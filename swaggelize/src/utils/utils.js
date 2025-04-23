@@ -215,7 +215,6 @@ function getVariablesFromPath(fullPath) {
  * @param sequelizeType
  */
 function getTypeField(sequelizeType) {
-    console.log(sequelizeType)
     const typeMap = {
         STRING: {type: 'string'},
         TEXT: {type: 'string'},

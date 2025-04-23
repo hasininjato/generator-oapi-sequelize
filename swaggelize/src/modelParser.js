@@ -78,14 +78,13 @@ function extractFields(modelDefinition) {
             const methods = getMethodsFromComment(swagComment.value.trim());
             const description = getDescriptionFromComment(swagComment.value.trim());
 
+            console.log("extract fields", methods)
             fields.push({
                 field: fieldName,
                 type: 'field',
                 object: fieldValue,
-                comment: {
-                    methods: methods || [],
-                    description: description || ''
-                }
+                methods: methods || [],
+                description: description || ''
             });
         }
     });
@@ -293,15 +292,15 @@ function getFieldsWithMethod(models) {
             modelMethod[sequelizeModel] = {};
         }
 
-        value.forEach(({field, comment, object}) => {
-            comment.methods.forEach((method) => {
+        value.forEach(({field, type, object, methods, description}) => {
+            methods?.forEach((method) => {
                 if (!modelMethod[sequelizeModel][method]) {
                     modelMethod[sequelizeModel][method] = [];
                 }
 
                 modelMethod[sequelizeModel][method].push({
                     field,
-                    description: comment.description,
+                    description: description,
                     type: getTypeField(object)
                 });
             });
