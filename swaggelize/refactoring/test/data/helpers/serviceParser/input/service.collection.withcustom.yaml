@@ -1,0 +1,28 @@
+Tag:
+  collectionOperations:
+    get:
+      openapi_context:
+        summary: "List of all tags"
+        description: "List of all tags"
+      output:
+        - "tag:list"
+    post:
+      openapi_context:
+        summary: "Create a tag"
+        description: "Create a tag"
+      input:
+        - "tag:post"
+      output:
+        - "tag:item"
+    custom_path:
+      tags: "Custom path"
+      path: "/custom/path"
+      method: "GET"
+      openapi_context:
+        summary: "Custom path"
+        description: "Custom path"
+      input:
+        - "tag:item"
+      params:
+        query:
+          name: "token"

@@ -1,0 +1,89 @@
+User:
+  collectionOperations:
+    get:
+      openapi_context:
+        summary: "List of all users"
+        description: "List of all users"
+      output:
+        - "user:list"
+    post:
+      openapi_context:
+        summary: "Create a user"
+        description: "Create a user"
+      input:
+        - "user:post"
+      output:
+        - "user:item"
+    login:
+      tags: "Authentication"
+      path: "/auth/login"
+      method: "POST"
+      openapi_context:
+        summary: "Login an user"
+        description: "Login an user"
+      input:
+        - "user:item"
+      output:
+        - "user:list"
+    validate_token:
+      tags: "Token"
+      path: "/validate/token"
+      method: "GET"
+      openapi_context:
+        summary: "Validate token sent in parameter"
+        description: "Validate token sent in parameter"
+      input:
+        - user:item
+      params:
+        query:
+          name: "token"
+  itemOperations:
+    get:
+      openapi_context:
+        summary: "Get user by id"
+        description: "Get user by id"
+      output:
+        - "user:item"
+    put:
+      openapi_context:
+        summary: "Update an user by id"
+        description: "Update an user by id"
+      input:
+        - "user:put"
+      output:
+        - "user:item"
+    delete:
+      openapi_context:
+        summary: "Delete an user by id"
+        description: "Delete an user by id"
+    create_transaction:
+      tags: "Transaction"
+      method: "POST"
+      path: "/users/{id}/transactions"
+      openapi_context:
+        summary: "Create a transaction of the user sent in param"
+        description: "Create a transaction of the user sent in param"
+      input:
+        - "transaction:post"
+      output:
+        - "transaction:item"
+    list_transaction:
+      tags: "Transaction"
+      method: "GET"
+      path: "/users/{id}/transactions"
+      openapi_context:
+        summary: "List of all transactions of an user by id"
+        description: "List of all transactions of an user by id"
+      output:
+        - "user:item"
+        - "transaction:list"
+    list_transaction_with_name:
+      tags: "Transaction"
+      method: "GET"
+      path: "/users/{id}/transactions/{name}"
+      openapi_context:
+        summary: "List of all transactions with name of an user by id"
+        description: "List of all transactions with name of an user by id"
+      output:
+        - "user:item"
+        - "transaction:list"

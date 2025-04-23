@@ -1,0 +1,168 @@
+[
+    {
+        "sequelizeModel": "Transaction",
+        "value": [
+            {
+                "field": "id",
+                "type": "field",
+                "object": {
+                    "type": "DataTypes.INTEGER",
+                    "primaryKey": true,
+                    "autoIncrement": true,
+                    "allowNull": false
+                },
+                "comment": {
+                    "methods": [
+                        "item",
+                        "list"
+                    ],
+                    "description": "Id of the transaction"
+                }
+            },
+            {
+                "field": "amount",
+                "type": "field",
+                "object": {
+                    "type": "DataTypes.DECIMAL",
+                    "allowNull": false,
+                    "unique": false,
+                    "validate": {
+                        "notNull": {
+                            "msg": "Amount is required"
+                        },
+                        "isDecimal": {
+                            "msg": "Amount must be a valid decimal number"
+                        },
+                        "notEmpty": {
+                            "msg": "Amount cannot be empty"
+                        },
+                        "min": {
+                            "args": [
+                                0.01
+                            ],
+                            "msg": "Amount must be greater than 0"
+                        }
+                    }
+                },
+                "comment": {
+                    "methods": [
+                        "item",
+                        "list",
+                        "put",
+                        "post"
+                    ],
+                    "description": "Amount of the transaction"
+                }
+            },
+            {
+                "field": "description",
+                "type": "field",
+                "object": {
+                    "type": "DataTypes.STRING",
+                    "allowNull": false,
+                    "unique": false,
+                    "validate": {
+                        "notNull": {
+                            "msg": "Description is required"
+                        },
+                        "notEmpty": {
+                            "msg": "Description cannot be empty"
+                        }
+                    }
+                },
+                "comment": {
+                    "methods": [
+                        "item",
+                        "list",
+                        "put",
+                        "post"
+                    ],
+                    "description": "Description of the transaction"
+                }
+            },
+            {
+                "field": "date",
+                "type": "field",
+                "object": {
+                    "type": "DataTypes.DATE",
+                    "allowNull": false,
+                    "defaultValue": "DataTypes.NOW"
+                },
+                "comment": {
+                    "methods": [
+                        "item",
+                        "list"
+                    ],
+                    "description": ""
+                }
+            },
+            {
+                "field": "createdAt",
+                "type": "field",
+                "object": {
+                    "type": "DataTypes.DATE",
+                    "allowNull": false
+                },
+                "comment": {
+                    "methods": [
+                        "item",
+                        "list"
+                    ],
+                    "description": "Date when the record was created"
+                }
+            },
+            {
+                "field": "updatedAt",
+                "type": "field",
+                "object": {
+                    "type": "DataTypes.DATE",
+                    "allowNull": false
+                },
+                "comment": {
+                    "methods": [
+                        "item",
+                        "list"
+                    ],
+                    "description": "Date when the record was last updated"
+                }
+            }
+        ],
+        "options": {
+            "timestamps": true
+        }
+    },
+    {
+        "sequelizeModel": "Post",
+        "value": [
+            {
+                "field": "title",
+                "type": "field",
+                "object": "DataTypes.STRING",
+                "comment": {
+                    "methods": [
+                        "list",
+                        "item",
+                        "put",
+                        "post"
+                    ],
+                    "description": "Post title"
+                }
+            },
+            {
+                "field": "content",
+                "type": "field",
+                "object": "DataTypes.TEXT",
+                "comment": {
+                    "methods": [
+                        "list",
+                        "item",
+                        "put",
+                        "post"
+                    ],
+                    "description": "Post content"
+                }
+            }
+        ],
+        "options": {}
+    }
+]

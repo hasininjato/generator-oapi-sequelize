@@ -1,0 +1,35 @@
+Post:
+  collectionOperations:
+    get:
+      openapi_context:
+        summary: "List of all posts"
+        description: "List of all posts"
+      output:
+        - "post:list"
+    post:
+      openapi_context:
+        summary: "Create a post"
+        description: "Create a post"
+      input:
+        - "post:post"
+      output:
+        - "post:item"
+  itemOperations:
+    get:
+      openapi_context:
+        summary: "Get post by id"
+        description: "Get post by id"
+      output:
+        - "post:item"
+    put:
+      openapi_context:
+        summary: "Update a post by id"
+        description: "Update a post by id"
+      input:
+        - "post:put"
+      output:
+        - "post:item"
+    delete:
+      openapi_context:
+        summary: "Delete a post by id"
+        description: "Delete a post by id"

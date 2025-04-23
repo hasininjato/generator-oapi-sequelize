@@ -1,0 +1,35 @@
+Profile:
+  collectionOperations:
+    get:
+      openapi_context:
+        summary: "List of all profiles"
+        description: "List of all profiles"
+      output:
+        - "profile:list"
+    post:
+      openapi_context:
+        summary: "Create a profile"
+        description: "Create a profile"
+      input:
+        - "profile:post"
+      output:
+        - "profile:item"
+  itemOperations:
+    get:
+      openapi_context:
+        summary: "Get profile by id"
+        description: "Get profile by id"
+      output:
+        - "profile:item"
+    put:
+      openapi_context:
+        summary: "Update a profile by id"
+        description: "Update a profile by id"
+      input:
+        - "profile:put"
+      output:
+        - "profile:item"
+    delete:
+      openapi_context:
+        summary: "Delete a profile by id"
+        description: "Delete a profile by id"

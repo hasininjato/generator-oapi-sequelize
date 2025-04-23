@@ -1,0 +1,25 @@
+Test:
+  itemOperations:
+    get:
+      openapi_context:
+        summary: "Test by id"
+        description: "Test by id"
+      output:
+        - "test:item"
+    put:
+      openapi_context:
+        summary: "Update a test by id"
+        description: "Update a test by id"
+      input:
+        - "test:put"
+      output:
+        - "test:item"
+    custom_path:
+      tags: "Custom path"
+      method: "GET"
+      path: "/test/{id}/custom"
+      openapi_context:
+        summary: "Custom path"
+        description: "Custom path"
+      output:
+        - "test:item"
