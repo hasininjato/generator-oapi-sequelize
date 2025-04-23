@@ -1,8 +1,5 @@
-const swaggerJsDoc = require('swagger-jsdoc');
-const parser = require('../swaggelize/refactoring');
-const swaggerUi = require("swagger-ui-express");
+const parser = require('../swaggelize');
 
-// swaggelize configuration
 function swagglizeConfig(app) {
     const swaggelizeOptions = {
         swaggerDefinition: {
