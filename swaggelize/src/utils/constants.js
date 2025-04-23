@@ -62,5 +62,6 @@ module.exports = {
     SEQUELIZE_DEFINE_PATTERN,
     SWAG_TAG,
     NODE_HANDLERS,
-    TYPE_MAP_SEQUELIZE_TO_OPENAPI
+    TYPE_MAP_SEQUELIZE_TO_OPENAPI,
+    getValueFromNode
 };
