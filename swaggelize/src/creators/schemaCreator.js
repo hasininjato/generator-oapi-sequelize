@@ -27,7 +27,7 @@ function createSchemas(models) {
                 if (fieldMethods.includes(method)) {
                     // Add to properties
                     schema.properties[field.field] = {
-                        type: getTypeField(field.object.type),
+                        ...getTypeField(field.object.type),
                         description: field.description || (field.comment && field.comment.description) || ""
                     };
 

@@ -1,0 +1,92 @@
+{
+    "/tags": {
+        "get": {
+            "summary": "List of all tags",
+            "description": "List of all tags",
+            "tags": [
+                "Tag"
+            ],
+            "output": [
+                "tag:list"
+            ]
+        },
+        "post": {
+            "summary": "Create a tag",
+            "description": "Create a tag",
+            "tags": [
+                "Tag"
+            ],
+            "input": [
+                "tag:post"
+            ],
+            "output": [
+                "tag:item"
+            ],
+            "requestBody": {
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/TagPost"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "/tags/:id": {
+        "get": {
+            "summary": "Get tag by id",
+            "description": "Get tag by id",
+            "tags": [
+                "Tag"
+            ],
+            "output": [
+                "tag:item"
+            ],
+            "parameters": [
+                {
+                    "$ref": "#/components/parameters/TagId"
+                }
+            ]
+        },
+        "put": {
+            "summary": "Update a tag by id",
+            "description": "Update a tag by id",
+            "tags": [
+                "Tag"
+            ],
+            "input": [
+                "tag:put"
+            ],
+            "output": [
+                "tag:item"
+            ],
+            "parameters": [
+                {
+                    "$ref": "#/components/parameters/TagId"
+                }
+            ],
+            "requestBody": {
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/TagPut"
+                        }
+                    }
+                }
+            }
+        },
+        "delete": {
+            "summary": "Delete a tag by id",
+            "description": "Delete a tag by id",
+            "tags": [
+                "Tag"
+            ],
+            "parameters": [
+                {
+                    "$ref": "#/components/parameters/TagId"
+                }
+            ]
+        }
+    }
+}

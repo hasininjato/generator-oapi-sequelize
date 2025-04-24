@@ -4,6 +4,7 @@ const serviceParser = require("./src/parsers/serviceParser");
 const fs = require("fs");
 const createParameters = require("./src/creators/parameterCreator");
 const createSchemas = require('./src/creators/schemaCreator');
+const createResponse = require('./src/creators/responseCreator');
 
 function getModels(modelsPath, modelsFiles) {
     const models = []
@@ -41,6 +42,8 @@ function parser(swaggelizeOptions) {
     components.components["parameters"] = parameters;
     components.components["schemas"] = schemas;
     const services = serviceParser(content, routesVariable, routePrefix, parameters);
+    createResponse(services, schemas);
+    fs.writeFileSync("../swaggelize/services.json", JSON.stringify(services, null, 4))
 
     const openApiSpec = {
         ...openApiInfo,

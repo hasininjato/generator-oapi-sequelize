@@ -69,23 +69,17 @@
                 "type": "object",
                 "properties": {
                     "id": {
-                        "type": {
-                            "type": "integer",
-                            "format": "int32"
-                        },
+                        "type": "integer",
+                        "format": "int32",
                         "description": ""
                     },
                     "type": {
-                        "type": {
-                            "type": "string"
-                        },
+                        "type": "string",
                         "description": "type of the instrument"
                     },
                     "purchaseDate": {
-                        "type": {
-                            "type": "string",
-                            "format": "date-time"
-                        },
+                        "type": "string",
+                        "format": "date-time",
                         "description": ""
                     }
                 }
@@ -94,23 +88,17 @@
                 "type": "object",
                 "properties": {
                     "id": {
-                        "type": {
-                            "type": "integer",
-                            "format": "int32"
-                        },
+                        "type": "integer",
+                        "format": "int32",
                         "description": ""
                     },
                     "type": {
-                        "type": {
-                            "type": "string"
-                        },
+                        "type": "string",
                         "description": "type of the instrument"
                     },
                     "purchaseDate": {
-                        "type": {
-                            "type": "string",
-                            "format": "date-time"
-                        },
+                        "type": "string",
+                        "format": "date-time",
                         "description": ""
                     }
                 }
@@ -119,9 +107,7 @@
                 "type": "object",
                 "properties": {
                     "type": {
-                        "type": {
-                            "type": "string"
-                        },
+                        "type": "string",
                         "description": "type of the instrument"
                     }
                 },
@@ -133,9 +119,7 @@
                 "type": "object",
                 "properties": {
                     "type": {
-                        "type": {
-                            "type": "string"
-                        },
+                        "type": "string",
                         "description": "type of the instrument"
                     }
                 },
@@ -147,17 +131,13 @@
                 "type": "object",
                 "properties": {
                     "userId": {
-                        "type": {
-                            "type": "integer",
-                            "format": "int32"
-                        },
+                        "type": "integer",
+                        "format": "int32",
                         "description": "User ID"
                     },
                     "instrumentId": {
-                        "type": {
-                            "type": "integer",
-                            "format": "int32"
-                        },
+                        "type": "integer",
+                        "format": "int32",
                         "description": "Instrument ID"
                     }
                 }
@@ -166,17 +146,13 @@
                 "type": "object",
                 "properties": {
                     "userId": {
-                        "type": {
-                            "type": "integer",
-                            "format": "int32"
-                        },
+                        "type": "integer",
+                        "format": "int32",
                         "description": "User ID"
                     },
                     "instrumentId": {
-                        "type": {
-                            "type": "integer",
-                            "format": "int32"
-                        },
+                        "type": "integer",
+                        "format": "int32",
                         "description": "Instrument ID"
                     }
                 }
@@ -193,15 +169,11 @@
                 "type": "object",
                 "properties": {
                     "title": {
-                        "type": {
-                            "type": "string"
-                        },
+                        "type": "string",
                         "description": "Post title"
                     },
                     "content": {
-                        "type": {
-                            "type": "string"
-                        },
+                        "type": "string",
                         "description": "Post content"
                     }
                 }
@@ -210,15 +182,11 @@
                 "type": "object",
                 "properties": {
                     "title": {
-                        "type": {
-                            "type": "string"
-                        },
+                        "type": "string",
                         "description": "Post title"
                     },
                     "content": {
-                        "type": {
-                            "type": "string"
-                        },
+                        "type": "string",
                         "description": "Post content"
                     }
                 }
@@ -227,15 +195,11 @@
                 "type": "object",
                 "properties": {
                     "title": {
-                        "type": {
-                            "type": "string"
-                        },
+                        "type": "string",
                         "description": "Post title"
                     },
                     "content": {
-                        "type": {
-                            "type": "string"
-                        },
+                        "type": "string",
                         "description": "Post content"
                     }
                 }
@@ -244,15 +208,11 @@
                 "type": "object",
                 "properties": {
                     "title": {
-                        "type": {
-                            "type": "string"
-                        },
+                        "type": "string",
                         "description": "Post title"
                     },
                     "content": {
-                        "type": {
-                            "type": "string"
-                        },
+                        "type": "string",
                         "description": "Post content"
                     }
                 }
@@ -261,15 +221,11 @@
                 "type": "object",
                 "properties": {
                     "title": {
-                        "type": {
-                            "type": "string"
-                        },
+                        "type": "string",
                         "description": "Post title"
                     },
                     "content": {
-                        "type": {
-                            "type": "string"
-                        },
+                        "type": "string",
                         "description": "Post content"
                     }
                 }
@@ -278,15 +234,11 @@
                 "type": "object",
                 "properties": {
                     "title": {
-                        "type": {
-                            "type": "string"
-                        },
+                        "type": "string",
                         "description": "Post title"
                     },
                     "content": {
-                        "type": {
-                            "type": "string"
-                        },
+                        "type": "string",
                         "description": "Post content"
                     }
                 }
@@ -295,15 +247,11 @@
                 "type": "object",
                 "properties": {
                     "title": {
-                        "type": {
-                            "type": "string"
-                        },
+                        "type": "string",
                         "description": "Post title"
                     },
                     "content": {
-                        "type": {
-                            "type": "string"
-                        },
+                        "type": "string",
                         "description": "Post content"
                     }
                 }
@@ -312,15 +260,11 @@
                 "type": "object",
                 "properties": {
                     "title": {
-                        "type": {
-                            "type": "string"
-                        },
+                        "type": "string",
                         "description": "Post title"
                     },
                     "content": {
-                        "type": {
-                            "type": "string"
-                        },
+                        "type": "string",
                         "description": "Post content"
                     }
                 }
@@ -329,17 +273,13 @@
                 "type": "object",
                 "properties": {
                     "postId": {
-                        "type": {
-                            "type": "integer",
-                            "format": "int32"
-                        },
+                        "type": "integer",
+                        "format": "int32",
                         "description": "Tag name"
                     },
                     "tagId": {
-                        "type": {
-                            "type": "integer",
-                            "format": "int32"
-                        },
+                        "type": "integer",
+                        "format": "int32",
                         "description": "Tag name"
                     }
                 }
@@ -348,17 +288,13 @@
                 "type": "object",
                 "properties": {
                     "postId": {
-                        "type": {
-                            "type": "integer",
-                            "format": "int32"
-                        },
+                        "type": "integer",
+                        "format": "int32",
                         "description": "Tag name"
                     },
                     "tagId": {
-                        "type": {
-                            "type": "integer",
-                            "format": "int32"
-                        },
+                        "type": "integer",
+                        "format": "int32",
                         "description": "Tag name"
                     }
                 }
@@ -367,17 +303,13 @@
                 "type": "object",
                 "properties": {
                     "postId": {
-                        "type": {
-                            "type": "integer",
-                            "format": "int32"
-                        },
+                        "type": "integer",
+                        "format": "int32",
                         "description": "Tag name"
                     },
                     "tagId": {
-                        "type": {
-                            "type": "integer",
-                            "format": "int32"
-                        },
+                        "type": "integer",
+                        "format": "int32",
                         "description": "Tag name"
                     }
                 }
@@ -386,17 +318,13 @@
                 "type": "object",
                 "properties": {
                     "postId": {
-                        "type": {
-                            "type": "integer",
-                            "format": "int32"
-                        },
+                        "type": "integer",
+                        "format": "int32",
                         "description": "Tag name"
                     },
                     "tagId": {
-                        "type": {
-                            "type": "integer",
-                            "format": "int32"
-                        },
+                        "type": "integer",
+                        "format": "int32",
                         "description": "Tag name"
                     }
                 }
@@ -405,16 +333,12 @@
                 "type": "object",
                 "properties": {
                     "id": {
-                        "type": {
-                            "type": "integer",
-                            "format": "int32"
-                        },
+                        "type": "integer",
+                        "format": "int32",
                         "description": "Profile ID"
                     },
                     "bio": {
-                        "type": {
-                            "type": "string"
-                        },
+                        "type": "string",
                         "description": "Profile bio"
                     }
                 }
@@ -423,16 +347,12 @@
                 "type": "object",
                 "properties": {
                     "id": {
-                        "type": {
-                            "type": "integer",
-                            "format": "int32"
-                        },
+                        "type": "integer",
+                        "format": "int32",
                         "description": "Profile ID"
                     },
                     "bio": {
-                        "type": {
-                            "type": "string"
-                        },
+                        "type": "string",
                         "description": "Profile bio"
                     }
                 }
@@ -441,9 +361,7 @@
                 "type": "object",
                 "properties": {
                     "bio": {
-                        "type": {
-                            "type": "string"
-                        },
+                        "type": "string",
                         "description": "Profile bio"
                     }
                 }
@@ -452,9 +370,7 @@
                 "type": "object",
                 "properties": {
                     "bio": {
-                        "type": {
-                            "type": "string"
-                        },
+                        "type": "string",
                         "description": "Profile bio"
                     }
                 }
@@ -463,9 +379,7 @@
                 "type": "object",
                 "properties": {
                     "name": {
-                        "type": {
-                            "type": "string"
-                        },
+                        "type": "string",
                         "description": "Tag name"
                     }
                 }
@@ -474,9 +388,7 @@
                 "type": "object",
                 "properties": {
                     "name": {
-                        "type": {
-                            "type": "string"
-                        },
+                        "type": "string",
                         "description": "Tag name"
                     }
                 }
@@ -485,9 +397,7 @@
                 "type": "object",
                 "properties": {
                     "name": {
-                        "type": {
-                            "type": "string"
-                        },
+                        "type": "string",
                         "description": "Tag name"
                     }
                 }
@@ -496,9 +406,7 @@
                 "type": "object",
                 "properties": {
                     "name": {
-                        "type": {
-                            "type": "string"
-                        },
+                        "type": "string",
                         "description": "Tag name"
                     }
                 }
@@ -507,43 +415,31 @@
                 "type": "object",
                 "properties": {
                     "id": {
-                        "type": {
-                            "type": "integer",
-                            "format": "int32"
-                        },
+                        "type": "integer",
+                        "format": "int32",
                         "description": "Id of the transaction"
                     },
                     "amount": {
-                        "type": {
-                            "type": "string"
-                        },
+                        "type": "string",
                         "description": "Amount of the transaction"
                     },
                     "description": {
-                        "type": {
-                            "type": "string"
-                        },
+                        "type": "string",
                         "description": "Description of the transaction"
                     },
                     "date": {
-                        "type": {
-                            "type": "string",
-                            "format": "date-time"
-                        },
+                        "type": "string",
+                        "format": "date-time",
                         "description": ""
                     },
                     "createdAt": {
-                        "type": {
-                            "type": "string",
-                            "format": "date-time"
-                        },
+                        "type": "string",
+                        "format": "date-time",
                         "description": "Date when the record was created"
                     },
                     "updatedAt": {
-                        "type": {
-                            "type": "string",
-                            "format": "date-time"
-                        },
+                        "type": "string",
+                        "format": "date-time",
                         "description": "Date when the record was last updated"
                     }
                 }
@@ -552,43 +448,31 @@
                 "type": "object",
                 "properties": {
                     "id": {
-                        "type": {
-                            "type": "integer",
-                            "format": "int32"
-                        },
+                        "type": "integer",
+                        "format": "int32",
                         "description": "Id of the transaction"
                     },
                     "amount": {
-                        "type": {
-                            "type": "string"
-                        },
+                        "type": "string",
                         "description": "Amount of the transaction"
                     },
                     "description": {
-                        "type": {
-                            "type": "string"
-                        },
+                        "type": "string",
                         "description": "Description of the transaction"
                     },
                     "date": {
-                        "type": {
-                            "type": "string",
-                            "format": "date-time"
-                        },
+                        "type": "string",
+                        "format": "date-time",
                         "description": ""
                     },
                     "createdAt": {
-                        "type": {
-                            "type": "string",
-                            "format": "date-time"
-                        },
+                        "type": "string",
+                        "format": "date-time",
                         "description": "Date when the record was created"
                     },
                     "updatedAt": {
-                        "type": {
-                            "type": "string",
-                            "format": "date-time"
-                        },
+                        "type": "string",
+                        "format": "date-time",
                         "description": "Date when the record was last updated"
                     }
                 }
@@ -597,15 +481,11 @@
                 "type": "object",
                 "properties": {
                     "amount": {
-                        "type": {
-                            "type": "string"
-                        },
+                        "type": "string",
                         "description": "Amount of the transaction"
                     },
                     "description": {
-                        "type": {
-                            "type": "string"
-                        },
+                        "type": "string",
                         "description": "Description of the transaction"
                     }
                 },
@@ -618,15 +498,11 @@
                 "type": "object",
                 "properties": {
                     "amount": {
-                        "type": {
-                            "type": "string"
-                        },
+                        "type": "string",
                         "description": "Amount of the transaction"
                     },
                     "description": {
-                        "type": {
-                            "type": "string"
-                        },
+                        "type": "string",
                         "description": "Description of the transaction"
                     }
                 },
@@ -639,36 +515,26 @@
                 "type": "object",
                 "properties": {
                     "id": {
-                        "type": {
-                            "type": "integer",
-                            "format": "int32"
-                        },
+                        "type": "integer",
+                        "format": "int32",
                         "description": "Id of the user"
                     },
                     "fullname": {
-                        "type": {
-                            "type": "string"
-                        },
+                        "type": "string",
                         "description": ""
                     },
                     "email": {
-                        "type": {
-                            "type": "string"
-                        },
+                        "type": "string",
                         "description": ""
                     },
                     "createdAt": {
-                        "type": {
-                            "type": "string",
-                            "format": "date-time"
-                        },
+                        "type": "string",
+                        "format": "date-time",
                         "description": "Date when the record was created"
                     },
                     "updatedAt": {
-                        "type": {
-                            "type": "string",
-                            "format": "date-time"
-                        },
+                        "type": "string",
+                        "format": "date-time",
                         "description": "Date when the record was last updated"
                     }
                 }
@@ -677,36 +543,26 @@
                 "type": "object",
                 "properties": {
                     "id": {
-                        "type": {
-                            "type": "integer",
-                            "format": "int32"
-                        },
+                        "type": "integer",
+                        "format": "int32",
                         "description": "Id of the user"
                     },
                     "fullname": {
-                        "type": {
-                            "type": "string"
-                        },
+                        "type": "string",
                         "description": ""
                     },
                     "email": {
-                        "type": {
-                            "type": "string"
-                        },
+                        "type": "string",
                         "description": ""
                     },
                     "createdAt": {
-                        "type": {
-                            "type": "string",
-                            "format": "date-time"
-                        },
+                        "type": "string",
+                        "format": "date-time",
                         "description": "Date when the record was created"
                     },
                     "updatedAt": {
-                        "type": {
-                            "type": "string",
-                            "format": "date-time"
-                        },
+                        "type": "string",
+                        "format": "date-time",
                         "description": "Date when the record was last updated"
                     }
                 }
@@ -715,21 +571,15 @@
                 "type": "object",
                 "properties": {
                     "fullname": {
-                        "type": {
-                            "type": "string"
-                        },
+                        "type": "string",
                         "description": ""
                     },
                     "email": {
-                        "type": {
-                            "type": "string"
-                        },
+                        "type": "string",
                         "description": ""
                     },
                     "password": {
-                        "type": {
-                            "type": "string"
-                        },
+                        "type": "string",
                         "description": ""
                     }
                 },
@@ -743,21 +593,15 @@
                 "type": "object",
                 "properties": {
                     "fullname": {
-                        "type": {
-                            "type": "string"
-                        },
+                        "type": "string",
                         "description": ""
                     },
                     "email": {
-                        "type": {
-                            "type": "string"
-                        },
+                        "type": "string",
                         "description": ""
                     },
                     "password": {
-                        "type": {
-                            "type": "string"
-                        },
+                        "type": "string",
                         "description": ""
                     }
                 },

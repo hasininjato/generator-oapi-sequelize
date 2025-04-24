@@ -114,7 +114,9 @@ function parseOperations(operations, routesVariable, routePrefix, model, isColle
         operationsResult[path][method.toLowerCase()] = {
             summary,
             description,
-            tags
+            tags,
+            input: operation.input,
+            output: operation.output
         };
         if (parameter) {
             operationsResult[path][method.toLowerCase()]["parameters"] = [
