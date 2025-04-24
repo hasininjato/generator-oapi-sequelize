@@ -73,7 +73,7 @@ const transformStr = (input) => {
         ? pascalPrefix + suffix.charAt(0).toUpperCase() + suffix.slice(1)
         : pascalPrefix;
 
-    return {pascalCase, suffix, prefix};
+    return { pascalCase, suffix, prefix };
 }
 
 const processValueNode = (node) => {
@@ -131,13 +131,13 @@ const processRelationArguments = (argsNodes) => {
         }
     });
 
-    return {args, options};
+    return { args, options };
 };
 
 const createRelationObject = (source, relationType, target, args, options) => {
     if (!hasForeignKey(options)) {
         const defaultForeignKey = generateDefaultForeignKey(target);
-        options = {...options, foreignKey: defaultForeignKey};
+        options = { ...options, foreignKey: defaultForeignKey };
 
         if (args.length > 1 && typeof args[1] === 'object') {
             args[1] = options;
@@ -163,26 +163,40 @@ const returnRelations = (modelDefinition) => {
         path.isProgram()
     )?.node;
 
-    if (!programNode) return {relations, programNode, modelName};
-    return {relations, programNode, modelName};
+    if (!programNode) return { relations, programNode, modelName };
+    return { relations, programNode, modelName };
 }
 
-function getVariablesIdFromPath(paths, model) {
-    const route = paths.find(route => {
-        const segments = route.path.split('/');
-        return (
-            segments.length === 4 && // ['', 'api', '<model>s', ':id']
-            segments[1] === 'api' &&
-            segments[2] === `${model}s` &&
-            segments[3].startsWith(':')
-        );
-    });
+function getVariableIdFromPath(path, model) {
+    const result = {
+        lastStaticSegment: null,
+        param: null
+    };
+    const segments = path.split('/').filter(Boolean); // Remove empty segments
 
-    if (route) {
-        return route.path.split('/').pop().substring(1); // remove the colon
+    // Must have at least ['api', model, ':param'] structure
+    if (segments.length < 3 || segments[0] !== 'api') {
+        return false;
     }
 
-    return null;
+    // Handle both versioned and non-versioned paths
+    const modelIndex = segments[1].startsWith('v') ? 2 : 1;
+
+    // Check if we have model segment followed by parameter
+    if (modelIndex >= segments.length - 1) return false;
+
+    const isModelMatch = segments[modelIndex] === model.toLowerCase() ||
+        segments[modelIndex] === `${model.toLowerCase()}s`;
+    const isParam = segments[modelIndex + 1]?.startsWith(':');
+
+    if (isModelMatch && isParam) {
+        // Capitalize the model name for the static segment
+        result.lastStaticSegment = model.charAt(0).toUpperCase() + model.slice(1);
+        result.param = segments[modelIndex + 1].substring(1); // Remove ':'
+        return result;
+    }
+
+    return false;
 }
 
 function getVariablesFromPath(fullPath) {
@@ -193,7 +207,19 @@ function getVariablesFromPath(fullPath) {
 
     for (let i = 0; i < segments.length; i++) {
         const segment = segments[i];
-        if (segment.startsWith('{') && segment.endsWith('}')) {
+        // if (segment.startsWith('{') && segment.endsWith('}')) {
+        if (segment.startsWith(':')) {
+            let lastStaticSegment = segments[i - 1]; // Get segment before {param}
+            if (lastStaticSegment) {
+                // Remove trailing 's' if it exists (e.g., "transactions" → "transaction")
+                lastStaticSegment = lastStaticSegment.replace(/s$/, '');
+                lastStaticSegment = capitalizeFirstLetter(lastStaticSegment);
+                result.push({
+                    lastStaticSegment,
+                    param: segment.replace(":", ""),
+                });
+            }
+        } else if (segment.startsWith('{') && segment.endsWith('}')) {
             let lastStaticSegment = segments[i - 1]; // Get segment before {param}
             if (lastStaticSegment) {
                 // Remove trailing 's' if it exists (e.g., "transactions" → "transaction")
@@ -216,25 +242,25 @@ function getVariablesFromPath(fullPath) {
  */
 function getTypeField(sequelizeType) {
     const typeMap = {
-        STRING: {type: 'string'},
-        TEXT: {type: 'string'},
-        INTEGER: {type: 'integer', format: 'int32'},
-        BIGINT: {type: 'integer', format: 'int64'},
-        FLOAT: {type: 'number', format: 'float'},
-        DOUBLE: {type: 'number', format: 'double'},
-        DECIMAL: {type: 'string'}, // usually represented as string in OpenAPI
-        BOOLEAN: {type: 'boolean'},
-        DATE: {type: 'string', format: 'date-time'},
-        DATEONLY: {type: 'string', format: 'date'},
-        TIME: {type: 'string'},
-        UUID: {type: 'string', format: 'uuid'},
-        JSON: {type: 'object'},
-        JSONB: {type: 'object'},
-        ENUM: {type: 'string'},
-        ARRAY: {type: 'array'},
-        BLOB: {type: 'string', format: 'binary'},
-        GEOMETRY: {type: 'object'},
-        RANGE: {type: 'array'}
+        STRING: { type: 'string' },
+        TEXT: { type: 'string' },
+        INTEGER: { type: 'integer', format: 'int32' },
+        BIGINT: { type: 'integer', format: 'int64' },
+        FLOAT: { type: 'number', format: 'float' },
+        DOUBLE: { type: 'number', format: 'double' },
+        DECIMAL: { type: 'string' }, // usually represented as string in OpenAPI
+        BOOLEAN: { type: 'boolean' },
+        DATE: { type: 'string', format: 'date-time' },
+        DATEONLY: { type: 'string', format: 'date' },
+        TIME: { type: 'string' },
+        UUID: { type: 'string', format: 'uuid' },
+        JSON: { type: 'object' },
+        JSONB: { type: 'object' },
+        ENUM: { type: 'string' },
+        ARRAY: { type: 'array' },
+        BLOB: { type: 'string', format: 'binary' },
+        GEOMETRY: { type: 'object' },
+        RANGE: { type: 'array' }
     };
     let typeKey = '';
 
@@ -247,7 +273,7 @@ function getTypeField(sequelizeType) {
         typeKey = sequelizeType.key || sequelizeType.constructor.name.toUpperCase();
     }
 
-    return typeMap[typeKey] || {type: 'string'};
+    return typeMap[typeKey] || { type: 'string' };
 }
 
 module.exports = {
@@ -266,7 +292,7 @@ module.exports = {
     hasForeignKey,
     returnRelations,
     getEndPointsApi,
-    getVariablesIdFromPath,
     getVariablesFromPath,
-    getTypeField
+    getTypeField,
+    getVariableIdFromPath
 }

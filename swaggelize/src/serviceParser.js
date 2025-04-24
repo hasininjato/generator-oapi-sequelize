@@ -1,6 +1,8 @@
 const yaml = require("js-yaml");
 const { getEndPointsApi } = require("./utils/utils");
-const { getVariablesIdFromPath } = require("./utils/utils");
+const { getVariablesFromPath, capitalizeFirstLetter } = require("./utils/utils");
+const generateParameters = require("./routeParser");
+const fs = require("node:fs");
 
 /**
  * get the model name from the parsed yaml
@@ -64,6 +66,22 @@ function getDefaultPath(model, routesVariable, routePrefix, isCollection) {
     });
 }
 
+function getParameters(path) {
+    const variables = getVariablesFromPath(path);
+    let parameters = [];
+    if (variables) {
+        variables.forEach((variable) => {
+            const key = `${variable.lastStaticSegment}${capitalizeFirstLetter(variable.param)}`;
+            const parameter = {
+                $ref: `#/components/parameters/${key}`
+            }
+            parameters.push(parameter);
+        })
+        return parameters;
+    }
+    return null;
+}
+
 /**
  * parse services operations (collection & item) and return OpenAPI specs
  * @param {object} operations 
@@ -73,15 +91,14 @@ function getDefaultPath(model, routesVariable, routePrefix, isCollection) {
  * @param {Boolean} isCollection 
  * @returns 
  */
-function parseOperations(operations, routesVariable, routePrefix, model, isCollection) {
+function parseOperations(operations, routesVariable, routePrefix, model, isCollection, parameters) {
     const operationsResult = {};
     for (const [operationName, operation] of Object.entries(operations)) {
         const summary = operation.openapi_context?.summary || "";
         const description = operation.openapi_context?.description || "";
         const method = operation.method || operationName.toUpperCase(); // default to key if method not present
-        const path = operation.path || getDefaultPath(model, routesVariable, routePrefix, isCollection).path; // path is not provided => default path
-        const input = operation.input || [];
-        const output = operation.output || [];
+        let path = operation.path || getDefaultPath(model, routesVariable, routePrefix, isCollection, parameters).path; // path is not provided => default path
+        path = path.replace(routePrefix, "");
 
         // Skip if we couldn't determine a path
         if (!path) continue;
@@ -91,14 +108,20 @@ function parseOperations(operations, routesVariable, routePrefix, model, isColle
             operationsResult[path] = {};
         }
         const tags = operation.tags ? [operation.tags] : [model];
+        // const parameter = getParameters(path, model);
+        const parameter = getParameters(path);
 
         // Add the method operation
         operationsResult[path][method.toLowerCase()] = {
             summary,
             description,
-            tags,
-            // Add other OpenAPI properties as needed
+            tags
         };
+        if (parameter) {
+            operationsResult[path][method.toLowerCase()]["parameters"] = [
+                ...parameter
+            ]
+        }
     }
 
     return operationsResult;
@@ -110,15 +133,14 @@ function parseOperations(operations, routesVariable, routePrefix, model, isColle
  * @param {string} routesVariable 
  * @param {string} routePrefix 
  */
-function serviceParser(content, routesVariable, routePrefix) {
-    console.log(typeof content);
+function serviceParser(content, routesVariable, routePrefix, parameters) {
     let operationsResult = {};
     const parsedYaml = yaml.load(content);
     const [model] = getModelName(parsedYaml);
     const { collectionOperations, itemOperations } = parsedYaml[model];
     operationsResult = {
-        ...parseOperations(collectionOperations, routesVariable, routePrefix, model, true),
-        ...parseOperations(itemOperations, routesVariable, routePrefix, model, false)
+        ...parseOperations(collectionOperations, routesVariable, routePrefix, model, true, parameters),
+        ...parseOperations(itemOperations, routesVariable, routePrefix, model, false, parameters)
     };
     // console.log(JSON.stringify(operationsResult, null, 4));
 }
