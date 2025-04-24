@@ -4,7 +4,7 @@ const sequelize = require('../config/db.conf');
 const User = sequelize.define('User', {
     /**
      * @swag
-     * methods: item, list, post, put
+     * methods: item, list
      * description: Id of the user
      */
     id: {

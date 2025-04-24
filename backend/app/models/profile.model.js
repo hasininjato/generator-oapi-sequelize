@@ -6,7 +6,7 @@ const Profile = sequelize.define('Profile', {
     /**
      * @swag
      * description: Profile ID
-     * methods: list, item, put, post
+     * methods: list, item
      */
     id: {
         allowNull: false,

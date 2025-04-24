@@ -2,7 +2,8 @@ const { modelParser } = require('./src/parsers/modelParser');
 const { getFileInDirectory, readFileContent } = require("./src/utils/utils");
 const serviceParser = require("./src/parsers/serviceParser");
 const fs = require("fs");
-const createParameters = require("./src/creators/componentCreator");
+const createParameters = require("./src/creators/parameterCreator");
+const createSchemas = require('./src/creators/schemaCreator');
 
 function getModels(modelsPath, modelsFiles) {
     const models = []
@@ -25,19 +26,27 @@ function parser(swaggelizeOptions) {
     const modelsFiles = getFileInDirectory(modelsPath);
     const models = getModels(modelsPath, modelsFiles);
 
-    const openApi = {
+    const schemas = createSchemas(models)
+
+    const openApiInfo = {
         openapi: swaggerDefinition.openapi,
         info: swaggerDefinition.info,
         servers: swaggerDefinition.servers
     }
-    console.log(swaggerDefinition)
     const components = {
         components: {}
     }
     const content = fs.readFileSync("../backend/app/docs/services/tag.yaml", "utf8");
     const parameters = createParameters(routesVariable);
     components.components["parameters"] = parameters;
-    serviceParser(content, routesVariable, routePrefix, parameters);
+    components.components["schemas"] = schemas;
+    const services = serviceParser(content, routesVariable, routePrefix, parameters);
+
+    const openApiSpec = {
+        ...openApiInfo,
+        ...components
+    }
+    fs.writeFileSync("../swaggelize/services-full.json", JSON.stringify(openApiSpec, null, 4))
 }
 
 module.exports = parser;

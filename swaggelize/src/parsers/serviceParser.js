@@ -141,6 +141,7 @@ function serviceParser(content, routesVariable, routePrefix, parameters) {
         ...parseOperations(collectionOperations, routesVariable, routePrefix, model, true, parameters),
         ...parseOperations(itemOperations, routesVariable, routePrefix, model, false, parameters)
     };
+    return operationsResult
     // console.log(JSON.stringify(operationsResult, null, 4));
 }
 

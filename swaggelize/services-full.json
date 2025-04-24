@@ -1,0 +1,772 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Swaggelize API",
+        "description": "API automatic generator using Swagger API and Swaggelize",
+        "contact": {
+            "name": "Hasininjato Rojovao"
+        },
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://localhost:8000/api"
+        },
+        {
+            "url": "http://localhost:3000/api"
+        }
+    ],
+    "components": {
+        "parameters": {
+            "UserId": {
+                "name": "id",
+                "in": "path",
+                "schema": {
+                    "type": "string"
+                },
+                "required": true,
+                "description": "User id"
+            },
+            "TransactionName": {
+                "name": "name",
+                "in": "path",
+                "schema": {
+                    "type": "string"
+                },
+                "required": true,
+                "description": "Transaction name"
+            },
+            "ProfileId": {
+                "name": "id",
+                "in": "path",
+                "schema": {
+                    "type": "string"
+                },
+                "required": true,
+                "description": "Profile id"
+            },
+            "TagId": {
+                "name": "id",
+                "in": "path",
+                "schema": {
+                    "type": "string"
+                },
+                "required": true,
+                "description": "Tag id"
+            },
+            "PostId": {
+                "name": "id",
+                "in": "path",
+                "schema": {
+                    "type": "string"
+                },
+                "required": true,
+                "description": "Post id"
+            }
+        },
+        "schemas": {
+            "InstrumentItem": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": {
+                            "type": "integer",
+                            "format": "int32"
+                        },
+                        "description": ""
+                    },
+                    "type": {
+                        "type": {
+                            "type": "string"
+                        },
+                        "description": "type of the instrument"
+                    },
+                    "purchaseDate": {
+                        "type": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "description": ""
+                    }
+                }
+            },
+            "InstrumentList": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": {
+                            "type": "integer",
+                            "format": "int32"
+                        },
+                        "description": ""
+                    },
+                    "type": {
+                        "type": {
+                            "type": "string"
+                        },
+                        "description": "type of the instrument"
+                    },
+                    "purchaseDate": {
+                        "type": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "description": ""
+                    }
+                }
+            },
+            "InstrumentPost": {
+                "type": "object",
+                "properties": {
+                    "type": {
+                        "type": {
+                            "type": "string"
+                        },
+                        "description": "type of the instrument"
+                    }
+                },
+                "required": [
+                    "type"
+                ]
+            },
+            "InstrumentPut": {
+                "type": "object",
+                "properties": {
+                    "type": {
+                        "type": {
+                            "type": "string"
+                        },
+                        "description": "type of the instrument"
+                    }
+                },
+                "required": [
+                    "type"
+                ]
+            },
+            "InstrumentUsersItem": {
+                "type": "object",
+                "properties": {
+                    "userId": {
+                        "type": {
+                            "type": "integer",
+                            "format": "int32"
+                        },
+                        "description": "User ID"
+                    },
+                    "instrumentId": {
+                        "type": {
+                            "type": "integer",
+                            "format": "int32"
+                        },
+                        "description": "Instrument ID"
+                    }
+                }
+            },
+            "InstrumentUsersList": {
+                "type": "object",
+                "properties": {
+                    "userId": {
+                        "type": {
+                            "type": "integer",
+                            "format": "int32"
+                        },
+                        "description": "User ID"
+                    },
+                    "instrumentId": {
+                        "type": {
+                            "type": "integer",
+                            "format": "int32"
+                        },
+                        "description": "Instrument ID"
+                    }
+                }
+            },
+            "InstrumentUsersPost": {
+                "type": "object",
+                "properties": {}
+            },
+            "InstrumentUsersPut": {
+                "type": "object",
+                "properties": {}
+            },
+            "PostItem": {
+                "type": "object",
+                "properties": {
+                    "title": {
+                        "type": {
+                            "type": "string"
+                        },
+                        "description": "Post title"
+                    },
+                    "content": {
+                        "type": {
+                            "type": "string"
+                        },
+                        "description": "Post content"
+                    }
+                }
+            },
+            "PostList": {
+                "type": "object",
+                "properties": {
+                    "title": {
+                        "type": {
+                            "type": "string"
+                        },
+                        "description": "Post title"
+                    },
+                    "content": {
+                        "type": {
+                            "type": "string"
+                        },
+                        "description": "Post content"
+                    }
+                }
+            },
+            "PostPost": {
+                "type": "object",
+                "properties": {
+                    "title": {
+                        "type": {
+                            "type": "string"
+                        },
+                        "description": "Post title"
+                    },
+                    "content": {
+                        "type": {
+                            "type": "string"
+                        },
+                        "description": "Post content"
+                    }
+                }
+            },
+            "PostPut": {
+                "type": "object",
+                "properties": {
+                    "title": {
+                        "type": {
+                            "type": "string"
+                        },
+                        "description": "Post title"
+                    },
+                    "content": {
+                        "type": {
+                            "type": "string"
+                        },
+                        "description": "Post content"
+                    }
+                }
+            },
+            "PostSecondItem": {
+                "type": "object",
+                "properties": {
+                    "title": {
+                        "type": {
+                            "type": "string"
+                        },
+                        "description": "Post title"
+                    },
+                    "content": {
+                        "type": {
+                            "type": "string"
+                        },
+                        "description": "Post content"
+                    }
+                }
+            },
+            "PostSecondList": {
+                "type": "object",
+                "properties": {
+                    "title": {
+                        "type": {
+                            "type": "string"
+                        },
+                        "description": "Post title"
+                    },
+                    "content": {
+                        "type": {
+                            "type": "string"
+                        },
+                        "description": "Post content"
+                    }
+                }
+            },
+            "PostSecondPost": {
+                "type": "object",
+                "properties": {
+                    "title": {
+                        "type": {
+                            "type": "string"
+                        },
+                        "description": "Post title"
+                    },
+                    "content": {
+                        "type": {
+                            "type": "string"
+                        },
+                        "description": "Post content"
+                    }
+                }
+            },
+            "PostSecondPut": {
+                "type": "object",
+                "properties": {
+                    "title": {
+                        "type": {
+                            "type": "string"
+                        },
+                        "description": "Post title"
+                    },
+                    "content": {
+                        "type": {
+                            "type": "string"
+                        },
+                        "description": "Post content"
+                    }
+                }
+            },
+            "PostTagsItem": {
+                "type": "object",
+                "properties": {
+                    "postId": {
+                        "type": {
+                            "type": "integer",
+                            "format": "int32"
+                        },
+                        "description": "Tag name"
+                    },
+                    "tagId": {
+                        "type": {
+                            "type": "integer",
+                            "format": "int32"
+                        },
+                        "description": "Tag name"
+                    }
+                }
+            },
+            "PostTagsList": {
+                "type": "object",
+                "properties": {
+                    "postId": {
+                        "type": {
+                            "type": "integer",
+                            "format": "int32"
+                        },
+                        "description": "Tag name"
+                    },
+                    "tagId": {
+                        "type": {
+                            "type": "integer",
+                            "format": "int32"
+                        },
+                        "description": "Tag name"
+                    }
+                }
+            },
+            "PostTagsPost": {
+                "type": "object",
+                "properties": {
+                    "postId": {
+                        "type": {
+                            "type": "integer",
+                            "format": "int32"
+                        },
+                        "description": "Tag name"
+                    },
+                    "tagId": {
+                        "type": {
+                            "type": "integer",
+                            "format": "int32"
+                        },
+                        "description": "Tag name"
+                    }
+                }
+            },
+            "PostTagsPut": {
+                "type": "object",
+                "properties": {
+                    "postId": {
+                        "type": {
+                            "type": "integer",
+                            "format": "int32"
+                        },
+                        "description": "Tag name"
+                    },
+                    "tagId": {
+                        "type": {
+                            "type": "integer",
+                            "format": "int32"
+                        },
+                        "description": "Tag name"
+                    }
+                }
+            },
+            "ProfileItem": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": {
+                            "type": "integer",
+                            "format": "int32"
+                        },
+                        "description": "Profile ID"
+                    },
+                    "bio": {
+                        "type": {
+                            "type": "string"
+                        },
+                        "description": "Profile bio"
+                    }
+                }
+            },
+            "ProfileList": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": {
+                            "type": "integer",
+                            "format": "int32"
+                        },
+                        "description": "Profile ID"
+                    },
+                    "bio": {
+                        "type": {
+                            "type": "string"
+                        },
+                        "description": "Profile bio"
+                    }
+                }
+            },
+            "ProfilePost": {
+                "type": "object",
+                "properties": {
+                    "bio": {
+                        "type": {
+                            "type": "string"
+                        },
+                        "description": "Profile bio"
+                    }
+                }
+            },
+            "ProfilePut": {
+                "type": "object",
+                "properties": {
+                    "bio": {
+                        "type": {
+                            "type": "string"
+                        },
+                        "description": "Profile bio"
+                    }
+                }
+            },
+            "TagItem": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": {
+                            "type": "string"
+                        },
+                        "description": "Tag name"
+                    }
+                }
+            },
+            "TagList": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": {
+                            "type": "string"
+                        },
+                        "description": "Tag name"
+                    }
+                }
+            },
+            "TagPost": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": {
+                            "type": "string"
+                        },
+                        "description": "Tag name"
+                    }
+                }
+            },
+            "TagPut": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": {
+                            "type": "string"
+                        },
+                        "description": "Tag name"
+                    }
+                }
+            },
+            "TransactionItem": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": {
+                            "type": "integer",
+                            "format": "int32"
+                        },
+                        "description": "Id of the transaction"
+                    },
+                    "amount": {
+                        "type": {
+                            "type": "string"
+                        },
+                        "description": "Amount of the transaction"
+                    },
+                    "description": {
+                        "type": {
+                            "type": "string"
+                        },
+                        "description": "Description of the transaction"
+                    },
+                    "date": {
+                        "type": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "description": ""
+                    },
+                    "createdAt": {
+                        "type": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "description": "Date when the record was created"
+                    },
+                    "updatedAt": {
+                        "type": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "description": "Date when the record was last updated"
+                    }
+                }
+            },
+            "TransactionList": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": {
+                            "type": "integer",
+                            "format": "int32"
+                        },
+                        "description": "Id of the transaction"
+                    },
+                    "amount": {
+                        "type": {
+                            "type": "string"
+                        },
+                        "description": "Amount of the transaction"
+                    },
+                    "description": {
+                        "type": {
+                            "type": "string"
+                        },
+                        "description": "Description of the transaction"
+                    },
+                    "date": {
+                        "type": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "description": ""
+                    },
+                    "createdAt": {
+                        "type": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "description": "Date when the record was created"
+                    },
+                    "updatedAt": {
+                        "type": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "description": "Date when the record was last updated"
+                    }
+                }
+            },
+            "TransactionPost": {
+                "type": "object",
+                "properties": {
+                    "amount": {
+                        "type": {
+                            "type": "string"
+                        },
+                        "description": "Amount of the transaction"
+                    },
+                    "description": {
+                        "type": {
+                            "type": "string"
+                        },
+                        "description": "Description of the transaction"
+                    }
+                },
+                "required": [
+                    "amount",
+                    "description"
+                ]
+            },
+            "TransactionPut": {
+                "type": "object",
+                "properties": {
+                    "amount": {
+                        "type": {
+                            "type": "string"
+                        },
+                        "description": "Amount of the transaction"
+                    },
+                    "description": {
+                        "type": {
+                            "type": "string"
+                        },
+                        "description": "Description of the transaction"
+                    }
+                },
+                "required": [
+                    "amount",
+                    "description"
+                ]
+            },
+            "UserItem": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": {
+                            "type": "integer",
+                            "format": "int32"
+                        },
+                        "description": "Id of the user"
+                    },
+                    "fullname": {
+                        "type": {
+                            "type": "string"
+                        },
+                        "description": ""
+                    },
+                    "email": {
+                        "type": {
+                            "type": "string"
+                        },
+                        "description": ""
+                    },
+                    "createdAt": {
+                        "type": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "description": "Date when the record was created"
+                    },
+                    "updatedAt": {
+                        "type": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "description": "Date when the record was last updated"
+                    }
+                }
+            },
+            "UserList": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": {
+                            "type": "integer",
+                            "format": "int32"
+                        },
+                        "description": "Id of the user"
+                    },
+                    "fullname": {
+                        "type": {
+                            "type": "string"
+                        },
+                        "description": ""
+                    },
+                    "email": {
+                        "type": {
+                            "type": "string"
+                        },
+                        "description": ""
+                    },
+                    "createdAt": {
+                        "type": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "description": "Date when the record was created"
+                    },
+                    "updatedAt": {
+                        "type": {
+                            "type": "string",
+                            "format": "date-time"
+                        },
+                        "description": "Date when the record was last updated"
+                    }
+                }
+            },
+            "UserPost": {
+                "type": "object",
+                "properties": {
+                    "fullname": {
+                        "type": {
+                            "type": "string"
+                        },
+                        "description": ""
+                    },
+                    "email": {
+                        "type": {
+                            "type": "string"
+                        },
+                        "description": ""
+                    },
+                    "password": {
+                        "type": {
+                            "type": "string"
+                        },
+                        "description": ""
+                    }
+                },
+                "required": [
+                    "fullname",
+                    "email",
+                    "password"
+                ]
+            },
+            "UserPut": {
+                "type": "object",
+                "properties": {
+                    "fullname": {
+                        "type": {
+                            "type": "string"
+                        },
+                        "description": ""
+                    },
+                    "email": {
+                        "type": {
+                            "type": "string"
+                        },
+                        "description": ""
+                    },
+                    "password": {
+                        "type": {
+                            "type": "string"
+                        },
+                        "description": ""
+                    }
+                },
+                "required": [
+                    "fullname",
+                    "email",
+                    "password"
+                ]
+            }
+        }
+    }
+}
