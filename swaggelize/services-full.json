@@ -639,5 +639,262 @@
                 ]
             }
         }
+    },
+    "paths": {
+        "/users": {
+            "get": {
+                "summary": "List of all users",
+                "description": "List of all users",
+                "tags": [
+                    "User"
+                ],
+                "responses": {
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            },
+            "post": {
+                "summary": "Create a user",
+                "description": "Create a user",
+                "tags": [
+                    "User"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UserPost"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Created user",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UserItem"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/auth/login": {
+            "post": {
+                "summary": "Login an user",
+                "description": "Login an user",
+                "tags": [
+                    "Authentication"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UserItem"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Created user",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UserItem"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/validate/token": {
+            "get": {
+                "summary": "Validate token sent in parameter",
+                "description": "Validate token sent in parameter",
+                "tags": [
+                    "Token"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UserItem"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/users/:id": {
+            "get": {
+                "summary": "Get user by id",
+                "description": "Get user by id",
+                "tags": [
+                    "User"
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/UserId"
+                    }
+                ],
+                "responses": {
+                    "404": {
+                        "description": "User not found"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            },
+            "put": {
+                "summary": "Update an user by id",
+                "description": "Update an user by id",
+                "tags": [
+                    "User"
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/UserId"
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UserPut"
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "summary": "Delete an user by id",
+                "description": "Delete an user by id",
+                "tags": [
+                    "User"
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/UserId"
+                    }
+                ],
+                "responses": {
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/users/{id}/transactions": {
+            "post": {
+                "summary": "Create a transaction of the user sent in param",
+                "description": "Create a transaction of the user sent in param",
+                "tags": [
+                    "Transaction"
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/UserId"
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/TransactionPost"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Created transaction",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/TransactionItem"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            },
+            "get": {
+                "summary": "List of all transactions of an user by id",
+                "description": "List of all transactions of an user by id",
+                "tags": [
+                    "Transaction"
+                ],
+                "output": [
+                    "user:item",
+                    "transaction:list"
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/UserId"
+                    }
+                ],
+                "responses": {
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/users/{id}/transactions/{name}": {
+            "get": {
+                "summary": "List of all transactions with name of an user by id",
+                "description": "List of all transactions with name of an user by id",
+                "tags": [
+                    "Transaction"
+                ],
+                "output": [
+                    "user:item",
+                    "transaction:list"
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/UserId"
+                    },
+                    {
+                        "$ref": "#/components/parameters/TransactionName"
+                    }
+                ],
+                "responses": {
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        }
     }
 }

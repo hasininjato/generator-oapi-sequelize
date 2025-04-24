@@ -24,7 +24,7 @@ User:
       input:
         - "user:item"
       output:
-        - "user:list"
+        - "user:item"
     validate_token:
       tags: "Token"
       path: "/validate/token"

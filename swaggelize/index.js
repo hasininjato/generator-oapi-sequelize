@@ -1,10 +1,11 @@
-const { modelParser } = require('./src/parsers/modelParser');
-const { getFileInDirectory, readFileContent } = require("./src/utils/utils");
+const {modelParser} = require('./src/parsers/modelParser');
+const {getFileInDirectory, readFileContent} = require("./src/utils/utils");
 const serviceParser = require("./src/parsers/serviceParser");
 const fs = require("fs");
 const createParameters = require("./src/creators/parameterCreator");
 const createSchemas = require('./src/creators/schemaCreator');
 const createResponse = require('./src/creators/responseCreator');
+const createRequestBody = require("./src/creators/requestBodyCreator");
 
 function getModels(modelsPath, modelsFiles) {
     const models = []
@@ -37,18 +38,25 @@ function parser(swaggelizeOptions) {
     const components = {
         components: {}
     }
-    const content = fs.readFileSync("../backend/app/docs/services/tag.yaml", "utf8");
-    const parameters = createParameters(routesVariable);
-    components.components["parameters"] = parameters;
-    components.components["schemas"] = schemas;
-    const services = serviceParser(content, routesVariable, routePrefix, parameters);
-    createResponse(services, schemas);
-    fs.writeFileSync("../swaggelize/services.json", JSON.stringify(services, null, 4))
+    let services = {};
+    const servicesFiles = getFileInDirectory(servicesPath);
+    let openApiSpec = {};
+    servicesFiles.forEach(file => {
+        const content = readFileContent(`${servicesPath}/${file}`);
+        const parameters = createParameters(routesVariable);
+        components.components["parameters"] = parameters;
+        components.components["schemas"] = schemas;
+        services = serviceParser(content, routesVariable, routePrefix, parameters);
+        createRequestBody(services, schemas);
+        createResponse(services, schemas);
+        fs.writeFileSync("../swaggelize/services.json", JSON.stringify(services, null, 4))
 
-    const openApiSpec = {
-        ...openApiInfo,
-        ...components
-    }
+        openApiSpec = {
+            ...openApiInfo,
+            ...components,
+            paths: services
+        }
+    })
     fs.writeFileSync("../swaggelize/services-full.json", JSON.stringify(openApiSpec, null, 4))
 }
 

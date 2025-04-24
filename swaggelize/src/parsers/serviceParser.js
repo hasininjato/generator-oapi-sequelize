@@ -1,6 +1,6 @@
 const yaml = require("js-yaml");
-const { getEndPointsApi } = require("../utils/utils");
-const { getVariablesFromPath, capitalizeFirstLetter } = require("../utils/utils");
+const {getEndPointsApi} = require("../utils/utils");
+const {getVariablesFromPath, capitalizeFirstLetter} = require("../utils/utils");
 const fs = require("node:fs");
 
 /**
@@ -14,8 +14,8 @@ function getModelName(content) {
 
 /**
  * make plural the model name
- * @param {string} singular 
- * @returns 
+ * @param {string} singular
+ * @returns
  */
 function pluralize(singular) {
     if (singular.endsWith('y')) {
@@ -27,10 +27,10 @@ function pluralize(singular) {
 /**
  * get default path & methods from express app routes
  * @param {string} model
- * @param {object} routesVariable 
- * @param {string} routePrefix 
- * @param {Boolean} isCollection 
- * @returns 
+ * @param {object} routesVariable
+ * @param {string} routePrefix
+ * @param {Boolean} isCollection
+ * @returns
  */
 function getDefaultPath(model, routesVariable, routePrefix, isCollection) {
     const paths = getEndPointsApi(routesVariable);
@@ -83,45 +83,51 @@ function getParameters(path) {
 
 /**
  * parse services operations (collection & item) and return OpenAPI specs
- * @param {object} operations 
- * @param {object} routesVariable 
- * @param {string} routePrefix 
- * @param {string} model 
- * @param {Boolean} isCollection 
- * @returns 
+ * @param {object} operations
+ * @param {object} routesVariable
+ * @param {string} routePrefix
+ * @param {string} model
+ * @param {Boolean} isCollection
+ * @returns
  */
 function parseOperations(operations, routesVariable, routePrefix, model, isCollection, parameters) {
     const operationsResult = {};
-    for (const [operationName, operation] of Object.entries(operations)) {
-        const summary = operation.openapi_context?.summary || "";
-        const description = operation.openapi_context?.description || "";
-        const method = operation.method || operationName.toUpperCase(); // default to key if method not present
-        let path = operation.path || getDefaultPath(model, routesVariable, routePrefix, isCollection, parameters).path; // path is not provided => default path
-        path = path.replace(routePrefix, "");
+    if (operations) {
+        for (const [operationName, operation] of Object.entries(operations)) {
+            const summary = operation.openapi_context?.summary || "";
+            const description = operation.openapi_context?.description || "";
+            const method = operation.method || operationName.toUpperCase(); // default to key if method not present
+            let path = operation.path || getDefaultPath(model, routesVariable, routePrefix, isCollection)?.path; // path is not provided => default path
+            if (path) {
+                path = path.replace(routePrefix, "");
+            } else {
+                path = "";
+            }
 
-        // Skip if we couldn't determine a path
-        if (!path) continue;
+            // Skip if we couldn't determine a path
+            if (!path) continue;
 
-        // Initialize the path object if it doesn't exist
-        if (!operationsResult[path]) {
-            operationsResult[path] = {};
-        }
-        const tags = operation.tags ? [operation.tags] : [model];
-        // const parameter = getParameters(path, model);
-        const parameter = getParameters(path);
+            // Initialize the path object if it doesn't exist
+            if (!operationsResult[path]) {
+                operationsResult[path] = {};
+            }
+            const tags = operation.tags ? [operation.tags] : [model];
+            // const parameter = getParameters(path, model);
+            const parameter = getParameters(path);
 
-        // Add the method operation
-        operationsResult[path][method.toLowerCase()] = {
-            summary,
-            description,
-            tags,
-            input: operation.input,
-            output: operation.output
-        };
-        if (parameter) {
-            operationsResult[path][method.toLowerCase()]["parameters"] = [
-                ...parameter
-            ]
+            // Add the method operation
+            operationsResult[path][method.toLowerCase()] = {
+                summary,
+                description,
+                tags,
+                input: operation.input,
+                output: operation.output
+            };
+            if (parameter) {
+                operationsResult[path][method.toLowerCase()]["parameters"] = [
+                    ...parameter
+                ]
+            }
         }
     }
 
@@ -130,21 +136,20 @@ function parseOperations(operations, routesVariable, routePrefix, model, isColle
 
 /**
  * main parser for the service to call in index.js
- * @param {string} content 
- * @param {string} routesVariable 
- * @param {string} routePrefix 
+ * @param {string} content
+ * @param {string} routesVariable
+ * @param {string} routePrefix
  */
 function serviceParser(content, routesVariable, routePrefix, parameters) {
     let operationsResult = {};
     const parsedYaml = yaml.load(content);
     const [model] = getModelName(parsedYaml);
-    const { collectionOperations, itemOperations } = parsedYaml[model];
+    const {collectionOperations, itemOperations} = parsedYaml[model];
     operationsResult = {
         ...parseOperations(collectionOperations, routesVariable, routePrefix, model, true, parameters),
         ...parseOperations(itemOperations, routesVariable, routePrefix, model, false, parameters)
     };
     return operationsResult
-    // console.log(JSON.stringify(operationsResult, null, 4));
 }
 
 module.exports = serviceParser;
