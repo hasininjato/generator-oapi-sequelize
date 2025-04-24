@@ -78,7 +78,6 @@ function extractFields(modelDefinition) {
             const methods = getMethodsFromComment(swagComment.value.trim());
             const description = getDescriptionFromComment(swagComment.value.trim());
 
-            console.log("extract fields", methods)
             fields.push({
                 field: fieldName,
                 type: 'field',

@@ -1,5 +1,7 @@
-const {modelParser} = require('./src/modelParser');
-const {getFileInDirectory, readFileContent} = require("./src/utils/utils");
+const { modelParser } = require('./src/modelParser');
+const { getFileInDirectory, readFileContent } = require("./src/utils/utils");
+const serviceParser = require("./src/serviceParser");
+const fs = require("fs");
 
 function getModels(modelsPath, modelsFiles) {
     const models = []
@@ -21,6 +23,9 @@ function parser(swaggelizeOptions) {
 
     const modelsFiles = getFileInDirectory(modelsPath);
     const models = getModels(modelsPath, modelsFiles);
+
+    const content = fs.readFileSync("../backend/app/docs/services/user.yaml", "utf8");
+    serviceParser(content, routesVariable, routePrefix);
 }
 
 module.exports = parser;
