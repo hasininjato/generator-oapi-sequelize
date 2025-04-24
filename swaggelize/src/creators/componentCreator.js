@@ -1,7 +1,12 @@
-const { getEndPointsApi } = require("./utils/utils");
-const { getVariablesFromPath, capitalizeFirstLetter } = require("./utils/utils");
+const { getEndPointsApi } = require("../utils/utils");
+const { getVariablesFromPath, capitalizeFirstLetter } = require("../utils/utils");
 
-function generateParameters(routesVariable) {
+/**
+ * Create all parameters
+ * @param {object} routesVariable 
+ * @returns 
+ */
+function createParameters(routesVariable) {
     const paths = getEndPointsApi(routesVariable);
     const parameters = {};
 
@@ -35,4 +40,4 @@ function generateParameters(routesVariable) {
     return parameters;
 }
 
-module.exports = generateParameters;
+module.exports = createParameters;

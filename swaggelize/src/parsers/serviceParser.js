@@ -1,7 +1,6 @@
 const yaml = require("js-yaml");
-const { getEndPointsApi } = require("./utils/utils");
-const { getVariablesFromPath, capitalizeFirstLetter } = require("./utils/utils");
-const generateParameters = require("./routeParser");
+const { getEndPointsApi } = require("../utils/utils");
+const { getVariablesFromPath, capitalizeFirstLetter } = require("../utils/utils");
 const fs = require("node:fs");
 
 /**

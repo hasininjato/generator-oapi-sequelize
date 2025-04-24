@@ -3,8 +3,8 @@ const {default: traverse} = require("@babel/traverse");
 const t = require("@babel/types");
 const {returnRelations, processRelationArguments, createRelationObject, getTypeField, getDescriptionFromComment,
     getMethodsFromComment
-} = require("./utils/utils");
-const {SWAG_TAG, getValueFromNode} = require("./utils/constants");
+} = require("../utils/utils");
+const {SWAG_TAG, getValueFromNode} = require("../utils/constants");
 
 /**
  * parse the js code

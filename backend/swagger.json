@@ -1,0 +1,457 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Swaggelize API",
+        "description": "API automatic generator using Swagger API and Swaggelize",
+        "contact": {
+            "name": "Hasininjato Rojovao"
+        },
+        "version": "1.0.0"
+    },
+    "components": {
+        "securitySchemes": {
+            "BearerAuth": {
+                "type": "http",
+                "scheme": "bearer",
+                "bearerFormat": "JWT"
+            },
+            "basicAuth": {
+                "type": "http",
+                "scheme": "basic"
+            }
+        },
+        "schemas": {
+            "UserLogin": {
+                "type": "object",
+                "required": [
+                    "email",
+                    "password"
+                ],
+                "properties": {
+                    "email": {
+                        "type": "string",
+                        "description": "Email de l'utilisateur"
+                    },
+                    "password": {
+                        "type": "string",
+                        "description": "Mot de passe de l'utilisateur"
+                    }
+                },
+                "example": {
+                    "email": "email@test.com",
+                    "password": "test"
+                }
+            },
+            "UserLoginResponse": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "description": "Id de l'utilisateur"
+                    },
+                    "fullname": {
+                        "type": "string",
+                        "description": "Nom de l'utilisateur"
+                    },
+                    "email": {
+                        "type": "string",
+                        "description": "Email de l'utilisateur"
+                    },
+                    "access_token": {
+                        "type": "string",
+                        "description": "Access token généré"
+                    }
+                },
+                "example": {
+                    "email": "email@test.com",
+                    "password": "test"
+                }
+            },
+            "UserGet": {
+                "type": "object",
+                "required": [
+                    "fullname",
+                    "email"
+                ],
+                "properties": {
+                    "fullname": {
+                        "type": "string",
+                        "description": "Nom de l'utilisateur"
+                    },
+                    "email": {
+                        "type": "string",
+                        "description": "Email de l'utilisateur"
+                    }
+                },
+                "example": {
+                    "fullname": "Name",
+                    "email": "email@test.com"
+                }
+            },
+            "UserCreationResponse": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "description": "Id de l'utilisateur"
+                    },
+                    "fullname": {
+                        "type": "string",
+                        "description": "Nom de l'utilisateur"
+                    },
+                    "email": {
+                        "type": "string",
+                        "description": "Email de l'utilisateur"
+                    },
+                    "access_token": {
+                        "type": "string",
+                        "description": "Access token généré"
+                    }
+                },
+                "example": {
+                    "email": "email@test.com",
+                    "password": "test"
+                }
+            },
+            "User": {
+                "type": "object",
+                "properties": {
+                    "fullname": {
+                        "type": "string",
+                        "description": "Nom de l'utilisateur"
+                    },
+                    "email": {
+                        "type": "string",
+                        "description": "Email de l'utilisateur"
+                    },
+                    "password": {
+                        "type": "string",
+                        "description": "Mot de passe"
+                    }
+                },
+                "example": {
+                    "fullname": "Nom de l'utilisateur",
+                    "email": "email@test.com",
+                    "password": "test"
+                }
+            },
+            "Transaction": {
+                "type": "object",
+                "properties": {
+                    "description": {
+                        "type": "string",
+                        "description": "Description de la transaction"
+                    },
+                    "amount": {
+                        "type": "string",
+                        "description": "Montant de l transaction"
+                    }
+                },
+                "example": {
+                    "description": "transaction 01",
+                    "amount": 20.5
+                }
+            }
+        }
+    },
+    "servers": [
+        {
+            "url": "http://localhost:8000/api"
+        }
+    ],
+    "paths": {
+        "/auth/login": {
+            "post": {
+                "summary": "Authentifier un utilisateur",
+                "description": "Authentifier un utilisateur",
+                "tags": [
+                    "Authentification"
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UserLogin"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Login réussi",
+                        "contents": {
+                            "applciation/json": {
+                                "schema": {
+                                    "$ref": "#components/schemas/UserLoginResponse"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Invalid credentials"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/users": {
+            "post": {
+                "summary": "Créer un utilisateur",
+                "tags": [
+                    "Utilisateur"
+                ],
+                "description": "Créer un utilisateur",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/User"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Création réussie",
+                        "contents": {
+                            "applciation/json": {
+                                "schema": {
+                                    "$ref": "#components/schemas/UserCreationResponse"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "409": {
+                        "description": "Unique constraint error"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/users/{id}/transactions": {
+            "post": {
+                "summary": "Créer une nouvelle transaction",
+                "description": "Créer une nouvelle transaction",
+                "tags": [
+                    "Transaction"
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Transaction"
+                            }
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "required": true,
+                        "description": "Id de l'utilisateur"
+                    }
+                ],
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Transactions"
+                    },
+                    "404": {
+                        "description": "User not found"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            },
+            "get": {
+                "summary": "Récupérer les transactions d'un utilisateur",
+                "description": "Récupérer les transactions d'un utilisateur",
+                "tags": [
+                    "Transaction"
+                ],
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "required": true,
+                        "description": "Id de l'utilisateur"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Transactions"
+                    },
+                    "404": {
+                        "description": "User not found"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/users/{id}": {
+            "get": {
+                "summary": "Récupérer un utilisateur par son id",
+                "description": "Récupérer un utilisateur par son id",
+                "tags": [
+                    "Utilisateur"
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "required": true,
+                        "description": "Id de l'utilisateur"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Utilisateur",
+                        "content": {
+                            "applciation/json": {
+                                "schema": {
+                                    "allOf": [
+                                        {
+                                            "$ref": "#components/schemas/UserGet"
+                                        },
+                                        {
+                                            "type": "object",
+                                            "properties": {
+                                                "Transactions": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "$ref": "#components/schemas/Transaction"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "User not found"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            },
+            "put": {
+                "summary": "Mettre à jour un utilisateur",
+                "description": "Mettre à jour un utilisateur",
+                "tags": [
+                    "Utilisateur"
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "required": true,
+                        "description": "Id de l'utilisateur"
+                    }
+                ],
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/User"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Utilisateur",
+                        "contents": {
+                            "applciation/json": {
+                                "schema": {
+                                    "$ref": "#components/schemas/User"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "User not found"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            },
+            "delete": {
+                "summary": "Supprimer un utilisateur",
+                "description": "Supprimer un utilisateur",
+                "tags": [
+                    "Utilisateur"
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "required": true,
+                        "description": "Id de l'utilisateur"
+                    }
+                ],
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No content"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        }
+    },
+    "tags": []
+}
