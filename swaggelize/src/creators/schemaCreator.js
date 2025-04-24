@@ -1,4 +1,4 @@
-const { capitalizeFirstLetter, getTypeField } = require("../utils/utils");
+const {capitalizeFirstLetter, getTypeField} = require("../utils/utils");
 
 function createSchemas(models) {
     const result = {};
@@ -9,10 +9,20 @@ function createSchemas(models) {
 
         methodsToProcess.forEach(method => {
             const schemaName = `${model.sequelizeModel}${method.charAt(0).toUpperCase() + method.slice(1)}`;
-            result[schemaName] = {
-                type: "object",
-                properties: {}
-            };
+            if (method === "list") {
+                result[schemaName] = {
+                    type: "array",
+                    items: {
+                        type: "object",
+                        properties: {},
+                    }
+                };
+            } else {
+                result[schemaName] = {
+                    type: "object",
+                    properties: {}
+                };
+            }
             if (["post", "put", "patch"].includes(method)) {
                 result[schemaName]["required"] = []
             }
@@ -26,10 +36,17 @@ function createSchemas(models) {
                 // Only include if this field should be in the current method schema
                 if (fieldMethods.includes(method)) {
                     // Add to properties
-                    schema.properties[field.field] = {
-                        ...getTypeField(field.object.type),
-                        description: field.description || (field.comment && field.comment.description) || ""
-                    };
+                    if (method === "list") {
+                        schema.items.properties[field.field] = {
+                            ...getTypeField(field.object.type),
+                            description: field.description || (field.comment && field.comment.description) || ""
+                        };
+                    } else {
+                        schema.properties[field.field] = {
+                            ...getTypeField(field.object.type),
+                            description: field.description || (field.comment && field.comment.description) || ""
+                        };
+                    }
 
                     // Add to required if allowNull is false and creation method
                     if (field.object.allowNull === false && ["post", "put", "patch"].includes(method)) {
