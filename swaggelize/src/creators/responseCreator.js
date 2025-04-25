@@ -19,9 +19,16 @@ function createResponse(services, schemas, models) {
             if (config.output?.length === 1) {
                 const obj = transformStr(config.output[0]);
                 // responses for post: 201, 400, 401, 403, 409, 500
-                if (method === "post") {
+                if (["post", "put", "patch"].includes(method)) {
+                    let returnResponse = {};
+                    if (method === "post") {
+                        returnResponse = { ...response201(obj, getSingularPath(index), config) }
+                    } else {
+                        returnResponse = { ...response200(obj, config), ...response404(paths) }
+                    }
                     services[index][method]["responses"] = {
-                        ...response201(obj, getSingularPath(index), config),
+                        // ...response201(obj, getSingularPath(index), config),
+                        ...returnResponse,
                         ...response400(obj, models, config),
                         ...response401(),
                         ...response403(),

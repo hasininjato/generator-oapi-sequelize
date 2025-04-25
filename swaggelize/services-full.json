@@ -925,6 +925,69 @@
                             }
                         }
                     }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Update an user by id",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UserItem"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request (VALIDATION_ERROR)",
+                        "details": [
+                            {
+                                "field": "fullname",
+                                "message": "Full name is required"
+                            },
+                            {
+                                "field": "fullname",
+                                "message": "Full name cannot be empty"
+                            },
+                            {
+                                "field": "email",
+                                "message": "Email is required"
+                            },
+                            {
+                                "field": "email",
+                                "message": "Email cannot be empty"
+                            },
+                            {
+                                "field": "email",
+                                "message": "Invalid email"
+                            },
+                            {
+                                "field": "password",
+                                "message": "Password is required"
+                            },
+                            {
+                                "field": "password",
+                                "message": "Password cannot be empty"
+                            }
+                        ]
+                    },
+                    "401": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "User not found"
+                    },
+                    "409": {
+                        "description": "Unique constraint errors",
+                        "details": [
+                            {
+                                "field": "email",
+                                "message": "This email is already in use"
+                            }
+                        ]
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
                 }
             },
             "delete": {
