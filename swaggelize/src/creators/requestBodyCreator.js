@@ -15,7 +15,7 @@ function createRequestBody(services, schemas) {
                     }
                 }
                 // delete the input key:value
-                // delete services[index][method]["input"]
+                delete services[index][method]["input"]
             }
         }
     }

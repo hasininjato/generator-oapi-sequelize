@@ -648,9 +648,6 @@
                 "tags": [
                     "User"
                 ],
-                "output": [
-                    "user:list"
-                ],
                 "responses": {
                     "200": {
                         "description": "List of all users",
@@ -675,12 +672,6 @@
                 "description": "Create a user",
                 "tags": [
                     "User"
-                ],
-                "input": [
-                    "user:post"
-                ],
-                "output": [
-                    "user:item"
                 ],
                 "requestBody": {
                     "content": {
@@ -760,12 +751,6 @@
                 "tags": [
                     "Authentication"
                 ],
-                "input": [
-                    "user:item"
-                ],
-                "output": [
-                    "user:item"
-                ],
                 "requestBody": {
                     "content": {
                         "application/json": {
@@ -844,9 +829,6 @@
                 "tags": [
                     "Token"
                 ],
-                "input": [
-                    "user:item"
-                ],
                 "requestBody": {
                     "content": {
                         "application/json": {
@@ -869,9 +851,6 @@
                 "description": "Get user by id",
                 "tags": [
                     "User"
-                ],
-                "output": [
-                    "user:item"
                 ],
                 "parameters": [
                     {
@@ -905,12 +884,6 @@
                 "description": "Update an user by id",
                 "tags": [
                     "User"
-                ],
-                "input": [
-                    "user:put"
-                ],
-                "output": [
-                    "user:item"
                 ],
                 "parameters": [
                     {
@@ -1023,12 +996,6 @@
                 "description": "Create a transaction of the user sent in param",
                 "tags": [
                     "Transaction"
-                ],
-                "input": [
-                    "transaction:post"
-                ],
-                "output": [
-                    "transaction:item"
                 ],
                 "parameters": [
                     {

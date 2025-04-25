@@ -38,6 +38,7 @@ function createResponse(services, schemas, models) {
                         ...responses.response404(pathVariables)
                     };
                 }
+                delete services[path][method].output;
             } else {
                 // if there is no output (for delete) or more than one (for relation)
                 // @TODO: when there are more than one output
