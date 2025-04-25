@@ -97,7 +97,6 @@ function parseOperations(operations, routesVariable, routePrefix, model, isColle
             const description = operation.openapi_context?.description || "";
             const method = operation.method || operationName.toUpperCase(); // default to key if method not present
             let path = operation.path || getDefaultPath(model, routesVariable, routePrefix, isCollection)?.path; // path is not provided => default path
-            console.log(path)
             if (path) {
                 path = path.replace(routePrefix, "");
             } else {

@@ -53,48 +53,66 @@
                 },
                 "400": {
                     "description": "Bad request (VALIDATION_ERROR)",
-                    "details": [
-                        {
-                            "field": "fullname",
-                            "message": "Full name is required"
-                        },
-                        {
-                            "field": "fullname",
-                            "message": "Full name cannot be empty"
-                        },
-                        {
-                            "field": "email",
-                            "message": "Email is required"
-                        },
-                        {
-                            "field": "email",
-                            "message": "Email cannot be empty"
-                        },
-                        {
-                            "field": "email",
-                            "message": "Invalid email"
-                        },
-                        {
-                            "field": "password",
-                            "message": "Password is required"
-                        },
-                        {
-                            "field": "password",
-                            "message": "Password cannot be empty"
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Response400Schema"
+                            },
+                            "example": {
+                                "details": [
+                                    {
+                                        "field": "fullname",
+                                        "message": "Full name is required"
+                                    },
+                                    {
+                                        "field": "fullname",
+                                        "message": "Full name cannot be empty"
+                                    },
+                                    {
+                                        "field": "email",
+                                        "message": "Email is required"
+                                    },
+                                    {
+                                        "field": "email",
+                                        "message": "Email cannot be empty"
+                                    },
+                                    {
+                                        "field": "email",
+                                        "message": "Invalid email"
+                                    },
+                                    {
+                                        "field": "password",
+                                        "message": "Password is required"
+                                    },
+                                    {
+                                        "field": "password",
+                                        "message": "Password cannot be empty"
+                                    }
+                                ]
+                            }
                         }
-                    ]
+                    }
                 },
                 "401": {
                     "description": "Forbidden"
                 },
                 "409": {
                     "description": "Unique constraint errors",
-                    "details": [
-                        {
-                            "field": "email",
-                            "message": "This email is already in use"
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Response409Schema"
+                            },
+                            "example": {
+                                "details": [
+                                    {
+                                        "field": "email",
+                                        "message": "This email is already in use"
+                                    }
+                                ]
+                            }
                         }
-                    ]
+                    }
                 },
                 "500": {
                     "description": "Internal server error"
@@ -131,48 +149,66 @@
                 },
                 "400": {
                     "description": "Bad request (VALIDATION_ERROR)",
-                    "details": [
-                        {
-                            "field": "fullname",
-                            "message": "Full name is required"
-                        },
-                        {
-                            "field": "fullname",
-                            "message": "Full name cannot be empty"
-                        },
-                        {
-                            "field": "email",
-                            "message": "Email is required"
-                        },
-                        {
-                            "field": "email",
-                            "message": "Email cannot be empty"
-                        },
-                        {
-                            "field": "email",
-                            "message": "Invalid email"
-                        },
-                        {
-                            "field": "password",
-                            "message": "Password is required"
-                        },
-                        {
-                            "field": "password",
-                            "message": "Password cannot be empty"
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Response400Schema"
+                            },
+                            "example": {
+                                "details": [
+                                    {
+                                        "field": "fullname",
+                                        "message": "Full name is required"
+                                    },
+                                    {
+                                        "field": "fullname",
+                                        "message": "Full name cannot be empty"
+                                    },
+                                    {
+                                        "field": "email",
+                                        "message": "Email is required"
+                                    },
+                                    {
+                                        "field": "email",
+                                        "message": "Email cannot be empty"
+                                    },
+                                    {
+                                        "field": "email",
+                                        "message": "Invalid email"
+                                    },
+                                    {
+                                        "field": "password",
+                                        "message": "Password is required"
+                                    },
+                                    {
+                                        "field": "password",
+                                        "message": "Password cannot be empty"
+                                    }
+                                ]
+                            }
                         }
-                    ]
+                    }
                 },
                 "401": {
                     "description": "Forbidden"
                 },
                 "409": {
                     "description": "Unique constraint errors",
-                    "details": [
-                        {
-                            "field": "email",
-                            "message": "This email is already in use"
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Response409Schema"
+                            },
+                            "example": {
+                                "details": [
+                                    {
+                                        "field": "email",
+                                        "message": "This email is already in use"
+                                    }
+                                ]
+                            }
                         }
-                    ]
+                    }
                 },
                 "500": {
                     "description": "Internal server error"
@@ -270,36 +306,45 @@
                 },
                 "400": {
                     "description": "Bad request (VALIDATION_ERROR)",
-                    "details": [
-                        {
-                            "field": "fullname",
-                            "message": "Full name is required"
-                        },
-                        {
-                            "field": "fullname",
-                            "message": "Full name cannot be empty"
-                        },
-                        {
-                            "field": "email",
-                            "message": "Email is required"
-                        },
-                        {
-                            "field": "email",
-                            "message": "Email cannot be empty"
-                        },
-                        {
-                            "field": "email",
-                            "message": "Invalid email"
-                        },
-                        {
-                            "field": "password",
-                            "message": "Password is required"
-                        },
-                        {
-                            "field": "password",
-                            "message": "Password cannot be empty"
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Response400Schema"
+                            },
+                            "example": {
+                                "details": [
+                                    {
+                                        "field": "fullname",
+                                        "message": "Full name is required"
+                                    },
+                                    {
+                                        "field": "fullname",
+                                        "message": "Full name cannot be empty"
+                                    },
+                                    {
+                                        "field": "email",
+                                        "message": "Email is required"
+                                    },
+                                    {
+                                        "field": "email",
+                                        "message": "Email cannot be empty"
+                                    },
+                                    {
+                                        "field": "email",
+                                        "message": "Invalid email"
+                                    },
+                                    {
+                                        "field": "password",
+                                        "message": "Password is required"
+                                    },
+                                    {
+                                        "field": "password",
+                                        "message": "Password cannot be empty"
+                                    }
+                                ]
+                            }
                         }
-                    ]
+                    }
                 },
                 "401": {
                     "description": "Forbidden"
@@ -309,12 +354,21 @@
                 },
                 "409": {
                     "description": "Unique constraint errors",
-                    "details": [
-                        {
-                            "field": "email",
-                            "message": "This email is already in use"
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Response409Schema"
+                            },
+                            "example": {
+                                "details": [
+                                    {
+                                        "field": "email",
+                                        "message": "This email is already in use"
+                                    }
+                                ]
+                            }
                         }
-                    ]
+                    }
                 },
                 "500": {
                     "description": "Internal server error"
@@ -382,39 +436,57 @@
                 },
                 "400": {
                     "description": "Bad request (VALIDATION_ERROR)",
-                    "details": [
-                        {
-                            "field": "amount",
-                            "message": "Amount is required"
-                        },
-                        {
-                            "field": "amount",
-                            "message": "Amount must be a valid decimal number"
-                        },
-                        {
-                            "field": "amount",
-                            "message": "Amount cannot be empty"
-                        },
-                        {
-                            "field": "amount",
-                            "message": "Amount must be greater than 0"
-                        },
-                        {
-                            "field": "description",
-                            "message": "Description is required"
-                        },
-                        {
-                            "field": "description",
-                            "message": "Description cannot be empty"
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Response400Schema"
+                            },
+                            "example": {
+                                "details": [
+                                    {
+                                        "field": "amount",
+                                        "message": "Amount is required"
+                                    },
+                                    {
+                                        "field": "amount",
+                                        "message": "Amount must be a valid decimal number"
+                                    },
+                                    {
+                                        "field": "amount",
+                                        "message": "Amount cannot be empty"
+                                    },
+                                    {
+                                        "field": "amount",
+                                        "message": "Amount must be greater than 0"
+                                    },
+                                    {
+                                        "field": "description",
+                                        "message": "Description is required"
+                                    },
+                                    {
+                                        "field": "description",
+                                        "message": "Description cannot be empty"
+                                    }
+                                ]
+                            }
                         }
-                    ]
+                    }
                 },
                 "401": {
                     "description": "Forbidden"
                 },
                 "409": {
                     "description": "Unique constraint errors",
-                    "details": []
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Response409Schema"
+                            },
+                            "example": {
+                                "details": []
+                            }
+                        }
+                    }
                 },
                 "500": {
                     "description": "Internal server error"

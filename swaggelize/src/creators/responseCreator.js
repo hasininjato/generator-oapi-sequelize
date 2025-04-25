@@ -26,7 +26,7 @@ function createResponse(services, schemas, models) {
                     // we add responses
                     services[path][method].responses = {
                         ...successResponse,
-                        ...responses.response400(transformedObj, models, config),
+                        ...responses.response400(transformedObj, models),
                         ...commonResponses,
                         ...responses.response409(transformedObj, models)
                     };

@@ -30,6 +30,32 @@ function parser(swaggelizeOptions) {
 
     const schemas = createSchemas(models)
 
+    if (schemas && typeof schemas === 'object') {
+        const response = {
+            type: "object",
+            properties: {
+                details: {
+                    type: "array",
+                    items: {
+                        type: "object",
+                        properties: {
+                            field: {
+                                type: "string",
+                                description: "Name of the field"
+                            },
+                            message: {
+                                type: "string",
+                                description: "Message on validation"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        schemas["Response400Schema"] = response;
+        schemas["Response409Schema"] = response;
+    }
+
     const openApiInfo = {
         openapi: swaggerDefinition.openapi,
         info: swaggerDefinition.info,

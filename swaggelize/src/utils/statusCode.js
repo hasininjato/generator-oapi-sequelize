@@ -1,12 +1,11 @@
-const { capitalizeFirstLetter } = require('./utils');
-const { sequelizeValidationHandlers } = require('./constants');
-
+const {capitalizeFirstLetter} = require('./utils');
+const {sequelizeValidationHandlers} = require('./constants');
 
 /**
- * 
- * @param {Object} obj: parsed value of input or output (like user:item)
+ *
+ * @param obj
  * @param {*} service
- * @returns 
+ * @returns
  */
 function response200(obj, service) {
     return {
@@ -24,11 +23,11 @@ function response200(obj, service) {
 }
 
 /**
- * 
- * @param {Object} obj 
- * @param {Object} models: full parsed model
- * @param {*} service 
- * @returns 
+ *
+ * @param {Object} obj
+ * @param models
+ * @param {*} service
+ * @returns
  */
 function response201(obj, models, service) {
     let description = "";
@@ -61,9 +60,9 @@ function response204() {
 
 /**
  * Validation error on fields based on Sequelize
- * @param {string} obj 
- * @param {object} models 
- * @returns 
+ * @param {Object} obj
+ * @param {Object} models
+ * @returns
  */
 function response400(obj, models) {
     const modelName = capitalizeFirstLetter(obj.prefix);
@@ -73,7 +72,7 @@ function response400(obj, models) {
 
     // Extract possible validation errors from each field
     findModel.value?.forEach(field => {
-        const { field: name, object: { validate } } = field;
+        const {field: name, object: {validate}} = field;
 
         if (validate) {
             for (const [validationType, validationConfig] of Object.entries(validate)) {
@@ -87,8 +86,17 @@ function response400(obj, models) {
     // Return the 400 response structure
     return {
         400: {
-            "description": "Bad request (VALIDATION_ERROR)",
-            "details": details
+            description: "Bad request (VALIDATION_ERROR)",
+            content: {
+                "application/json": {
+                    schema: {
+                        "$ref": "#/components/schemas/Response400Schema"
+                    },
+                    example: {
+                        details: [...details]
+                    }
+                }
+            }
         }
     };
 }
@@ -131,7 +139,7 @@ function response409(obj, models) {
     const details = [];
     // extract unique validation message from each field
     findModel.value?.forEach(field => {
-        const { field: name, object: { unique } } = field;
+        const {field: name, object: {unique}} = field;
         if (unique) {
             let message = "";
             if (typeof unique === "boolean") {
@@ -148,7 +156,16 @@ function response409(obj, models) {
     return {
         409: {
             description: "Unique constraint errors",
-            details: details
+            content: {
+                "application/json": {
+                    schema: {
+                        "$ref": "#/components/schemas/Response409Schema"
+                    },
+                    example: {
+                        details: [...details]
+                    }
+                }
+            }
         }
     }
 }
