@@ -165,11 +165,33 @@
             },
             "InstrumentUsersPost": {
                 "type": "object",
-                "properties": {}
+                "properties": {
+                    "userId": {
+                        "type": "integer",
+                        "format": "int32",
+                        "description": "User ID"
+                    },
+                    "instrumentId": {
+                        "type": "integer",
+                        "format": "int32",
+                        "description": "Instrument ID"
+                    }
+                }
             },
             "InstrumentUsersPut": {
                 "type": "object",
-                "properties": {}
+                "properties": {
+                    "userId": {
+                        "type": "integer",
+                        "format": "int32",
+                        "description": "User ID"
+                    },
+                    "instrumentId": {
+                        "type": "integer",
+                        "format": "int32",
+                        "description": "Instrument ID"
+                    }
+                }
             },
             "PostItem": {
                 "type": "object",

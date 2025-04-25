@@ -1,4 +1,4 @@
-const {capitalizeFirstLetter, getTypeField} = require("../utils/utils");
+const { getTypeField } = require("../utils/utils");
 
 function createSchemas(models) {
     const result = {};
