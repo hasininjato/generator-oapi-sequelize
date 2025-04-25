@@ -650,7 +650,25 @@
                 ],
                 "output": [
                     "user:list"
-                ]
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List of all users",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UserList"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Forbidden"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
             },
             "post": {
                 "summary": "Create a user",
@@ -675,7 +693,7 @@
                 },
                 "responses": {
                     "201": {
-                        "description": "user created successfully",
+                        "description": "User created successfully",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -859,7 +877,28 @@
                     {
                         "$ref": "#/components/parameters/UserId"
                     }
-                ]
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Get user by id",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UserItem"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "User not found"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
             },
             "put": {
                 "summary": "Update an user by id",
@@ -900,6 +939,15 @@
                     }
                 ],
                 "responses": {
+                    "204": {
+                        "description": "No content"
+                    },
+                    "401": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "User not found"
+                    },
                     "500": {
                         "description": "Internal server error"
                     }
