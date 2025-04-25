@@ -1,7 +1,6 @@
 const yaml = require("js-yaml");
 const {getEndPointsApi} = require("../utils/utils");
 const {getVariablesFromPath, capitalizeFirstLetter} = require("../utils/utils");
-const fs = require("node:fs");
 
 /**
  * get the model name from the parsed yaml
@@ -98,6 +97,7 @@ function parseOperations(operations, routesVariable, routePrefix, model, isColle
             const description = operation.openapi_context?.description || "";
             const method = operation.method || operationName.toUpperCase(); // default to key if method not present
             let path = operation.path || getDefaultPath(model, routesVariable, routePrefix, isCollection)?.path; // path is not provided => default path
+            console.log(path)
             if (path) {
                 path = path.replace(routePrefix, "");
             } else {
@@ -107,16 +107,19 @@ function parseOperations(operations, routesVariable, routePrefix, model, isColle
             // Skip if we couldn't determine a path
             if (!path) continue;
 
+            // remove : and wrap param in {}
+            const updatePath = path.replace(/:([a-zA-Z0-9_]+)/g, '{$1}');
+
             // Initialize the path object if it doesn't exist
-            if (!operationsResult[path]) {
-                operationsResult[path] = {};
+            if (!operationsResult[updatePath]) {
+                operationsResult[updatePath] = {};
             }
             const tags = operation.tags ? [operation.tags] : [model];
             // const parameter = getParameters(path, model);
-            const parameter = getParameters(path);
+            const parameter = getParameters(updatePath);
 
             // Add the method operation
-            operationsResult[path][method.toLowerCase()] = {
+            operationsResult[updatePath][method.toLowerCase()] = {
                 summary,
                 description,
                 tags,
@@ -124,7 +127,7 @@ function parseOperations(operations, routesVariable, routePrefix, model, isColle
                 output: operation.output
             };
             if (parameter) {
-                operationsResult[path][method.toLowerCase()]["parameters"] = [
+                operationsResult[updatePath][method.toLowerCase()]["parameters"] = [
                     ...parameter
                 ]
             }

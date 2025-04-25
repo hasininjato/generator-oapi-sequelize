@@ -203,7 +203,7 @@
             }
         }
     },
-    "/users/:id": {
+    "/users/{id}": {
         "get": {
             "summary": "Get user by id",
             "description": "Get user by id",
