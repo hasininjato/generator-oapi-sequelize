@@ -1,5 +1,5 @@
 const { sequelizeValidationHandlers } = require("../utils/constants");
-const { transformStr, getVariablesFromPath, getSingularPath, capitalizeFirstLetter } = require("../utils/utils");
+const { transformStr, getSingularPath, capitalizeFirstLetter } = require("../utils/utils");
 
 function createResponse(services, schemas, models) {
     for (const [index, service] of Object.entries(services)) {
@@ -13,6 +13,7 @@ function createResponse(services, schemas, models) {
                         ...response400(obj, models, config),
                         ...response401(),
                         ...response403(),
+                        ...response409(obj, models),
                         ...response500()
                     }
                 }
@@ -51,12 +52,10 @@ function response201(obj, model, service) {
 /**
  * Validation error on fields based on Sequelize
  * @param {string} obj 
- * @param {string} model 
  * @param {object} models 
- * @param {object} service 
  * @returns 
  */
-function response400(obj, models, service) {
+function response400(obj, models) {
     const modelName = capitalizeFirstLetter(obj.prefix);
     const findModel = models.find((model => model.sequelizeModel === modelName));
 
@@ -113,6 +112,35 @@ function response404(variables) {
         }
     }
     return null;
+}
+
+function response409(obj, models) {
+    const modelName = capitalizeFirstLetter(obj.prefix);
+    const findModel = models.find((model => model.sequelizeModel === modelName));
+
+    const details = [];
+    // extract unique validation message from each field
+    findModel.value?.forEach(field => {
+        const { field: name, object: { unique } } = field;
+        if (unique) {
+            let message = "";
+            if (typeof unique === "boolean") {
+                message = `Constraint violations on ${field.field}`;
+            } else {
+                message = unique.msg;
+            }
+            details.push({
+                field: field.field,
+                message: message
+            })
+        }
+    })
+    return {
+        409: {
+            description: "Unique constraint errors",
+            details: details
+        }
+    }
 }
 
 function response500() {

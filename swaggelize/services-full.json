@@ -720,6 +720,15 @@
                     "401": {
                         "description": "Forbidden"
                     },
+                    "409": {
+                        "description": "Unique constraint errors",
+                        "details": [
+                            {
+                                "field": "email",
+                                "message": "This email is already in use"
+                            }
+                        ]
+                    },
                     "500": {
                         "description": "Internal server error"
                     }
@@ -794,6 +803,15 @@
                     },
                     "401": {
                         "description": "Forbidden"
+                    },
+                    "409": {
+                        "description": "Unique constraint errors",
+                        "details": [
+                            {
+                                "field": "email",
+                                "message": "This email is already in use"
+                            }
+                        ]
                     },
                     "500": {
                         "description": "Internal server error"
@@ -957,6 +975,10 @@
                     },
                     "401": {
                         "description": "Forbidden"
+                    },
+                    "409": {
+                        "description": "Unique constraint errors",
+                        "details": []
                     },
                     "500": {
                         "description": "Internal server error"
