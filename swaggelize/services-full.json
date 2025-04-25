@@ -647,6 +647,9 @@
                 "description": "List of all users",
                 "tags": [
                     "User"
+                ],
+                "output": [
+                    "user:list"
                 ]
             },
             "post": {
@@ -654,6 +657,12 @@
                 "description": "Create a user",
                 "tags": [
                     "User"
+                ],
+                "input": [
+                    "user:post"
+                ],
+                "output": [
+                    "user:item"
                 ],
                 "requestBody": {
                     "content": {
@@ -676,7 +685,37 @@
                         }
                     },
                     "400": {
-                        "description": "Bad request"
+                        "description": "Bad request (VALIDATION_ERROR)",
+                        "details": [
+                            {
+                                "field": "fullname",
+                                "message": "Full name is required"
+                            },
+                            {
+                                "field": "fullname",
+                                "message": "Full name cannot be empty"
+                            },
+                            {
+                                "field": "email",
+                                "message": "Email is required"
+                            },
+                            {
+                                "field": "email",
+                                "message": "Email cannot be empty"
+                            },
+                            {
+                                "field": "email",
+                                "message": "Invalid email"
+                            },
+                            {
+                                "field": "password",
+                                "message": "Password is required"
+                            },
+                            {
+                                "field": "password",
+                                "message": "Password cannot be empty"
+                            }
+                        ]
                     },
                     "401": {
                         "description": "Forbidden"
@@ -693,6 +732,12 @@
                 "description": "Login an user",
                 "tags": [
                     "Authentication"
+                ],
+                "input": [
+                    "user:item"
+                ],
+                "output": [
+                    "user:item"
                 ],
                 "requestBody": {
                     "content": {
@@ -715,7 +760,37 @@
                         }
                     },
                     "400": {
-                        "description": "Bad request"
+                        "description": "Bad request (VALIDATION_ERROR)",
+                        "details": [
+                            {
+                                "field": "fullname",
+                                "message": "Full name is required"
+                            },
+                            {
+                                "field": "fullname",
+                                "message": "Full name cannot be empty"
+                            },
+                            {
+                                "field": "email",
+                                "message": "Email is required"
+                            },
+                            {
+                                "field": "email",
+                                "message": "Email cannot be empty"
+                            },
+                            {
+                                "field": "email",
+                                "message": "Invalid email"
+                            },
+                            {
+                                "field": "password",
+                                "message": "Password is required"
+                            },
+                            {
+                                "field": "password",
+                                "message": "Password cannot be empty"
+                            }
+                        ]
                     },
                     "401": {
                         "description": "Forbidden"
@@ -732,6 +807,9 @@
                 "description": "Validate token sent in parameter",
                 "tags": [
                     "Token"
+                ],
+                "input": [
+                    "user:item"
                 ],
                 "requestBody": {
                     "content": {
@@ -756,6 +834,9 @@
                 "tags": [
                     "User"
                 ],
+                "output": [
+                    "user:item"
+                ],
                 "parameters": [
                     {
                         "$ref": "#/components/parameters/UserId"
@@ -767,6 +848,12 @@
                 "description": "Update an user by id",
                 "tags": [
                     "User"
+                ],
+                "input": [
+                    "user:put"
+                ],
+                "output": [
+                    "user:item"
                 ],
                 "parameters": [
                     {
@@ -808,6 +895,12 @@
                 "tags": [
                     "Transaction"
                 ],
+                "input": [
+                    "transaction:post"
+                ],
+                "output": [
+                    "transaction:item"
+                ],
                 "parameters": [
                     {
                         "$ref": "#/components/parameters/UserId"
@@ -834,7 +927,33 @@
                         }
                     },
                     "400": {
-                        "description": "Bad request"
+                        "description": "Bad request (VALIDATION_ERROR)",
+                        "details": [
+                            {
+                                "field": "amount",
+                                "message": "Amount is required"
+                            },
+                            {
+                                "field": "amount",
+                                "message": "Amount must be a valid decimal number"
+                            },
+                            {
+                                "field": "amount",
+                                "message": "Amount cannot be empty"
+                            },
+                            {
+                                "field": "amount",
+                                "message": "Amount must be greater than 0"
+                            },
+                            {
+                                "field": "description",
+                                "message": "Description is required"
+                            },
+                            {
+                                "field": "description",
+                                "message": "Description cannot be empty"
+                            }
+                        ]
                     },
                     "401": {
                         "description": "Forbidden"
