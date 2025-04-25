@@ -276,6 +276,19 @@ function getTypeField(sequelizeType) {
     return typeMap[typeKey] || { type: 'string' };
 }
 
+/**
+ * return path based on model
+ * @param {string} path 
+ * @returns 
+ */
+function getSingularPath(path) {
+    const parts = path.split('/').filter(Boolean);
+    if (parts.length === 1 && parts[0].endsWith('s')) {
+        return capitalizeFirstLetter(parts[0].slice(0, -1)); // Remove last 's'
+    }
+    return null; // Or return original path if preferred
+}
+
 module.exports = {
     readFileContent,
     getFileInDirectory,
@@ -294,5 +307,6 @@ module.exports = {
     getEndPointsApi,
     getVariablesFromPath,
     getTypeField,
-    getVariableIdFromPath
+    getVariableIdFromPath,
+    getSingularPath
 }

@@ -1,22 +1,17 @@
-const {transformStr, getVariablesFromPath} = require("../utils/utils");
+const { transformStr, getVariablesFromPath, getSingularPath } = require("../utils/utils");
 
-function createResponse(services, schemas) {
+function createResponse(services, schemas, models) {
     for (const [index, service] of Object.entries(services)) {
         for (const [method, config] of Object.entries(service)) {
             if (config.output?.length === 1) {
                 const obj = transformStr(config.output[0]);
+                // responses for post: 201, 400, 401, 403, 409, 500
                 if (method === "post") {
                     services[index][method]["responses"] = {
-                        ...response201(obj),
+                        ...response201(obj, getSingularPath(index), config),
                         ...response400(),
-                        ...response500()
-                    }
-                }
-                const variables = getVariablesFromPath(index);
-                if (!["post", "put", "patch"].includes(method)) {
-                    services[index][method]["responses"] = {
-                        // ...services[index][method]["responses"],
-                        ...response404(variables),
+                        ...response401(),
+                        ...response403(),
                         ...response500()
                     }
                 }
@@ -31,10 +26,17 @@ function createResponse(services, schemas) {
     }
 }
 
-function response201(obj) {
+function response201(obj, model, service) {
+    let description = "";
+    if (model) {
+        description = `${obj.prefix} created successfully`;
+        console.log("model is null", service)
+    } else {
+        description = `${service.summary} successfully`
+    }
     return {
         201: {
-            "description": `Created ${obj.prefix}`,
+            "description": description,
             "content": {
                 "application/json": {
                     "schema": {
@@ -50,6 +52,22 @@ function response400() {
     return {
         "400": {
             "description": "Bad request"
+        }
+    }
+}
+
+function response401() {
+    return {
+        401: {
+            "description": "Unauthorized"
+        }
+    }
+}
+
+function response403() {
+    return {
+        401: {
+            "description": "Forbidden"
         }
     }
 }

@@ -61,7 +61,7 @@ User:
       method: "POST"
       path: "/users/{id}/transactions"
       openapi_context:
-        summary: "Create a transaction of the user sent in param"
+        summary: "Creation of a transaction of a user"
         description: "Create a transaction of the user sent in param"
       input:
         - "transaction:post"

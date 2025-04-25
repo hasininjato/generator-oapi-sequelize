@@ -48,7 +48,7 @@ function parser(swaggelizeOptions) {
         components.components["schemas"] = schemas;
         services = serviceParser(content, routesVariable, routePrefix, parameters);
         createRequestBody(services, schemas);
-        createResponse(services, schemas);
+        createResponse(services, schemas, models);
         fs.writeFileSync("../swaggelize/services.json", JSON.stringify(services, null, 4))
 
         openApiSpec = {

@@ -647,12 +647,7 @@
                 "description": "List of all users",
                 "tags": [
                     "User"
-                ],
-                "responses": {
-                    "500": {
-                        "description": "Internal server error"
-                    }
-                }
+                ]
             },
             "post": {
                 "summary": "Create a user",
@@ -671,7 +666,7 @@
                 },
                 "responses": {
                     "201": {
-                        "description": "Created user",
+                        "description": "user created successfully",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -682,6 +677,9 @@
                     },
                     "400": {
                         "description": "Bad request"
+                    },
+                    "401": {
+                        "description": "Forbidden"
                     },
                     "500": {
                         "description": "Internal server error"
@@ -707,7 +705,7 @@
                 },
                 "responses": {
                     "201": {
-                        "description": "Created user",
+                        "description": "Login an user successfully",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -718,6 +716,9 @@
                     },
                     "400": {
                         "description": "Bad request"
+                    },
+                    "401": {
+                        "description": "Forbidden"
                     },
                     "500": {
                         "description": "Internal server error"
@@ -759,15 +760,7 @@
                     {
                         "$ref": "#/components/parameters/UserId"
                     }
-                ],
-                "responses": {
-                    "404": {
-                        "description": "User not found"
-                    },
-                    "500": {
-                        "description": "Internal server error"
-                    }
-                }
+                ]
             },
             "put": {
                 "summary": "Update an user by id",
@@ -810,7 +803,7 @@
         },
         "/users/{id}/transactions": {
             "post": {
-                "summary": "Create a transaction of the user sent in param",
+                "summary": "Creation of a transaction of a user",
                 "description": "Create a transaction of the user sent in param",
                 "tags": [
                     "Transaction"
@@ -831,7 +824,7 @@
                 },
                 "responses": {
                     "201": {
-                        "description": "Created transaction",
+                        "description": "Creation of a transaction of a user successfully",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -842,6 +835,9 @@
                     },
                     "400": {
                         "description": "Bad request"
+                    },
+                    "401": {
+                        "description": "Forbidden"
                     },
                     "500": {
                         "description": "Internal server error"
