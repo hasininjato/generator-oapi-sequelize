@@ -1,67 +1,57 @@
 const { transformStr, getSingularPath, getVariablesFromPath } = require("../utils/utils");
-const {
-    response200,
-    response201,
-    response204,
-    response400,
-    response401,
-    response403,
-    response404,
-    response409,
-    response500
-} = require("../utils/statusCode");
-
+const responses = require("../utils/statusCode");
 
 function createResponse(services, schemas, models) {
-    for (const [index, service] of Object.entries(services)) {
+    for (const [path, service] of Object.entries(services)) {
         for (const [method, config] of Object.entries(service)) {
-            const paths = getVariablesFromPath(index)
+            const pathVariables = getVariablesFromPath(path);
+            // common responses are 401, 403 and 500 for each route
+            const commonResponses = {
+                ...responses.response401(),
+                ...responses.response403(),
+                ...responses.response500()
+            };
+
+            // first process when there is no relation in the output
             if (config.output?.length === 1) {
-                const obj = transformStr(config.output[0]);
-                // responses for post: 201, 400, 401, 403, 409, 500
+                const transformedObj = transformStr(config.output[0]); // parse the output value
+
+                // for modification method
                 if (["post", "put", "patch"].includes(method)) {
-                    let returnResponse = {};
-                    if (method === "post") {
-                        returnResponse = { ...response201(obj, getSingularPath(index), config) }
-                    } else {
-                        returnResponse = { ...response200(obj, config), ...response404(paths) }
-                    }
-                    services[index][method]["responses"] = {
-                        // ...response201(obj, getSingularPath(index), config),
-                        ...returnResponse,
-                        ...response400(obj, models, config),
-                        ...response401(),
-                        ...response403(),
-                        ...response409(obj, models),
-                        ...response500()
-                    }
+                    // for post, we return 201. for put or patch, we return 200 and 404.
+                    const successResponse = method === "post"
+                        ? responses.response201(transformedObj, getSingularPath(path), config)
+                        : { ...responses.response200(transformedObj, config), ...responses.response404(pathVariables) };
+
+                    // we add responses
+                    services[path][method].responses = {
+                        ...successResponse,
+                        ...responses.response400(transformedObj, models, config),
+                        ...commonResponses,
+                        ...responses.response409(transformedObj, models)
+                    };
                 } else if (method === "get") {
-                    services[index][method]["responses"] = {
-                        ...response200(obj, config),
-                        ...response401(),
-                        ...response403(),
-                        ...response404(paths),
-                        ...response500()
-                    }
+                    // for get method
+                    services[path][method].responses = {
+                        ...responses.response200(transformedObj, config),
+                        ...commonResponses,
+                        ...responses.response404(pathVariables)
+                    };
                 }
-                // delete the output key:value
-                // delete services[index][method]["output"]
             } else {
-                // responses for delete: 204, 401, 403, 404, 500
-                if (method === "delete") {
-                    services[index][method]["responses"] = {
-                        ...response204(),
-                        ...response401(),
-                        ...response403(),
-                        ...response404(paths),
-                        ...response500()
+                // if there is no output (for delete) or more than one (for relation)
+                // @TODO: when there are more than one output
+                services[path][method].responses = method === "delete"
+                    ? {
+                        ...responses.response204(),
+                        ...commonResponses,
+                        ...responses.response404(pathVariables)
                     }
-                } else {
-                    services[index][method]["responses"] = {
-                        ...response500()
-                    }
-                }
+                    : { ...responses.response500() };
             }
+
+            // Optional: Remove output key if needed
+            // delete services[path][method].output;
         }
     }
 }
