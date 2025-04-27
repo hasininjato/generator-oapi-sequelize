@@ -1,5 +1,6 @@
 const { transformStr, getSingularPath, getVariablesFromPath } = require("../utils/utils");
 const responses = require("../utils/statusCode");
+const createRelations = require("./relationCreator");
 
 function createResponse(services, schemas, models) {
     for (const [path, service] of Object.entries(services)) {
@@ -49,6 +50,7 @@ function createResponse(services, schemas, models) {
                         ...responses.response404(pathVariables)
                     }
                     : { ...responses.response500() };
+                createRelations(models, config, schemas);
             }
 
             // Optional: Remove output key if needed

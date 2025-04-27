@@ -12,8 +12,10 @@ User:
         description: "Create a user"
       input:
         - "user:post"
+        - "profile:post"
       output:
         - "user:item"
+        - "profile:item"
     login:
       tags: "Authentication"
       path: "/auth/login"

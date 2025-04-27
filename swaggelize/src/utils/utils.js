@@ -73,7 +73,7 @@ const transformStr = (input) => {
         ? pascalPrefix + suffix.charAt(0).toUpperCase() + suffix.slice(1)
         : pascalPrefix;
 
-    return { pascalCase, suffix, prefix };
+    return {pascalCase, suffix, prefix};
 }
 
 const processValueNode = (node) => {
@@ -103,8 +103,8 @@ const processObjectExpression = (objectExpression) => {
     }, {});
 };
 
-const generateDefaultForeignKey = (targetModelName) => {
-    return `${targetModelName.toLowerCase()}Id`;
+const generateDefaultForeignKey = (sourceName) => {
+    return `${sourceName.toLowerCase()}Id`;
 };
 
 const hasForeignKey = (options) => {
@@ -131,13 +131,13 @@ const processRelationArguments = (argsNodes) => {
         }
     });
 
-    return { args, options };
+    return {args, options};
 };
 
 const createRelationObject = (source, relationType, target, args, options) => {
     if (!hasForeignKey(options)) {
-        const defaultForeignKey = generateDefaultForeignKey(target);
-        options = { ...options, foreignKey: defaultForeignKey };
+        const defaultForeignKey = generateDefaultForeignKey(source);
+        options = {...options, foreignKey: defaultForeignKey};
 
         if (args.length > 1 && typeof args[1] === 'object') {
             args[1] = options;
@@ -163,8 +163,8 @@ const returnRelations = (modelDefinition) => {
         path.isProgram()
     )?.node;
 
-    if (!programNode) return { relations, programNode, modelName };
-    return { relations, programNode, modelName };
+    if (!programNode) return {relations, programNode, modelName};
+    return {relations, programNode, modelName};
 }
 
 function getVariableIdFromPath(path, model) {
@@ -242,25 +242,25 @@ function getVariablesFromPath(fullPath) {
  */
 function getTypeField(sequelizeType) {
     const typeMap = {
-        STRING: { type: 'string' },
-        TEXT: { type: 'string' },
-        INTEGER: { type: 'integer', format: 'int32' },
-        BIGINT: { type: 'integer', format: 'int64' },
-        FLOAT: { type: 'number', format: 'float' },
-        DOUBLE: { type: 'number', format: 'double' },
-        DECIMAL: { type: 'string' }, // usually represented as string in OpenAPI
-        BOOLEAN: { type: 'boolean' },
-        DATE: { type: 'string', format: 'date-time' },
-        DATEONLY: { type: 'string', format: 'date' },
-        TIME: { type: 'string' },
-        UUID: { type: 'string', format: 'uuid' },
-        JSON: { type: 'object' },
-        JSONB: { type: 'object' },
-        ENUM: { type: 'string' },
-        ARRAY: { type: 'array' },
-        BLOB: { type: 'string', format: 'binary' },
-        GEOMETRY: { type: 'object' },
-        RANGE: { type: 'array' }
+        STRING: {type: 'string'},
+        TEXT: {type: 'string'},
+        INTEGER: {type: 'integer', format: 'int32'},
+        BIGINT: {type: 'integer', format: 'int64'},
+        FLOAT: {type: 'number', format: 'float'},
+        DOUBLE: {type: 'number', format: 'double'},
+        DECIMAL: {type: 'string'}, // usually represented as string in OpenAPI
+        BOOLEAN: {type: 'boolean'},
+        DATE: {type: 'string', format: 'date-time'},
+        DATEONLY: {type: 'string', format: 'date'},
+        TIME: {type: 'string'},
+        UUID: {type: 'string', format: 'uuid'},
+        JSON: {type: 'object'},
+        JSONB: {type: 'object'},
+        ENUM: {type: 'string'},
+        ARRAY: {type: 'array'},
+        BLOB: {type: 'string', format: 'binary'},
+        GEOMETRY: {type: 'object'},
+        RANGE: {type: 'array'}
     };
     let typeKey = '';
 
@@ -273,13 +273,13 @@ function getTypeField(sequelizeType) {
         typeKey = sequelizeType.key || sequelizeType.constructor.name.toUpperCase();
     }
 
-    return typeMap[typeKey] || { type: 'string' };
+    return typeMap[typeKey] || {type: 'string'};
 }
 
 /**
  * return path based on model
- * @param {string} path 
- * @returns 
+ * @param {string} path
+ * @returns
  */
 function getSingularPath(path) {
     const parts = path.split('/').filter(Boolean);

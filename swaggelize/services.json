@@ -31,89 +31,15 @@
             "tags": [
                 "User"
             ],
-            "requestBody": {
-                "content": {
-                    "application/json": {
-                        "schema": {
-                            "$ref": "#/components/schemas/UserPost"
-                        }
-                    }
-                }
-            },
+            "input": [
+                "user:post",
+                "profile:post"
+            ],
+            "output": [
+                "user:item",
+                "profile:item"
+            ],
             "responses": {
-                "201": {
-                    "description": "User created successfully",
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/UserItem"
-                            }
-                        }
-                    }
-                },
-                "400": {
-                    "description": "Bad request (VALIDATION_ERROR)",
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/Response400Schema"
-                            },
-                            "example": {
-                                "details": [
-                                    {
-                                        "field": "fullname",
-                                        "message": "Full name is required"
-                                    },
-                                    {
-                                        "field": "fullname",
-                                        "message": "Full name cannot be empty"
-                                    },
-                                    {
-                                        "field": "email",
-                                        "message": "Email is required"
-                                    },
-                                    {
-                                        "field": "email",
-                                        "message": "Email cannot be empty"
-                                    },
-                                    {
-                                        "field": "email",
-                                        "message": "Invalid email"
-                                    },
-                                    {
-                                        "field": "password",
-                                        "message": "Password is required"
-                                    },
-                                    {
-                                        "field": "password",
-                                        "message": "Password cannot be empty"
-                                    }
-                                ]
-                            }
-                        }
-                    }
-                },
-                "401": {
-                    "description": "Forbidden"
-                },
-                "409": {
-                    "description": "Unique constraint errors",
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/Response409Schema"
-                            },
-                            "example": {
-                                "details": [
-                                    {
-                                        "field": "email",
-                                        "message": "This email is already in use"
-                                    }
-                                ]
-                            }
-                        }
-                    }
-                },
                 "500": {
                     "description": "Internal server error"
                 }
