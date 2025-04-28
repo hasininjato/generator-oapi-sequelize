@@ -5,6 +5,7 @@ function createRelations(models, service, schemas) {
     let result = "";
     if (output) {
         output.forEach(element => {
+            console.log(element, service)
             const transformedObj = transformStr(element)
             const modelName = capitalizeFirstLetter(transformedObj.prefix)
             const model = models.find(elt => elt.sequelizeModel === modelName);

@@ -88,5 +88,5 @@ User:
         summary: "List of all transactions with name of an user by id"
         description: "List of all transactions with name of an user by id"
       output:
-        - "user:item"
+#        - "user:item"
         - "transaction:list"

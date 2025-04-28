@@ -12,7 +12,7 @@ function response200(obj, service, relation) {
     const summary = service.summary || "";
     let ref = "";
     if (obj) {
-        ref = obj?.pascalCase;
+        ref = obj.pascalCase;
     } else {
         ref = relation;
     }

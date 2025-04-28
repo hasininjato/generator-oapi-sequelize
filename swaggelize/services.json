@@ -514,10 +514,6 @@
             "tags": [
                 "Transaction"
             ],
-            "output": [
-                "user:item",
-                "transaction:list"
-            ],
             "parameters": [
                 {
                     "$ref": "#/components/parameters/UserId"
@@ -532,7 +528,7 @@
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/"
+                                "$ref": "#/components/schemas/TransactionList"
                             }
                         }
                     }
