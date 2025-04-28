@@ -1,14 +1,14 @@
 const {transformStr, capitalizeFirstLetter} = require("../utils/utils");
 
 function createRelations(models, service, schemas) {
-    const output = service.output;
+    const serviceOutput = service.output;
     let result = "";
-    if (output) {
-        output.forEach(element => {
-            console.log(element, service)
-            const transformedObj = transformStr(element)
+    if (serviceOutput) {
+        serviceOutput.forEach(output => {
+            const transformedObj = transformStr(output)
             const modelName = capitalizeFirstLetter(transformedObj.prefix)
             const model = models.find(elt => elt.sequelizeModel === modelName);
+            console.log(output)
             model.relations.forEach(relation => {
                 if (relation.relation === "hasOne") {
                     result = hasOneRelation(relation, schemas);
@@ -19,65 +19,36 @@ function createRelations(models, service, schemas) {
     return result;
 }
 
-function hasOneRelation(relation, schemas, get=null) {
+function hasOneRelation(relation, schemas) {
     const source = relation.source;
     const target = relation.target;
     const foreignKey = relation.args[1].foreignKey.name || relation.args[1].foreignKey;
-    if(get) {
-        const sourceItem = JSON.parse(JSON.stringify(schemas[`${source}Item`]));
-        const targetItem = JSON.parse(JSON.stringify(schemas[`${target}Item`]));
+    const sourceItem = JSON.parse(JSON.stringify(schemas[`${source}Item`]));
+    const targetItem = JSON.parse(JSON.stringify(schemas[`${target}Item`]));
 
-        // Only embed target reference inside source, not both ways
-        sourceItem.properties[target.toLowerCase()] = {
-            type: "object",
-            properties: {
-                ...targetItem.properties
-            }
-        };
-
-        // Embed only userId as a primitive reference in profile, not full user
-        targetItem.properties[foreignKey] = {
-            type: "integer",
-            format: "int32",
-            description: `Foreign key referencing ${source}`
-        };
-
-        if (!schemas[`${source}${target}Item`]) {
-            schemas[`${source}${target}Item`] = sourceItem;
+    // Only embed target reference inside source, not both ways
+    sourceItem.properties[target.toLowerCase()] = {
+        type: "object",
+        properties: {
+            ...targetItem.properties
         }
+    };
 
-        if (!schemas[`${target}${source}Item`]) {
-            schemas[`${target}${source}Item`] = targetItem;
-        }
-        return `${source}${target}Item`;
-    } else {
-        const sourceItem = JSON.parse(JSON.stringify(schemas[`${source}Item`]));
-        const targetItem = JSON.parse(JSON.stringify(schemas[`${target}Item`]));
+    // Embed only userId as a primitive reference in profile, not full user
+    targetItem.properties[foreignKey] = {
+        type: "integer",
+        format: "int32",
+        description: `Foreign key referencing ${source}`
+    };
 
-        // Only embed target reference inside source, not both ways
-        sourceItem.properties[target.toLowerCase()] = {
-            type: "object",
-            properties: {
-                ...targetItem.properties
-            }
-        };
-
-        // Embed only userId as a primitive reference in profile, not full user
-        targetItem.properties[foreignKey] = {
-            type: "integer",
-            format: "int32",
-            description: `Foreign key referencing ${source}`
-        };
-
-        if (!schemas[`${source}${target}Item`]) {
-            schemas[`${source}${target}Item`] = sourceItem;
-        }
-
-        if (!schemas[`${target}${source}Item`]) {
-            schemas[`${target}${source}Item`] = targetItem;
-        }
-        return `${source}${target}Item`;
+    if (!schemas[`${source}${target}Item`]) {
+        schemas[`${source}${target}Item`] = sourceItem;
     }
+
+    if (!schemas[`${target}${source}Item`]) {
+        schemas[`${target}${source}Item`] = targetItem;
+    }
+    return `${source}${target}Item`;
 }
 
 module.exports = createRelations;
