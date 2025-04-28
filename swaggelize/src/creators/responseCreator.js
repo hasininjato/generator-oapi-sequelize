@@ -1,4 +1,4 @@
-const { transformStr, getSingularPath, getVariablesFromPath } = require("../utils/utils");
+const {transformStr, getSingularPath, getVariablesFromPath} = require("../utils/utils");
 const responses = require("../utils/statusCode");
 const createRelations = require("./relationCreator");
 
@@ -22,7 +22,7 @@ function createResponse(services, schemas, models) {
                     // for post, we return 201. for put or patch, we return 200 and 404.
                     const successResponse = method === "post"
                         ? responses.response201(transformedObj, getSingularPath(path), config)
-                        : { ...responses.response200(transformedObj, config), ...responses.response404(pathVariables) };
+                        : {...responses.response200(transformedObj, config), ...responses.response404(pathVariables)};
 
                     // we add responses
                     services[path][method].responses = {
@@ -43,18 +43,29 @@ function createResponse(services, schemas, models) {
             } else {
                 // if there is no output (for delete) or more than one (for relation)
                 // @TODO: when there are more than one output
-                services[path][method].responses = method === "delete"
-                    ? {
+                if (method === "delete" || config.output?.length === undefined) {
+                    services[path][method].responses = {
                         ...responses.response204(),
                         ...commonResponses,
                         ...responses.response404(pathVariables)
                     }
-                    : { ...responses.response500() };
-                createRelations(models, config, schemas);
+                } else {
+                    const relation = createRelations(models, config, schemas);
+                    if (["post", "put", "patch"].includes(method)) {
+                        services[path][method].responses = {
+                            ...commonResponses,
+                            ...responses.response201(null, getSingularPath(path), config, relation)
+                        };
+                    } else if (method === "get") {
+                        services[path][method].responses = {
+                            ...commonResponses,
+                        }
+                    }
+                }
             }
 
             // Optional: Remove output key if needed
-            // delete services[path][method].output;
+            // to delete services[path][method].output;
         }
     }
 }

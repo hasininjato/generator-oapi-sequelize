@@ -6,6 +6,7 @@ User:
         description: "List of all users"
       output:
         - "user:list"
+        - "profile:item"
     post:
       openapi_context:
         summary: "Create a user"

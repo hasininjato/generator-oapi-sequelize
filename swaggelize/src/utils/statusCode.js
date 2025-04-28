@@ -25,16 +25,23 @@ function response200(obj, service) {
 /**
  *
  * @param {Object} obj
- * @param models
+ * @param model
  * @param {*} service
+ * @param relation
  * @returns
  */
-function response201(obj, models, service) {
+function response201(obj, model, service, relation = null) {
     let description = "";
-    if (models) {
-        description = `${capitalizeFirstLetter(obj.prefix)} created successfully`;
+    let componentName = "";
+    if (model) {
+        description = `${model} created successfully`;
     } else {
         description = `${service.summary} successfully`
+    }
+    if (obj) {
+        componentName = `${obj.pascalCase}`;
+    } else {
+        componentName = relation;
     }
     return {
         201: {
@@ -42,7 +49,7 @@ function response201(obj, models, service) {
             "content": {
                 "application/json": {
                     "schema": {
-                        "$ref": `#/components/schemas/${obj.pascalCase}`
+                        "$ref": `#/components/schemas/${componentName}`,
                     }
                 }
             }
