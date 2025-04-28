@@ -3,15 +3,15 @@ const responses = require("../utils/statusCode");
 const createRelations = require("./relationCreator");
 
 function createResponse(services, schemas, models) {
+    // common responses are 401, 403 and 500 for each route
+    const commonResponses = {
+        ...responses.response401(),
+        ...responses.response403(),
+        ...responses.response500()
+    };
     for (const [path, service] of Object.entries(services)) {
         for (const [method, config] of Object.entries(service)) {
             const pathVariables = getVariablesFromPath(path);
-            // common responses are 401, 403 and 500 for each route
-            const commonResponses = {
-                ...responses.response401(),
-                ...responses.response403(),
-                ...responses.response500()
-            };
 
             // first process when there is no relation in the output
             if (config.output?.length === 1) {
@@ -56,7 +56,7 @@ function createResponse(services, schemas, models) {
                             ...commonResponses,
                             ...responses.response201(null, getSingularPath(path), config, relation)
                         };
-                    } else if (method === "get") {
+                    } else {
                         services[path][method].responses = {
                             ...commonResponses,
                         }

@@ -118,7 +118,7 @@ function response401() {
 
 function response403() {
     return {
-        401: {
+        403: {
             "description": "Forbidden"
         }
     }
