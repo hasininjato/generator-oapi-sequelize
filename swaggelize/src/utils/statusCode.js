@@ -5,16 +5,24 @@ const {sequelizeValidationHandlers} = require('./constants');
  *
  * @param obj
  * @param {*} service
+ * @param relation
  * @returns
  */
-function response200(obj, service) {
+function response200(obj, service, relation) {
+    const summary = service.summary || "";
+    let ref = "";
+    if (obj) {
+        ref = obj?.pascalCase;
+    } else {
+        ref = relation;
+    }
     return {
         200: {
-            "description": service.summary || "",
+            "description": summary,
             "content": {
                 "application/json": {
                     "schema": {
-                        "$ref": `#/components/schemas/${obj.pascalCase}`
+                        "$ref": `#/components/schemas/${ref}`
                     }
                 }
             }

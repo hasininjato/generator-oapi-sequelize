@@ -778,6 +778,16 @@
                     "profile:item"
                 ],
                 "responses": {
+                    "200": {
+                        "description": "List of all users",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UserProfileItem"
+                                }
+                            }
+                        }
+                    },
                     "401": {
                         "description": "Unauthorized"
                     },
@@ -1239,11 +1249,24 @@
                     }
                 ],
                 "responses": {
+                    "200": {
+                        "description": "List of all transactions of an user by id",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/"
+                                }
+                            }
+                        }
+                    },
                     "401": {
                         "description": "Unauthorized"
                     },
                     "403": {
                         "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "User not found"
                     },
                     "500": {
                         "description": "Internal server error"
@@ -1271,11 +1294,24 @@
                     }
                 ],
                 "responses": {
+                    "200": {
+                        "description": "List of all transactions with name of an user by id",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/"
+                                }
+                            }
+                        }
+                    },
                     "401": {
                         "description": "Unauthorized"
                     },
                     "403": {
                         "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "User, Transaction not found"
                     },
                     "500": {
                         "description": "Internal server error"
