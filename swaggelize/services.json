@@ -207,6 +207,10 @@
             "tags": [
                 "User"
             ],
+            "output": [
+                "user:item",
+                "profile:item"
+            ],
             "parameters": [
                 {
                     "$ref": "#/components/parameters/UserId"
@@ -218,7 +222,7 @@
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/UserItem"
+                                "$ref": "#/components/schemas/UserProfileRelationItem"
                             }
                         }
                     }

@@ -5,7 +5,8 @@ function createRelations(models, service, schemas) {
     if (!parentModelValue) return "";
 
     const parentTransformed = transformStr(parentModelValue);
-    const parentSchema = {...schemas[parentTransformed.pascalCase]};
+    // Create a deep clone of the parent schema to avoid modifying the original
+    const parentSchema = JSON.parse(JSON.stringify(schemas[parentTransformed.pascalCase]));
     let schemaName = capitalizeFirstLetter(parentTransformed.prefix);
     const relations = {};
 
@@ -16,17 +17,21 @@ function createRelations(models, service, schemas) {
 
         schemaName += capitalizeFirstLetter(relationTransformed.prefix);
         const keyName = relationTransformed.suffix === "list"
-            ? relationModel.relations[0]?.args[1].association
+            ? relationModel.relations[0].args[1].association
             : relationTransformed.prefix;
 
-        relations[keyName] = {...schemas[relationTransformed.pascalCase]};
+        // Create a deep clone of the relation schema
+        relations[keyName] = JSON.parse(JSON.stringify(schemas[relationTransformed.pascalCase]));
     }
 
     const isList = parentTransformed.suffix === "list";
     const result = `${schemaName}Relation${isList ? "List" : "Item"}`;
     const targetProperties = isList ? parentSchema.items.properties : parentSchema.properties;
 
+    // Safely merge the relations into the cloned schema
     Object.assign(targetProperties, relations);
+
+    // Assign the modified clone to the schemas object
     schemas[result] = parentSchema;
 
     return result;

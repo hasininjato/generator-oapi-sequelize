@@ -47,6 +47,7 @@ User:
         description: "Get user by id"
       output:
         - "user:item"
+        - "profile:item"
     put:
       openapi_context:
         summary: "Update an user by id"

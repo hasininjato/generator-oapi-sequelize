@@ -582,56 +582,6 @@
                         "type": "string",
                         "format": "date-time",
                         "description": "Date when the record was last updated"
-                    },
-                    "profile": {
-                        "type": "object",
-                        "properties": {
-                            "id": {
-                                "type": "integer",
-                                "format": "int32",
-                                "description": "Profile ID"
-                            },
-                            "bio": {
-                                "type": "string",
-                                "description": "Profile bio"
-                            }
-                        }
-                    },
-                    "Transactions": {
-                        "type": "array",
-                        "items": {
-                            "type": "object",
-                            "properties": {
-                                "id": {
-                                    "type": "integer",
-                                    "format": "int32",
-                                    "description": "Id of the transaction"
-                                },
-                                "amount": {
-                                    "type": "string",
-                                    "description": "Amount of the transaction"
-                                },
-                                "description": {
-                                    "type": "string",
-                                    "description": "Description of the transaction"
-                                },
-                                "date": {
-                                    "type": "string",
-                                    "format": "date-time",
-                                    "description": ""
-                                },
-                                "createdAt": {
-                                    "type": "string",
-                                    "format": "date-time",
-                                    "description": "Date when the record was created"
-                                },
-                                "updatedAt": {
-                                    "type": "string",
-                                    "format": "date-time",
-                                    "description": "Date when the record was last updated"
-                                }
-                            }
-                        }
                     }
                 }
             },
@@ -662,20 +612,6 @@
                             "type": "string",
                             "format": "date-time",
                             "description": "Date when the record was last updated"
-                        },
-                        "profile": {
-                            "type": "object",
-                            "properties": {
-                                "id": {
-                                    "type": "integer",
-                                    "format": "int32",
-                                    "description": "Profile ID"
-                                },
-                                "bio": {
-                                    "type": "string",
-                                    "description": "Profile bio"
-                                }
-                            }
                         }
                     }
                 }
@@ -850,42 +786,6 @@
                                 "description": "Profile bio"
                             }
                         }
-                    },
-                    "Transactions": {
-                        "type": "array",
-                        "items": {
-                            "type": "object",
-                            "properties": {
-                                "id": {
-                                    "type": "integer",
-                                    "format": "int32",
-                                    "description": "Id of the transaction"
-                                },
-                                "amount": {
-                                    "type": "string",
-                                    "description": "Amount of the transaction"
-                                },
-                                "description": {
-                                    "type": "string",
-                                    "description": "Description of the transaction"
-                                },
-                                "date": {
-                                    "type": "string",
-                                    "format": "date-time",
-                                    "description": ""
-                                },
-                                "createdAt": {
-                                    "type": "string",
-                                    "format": "date-time",
-                                    "description": "Date when the record was created"
-                                },
-                                "updatedAt": {
-                                    "type": "string",
-                                    "format": "date-time",
-                                    "description": "Date when the record was last updated"
-                                }
-                            }
-                        }
                     }
                 }
             },
@@ -914,20 +814,6 @@
                         "type": "string",
                         "format": "date-time",
                         "description": "Date when the record was last updated"
-                    },
-                    "profile": {
-                        "type": "object",
-                        "properties": {
-                            "id": {
-                                "type": "integer",
-                                "format": "int32",
-                                "description": "Profile ID"
-                            },
-                            "bio": {
-                                "type": "string",
-                                "description": "Profile bio"
-                            }
-                        }
                     },
                     "Transactions": {
                         "type": "array",
@@ -1178,6 +1064,10 @@
                 "tags": [
                     "User"
                 ],
+                "output": [
+                    "user:item",
+                    "profile:item"
+                ],
                 "parameters": [
                     {
                         "$ref": "#/components/parameters/UserId"
@@ -1189,7 +1079,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/UserItem"
+                                    "$ref": "#/components/schemas/UserProfileRelationItem"
                                 }
                             }
                         }
