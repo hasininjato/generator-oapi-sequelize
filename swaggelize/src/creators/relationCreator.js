@@ -3,18 +3,42 @@ const {transformStr, capitalizeFirstLetter} = require("../utils/utils");
 function createRelations(models, service, schemas) {
     const serviceOutput = service.output;
     let result = "";
+    const parentModelValue = serviceOutput[0];
+    const parentTransformedObj = transformStr(parentModelValue);
+    const parentSchema = JSON.parse(JSON.stringify(schemas[parentTransformedObj.pascalCase]))
+    let schemaName = capitalizeFirstLetter(parentTransformedObj.prefix);
+    let item = {};
     if (serviceOutput) {
-        serviceOutput.forEach(output => {
-            const transformedObj = transformStr(output)
-            const modelName = capitalizeFirstLetter(transformedObj.prefix)
-            const model = models.find(elt => elt.sequelizeModel === modelName);
-            console.log(output)
-            model.relations.forEach(relation => {
-                if (relation.relation === "hasOne") {
-                    result = hasOneRelation(relation, schemas);
-                }
-            })
-        })
+        for (let i = 1; i < serviceOutput.length; i++) {
+            const relationTransformedObj = transformStr(serviceOutput[i]);
+            const relationModelName = capitalizeFirstLetter(relationTransformedObj.prefix);
+            const relationModel = models.find(elt => elt.sequelizeModel === relationModelName);
+            const suffixRelation = relationTransformedObj.suffix;
+            schemaName += capitalizeFirstLetter(relationTransformedObj.prefix);
+            item[relationTransformedObj.prefix] = {
+                ...schemas[relationTransformedObj.pascalCase]
+            }
+            console.log(item)
+        }
+        if (parentTransformedObj.suffix === "list") {
+            result = `${schemaName}RelationList`;
+            parentSchema.items.properties = {
+                ...parentSchema.items.properties,
+                ...item
+            };
+            schemas[result] = {
+                ...parentSchema
+            };
+        } else {
+            result = `${schemaName}RelationItem`;
+            parentSchema.properties = {
+                ...parentSchema.properties,
+                ...item
+            };
+            schemas[result] = {
+                ...parentSchema
+            };
+        }
     }
     return result;
 }

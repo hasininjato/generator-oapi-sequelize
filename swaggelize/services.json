@@ -16,7 +16,7 @@
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/UserProfileItem"
+                                "$ref": "#/components/schemas/UserProfileRelationList"
                             }
                         }
                     }
@@ -52,7 +52,7 @@
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/UserProfileItem"
+                                "$ref": "#/components/schemas/UserProfileRelationItem"
                             }
                         }
                     }
@@ -487,7 +487,7 @@
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/"
+                                "$ref": "#/components/schemas/UserTransactionRelationItem"
                             }
                         }
                     }
