@@ -250,6 +250,17 @@ function extractRelationsManyToManyThroughString(ast) {
     return relations;
 }
 
+function addRelationManyToManyToEachModel(models) {
+    for (const [index, model] of Object.entries(models)) {
+        if (model.relations.length > 1) {
+            // console.log(JSON.stringify(model, null, 2));
+        }
+        if(["Tag", "Post"].includes(model.sequelizeModel)) {
+            console.log(model);
+        }
+    }
+}
+
 /**
  * create the model for the many-to-many relationship using through if it is string. relations parameter is from the function extractRelationsManyToManyThroughString
  * @param relations
@@ -326,6 +337,7 @@ function modelParser(code) {
     });
     const relations = extractRelationsManyToManyThroughString(ast);
     let manyToManyThroughStringModels = [];
+    addRelationManyToManyToEachModel(models);
     if (relations && relations.length > 0) {
         manyToManyThroughStringModels = createModelManyToManyThroughString(relations);
         return [...models, manyToManyThroughStringModels];

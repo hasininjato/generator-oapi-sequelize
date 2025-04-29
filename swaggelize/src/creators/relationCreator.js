@@ -17,7 +17,7 @@ function createRelations(models, service, schemas) {
 
         schemaName += capitalizeFirstLetter(relationTransformed.prefix);
         const keyName = relationTransformed.suffix === "list"
-            ? relationModel.relations[0].args[1].association
+            ? relationModel.relations[0]?.args[1]?.association
             : relationTransformed.prefix;
 
         // Create a deep clone of the relation schema

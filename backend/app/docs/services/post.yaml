@@ -6,6 +6,7 @@ Post:
         description: "List of all posts"
       output:
         - "post:list"
+        - "tag:list"
     post:
       openapi_context:
         summary: "Create a post"
