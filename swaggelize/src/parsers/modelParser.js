@@ -251,12 +251,51 @@ function extractRelationsManyToManyThroughString(ast) {
 }
 
 function addRelationManyToManyToEachModel(models) {
-    for (const [index, model] of Object.entries(models)) {
+    for (const model of Object.values(models)) {
+        let relationsMany = [];
         if (model.relations.length > 1) {
-            // console.log(JSON.stringify(model, null, 2));
+            const relations = model.relations;
+            for (const relation of Object.values(relations)) {
+                if (relation.relation === "belongsToMany" && !model.isThroughString) {
+                    if (model.sequelizeModel !== relation.source && model.sequelizeModel !== relation.target) {
+                        relationsMany.push(relation);
+                    }
+                }
+            }
         }
-        if(["Tag", "Post"].includes(model.sequelizeModel)) {
-            console.log(model);
+        if (relationsMany.length > 0) { // Changed to > 0 since you might want to add even single relations
+            const source = relationsMany[0]?.source;
+            const target = relationsMany[0]?.target;
+
+            if (!source || !target) {
+                throw new Error('Relations must have source and target defined');
+            }
+
+            const sourceModel = models.find(elt => elt.sequelizeModel === source);
+            const targetModel = models.find(elt => elt.sequelizeModel === target);
+
+            if (!sourceModel || !targetModel) {
+                throw new Error(`Source or target model not found (${source}, ${target})`);
+            }
+
+            // Initialize relations array if it doesn't exist
+            sourceModel.relations = sourceModel.relations || [];
+            targetModel.relations = targetModel.relations || [];
+
+            // Filter out duplicates before adding
+            const newSourceRelations = relationsMany.filter(newRel =>
+                !sourceModel.relations.some(existingRel =>
+                    JSON.stringify(existingRel) === JSON.stringify(newRel)
+                ));
+
+            const newTargetRelations = relationsMany.filter(newRel =>
+                !targetModel.relations.some(existingRel =>
+                    JSON.stringify(existingRel) === JSON.stringify(newRel)
+                ));
+
+            // Add new relations
+            sourceModel.relations.push(...newSourceRelations);
+            targetModel.relations.push(...newTargetRelations);
         }
     }
 }
@@ -289,6 +328,7 @@ function createModelManyToManyThroughString(relations) {
     })
     return {
         sequelizeModel: sequelizeModelName,
+        isThroughString: true,
         value: values,
         relations: relations
     }
@@ -337,7 +377,6 @@ function modelParser(code) {
     });
     const relations = extractRelationsManyToManyThroughString(ast);
     let manyToManyThroughStringModels = [];
-    addRelationManyToManyToEachModel(models);
     if (relations && relations.length > 0) {
         manyToManyThroughStringModels = createModelManyToManyThroughString(relations);
         return [...models, manyToManyThroughStringModels];
@@ -357,5 +396,6 @@ module.exports = {
     extractTimestampFields,
     extractRelations,
     extractRelationsManyToManyThroughString,
-    createModelManyToManyThroughString
+    createModelManyToManyThroughString,
+    addRelationManyToManyToEachModel
 };

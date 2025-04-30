@@ -715,7 +715,7 @@
                             "type": "string",
                             "description": "Post content"
                         },
-                        "undefined": {
+                        "Tags": {
                             "type": "array",
                             "items": {
                                 "type": "object",
@@ -723,6 +723,34 @@
                                     "name": {
                                         "type": "string",
                                         "description": "Tag name"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "TagPostRelationList": {
+                "type": "array",
+                "items": {
+                    "type": "object",
+                    "properties": {
+                        "name": {
+                            "type": "string",
+                            "description": "Tag name"
+                        },
+                        "Posts": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "title": {
+                                        "type": "string",
+                                        "description": "Post title"
+                                    },
+                                    "content": {
+                                        "type": "string",
+                                        "description": "Post content"
                                     }
                                 }
                             }

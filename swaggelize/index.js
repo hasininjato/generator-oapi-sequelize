@@ -1,4 +1,4 @@
-const {modelParser} = require('./src/parsers/modelParser');
+const {modelParser, addRelationManyToManyToEachModel} = require('./src/parsers/modelParser');
 const {getFileInDirectory, readFileContent} = require("./src/utils/utils");
 const serviceParser = require("./src/parsers/serviceParser");
 const fs = require("fs");
@@ -27,6 +27,8 @@ function parser(swaggelizeOptions) {
 
     const modelsFiles = getFileInDirectory(modelsPath);
     const models = getModels(modelsPath, modelsFiles);
+
+    addRelationManyToManyToEachModel(models);
 
     const schemas = createSchemas(models)
 
@@ -83,6 +85,7 @@ function parser(swaggelizeOptions) {
             paths: services
         }
     })
+    fs.writeFileSync("../swaggelize/models.json", JSON.stringify(models, null, 4))
     fs.writeFileSync("../swaggelize/services-full.json", JSON.stringify(openApiSpec, null, 4))
 }
 

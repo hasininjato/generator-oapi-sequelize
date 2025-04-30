@@ -6,6 +6,7 @@ Tag:
         description: "List of all tags"
       output:
         - "tag:list"
+        - "post:list"
     post:
       openapi_context:
         summary: "Create a tag"

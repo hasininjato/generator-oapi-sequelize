@@ -57,7 +57,7 @@
                     {
                         "through": "InstrumentUsers",
                         "association": "Instruments",
-                        "foreignKey": "instrumentId"
+                        "foreignKey": "userId"
                     }
                 ]
             },
@@ -71,7 +71,7 @@
                     {
                         "through": "InstrumentUsers",
                         "association": "Users",
-                        "foreignKey": "userId"
+                        "foreignKey": "instrumentId"
                     }
                 ]
             }
@@ -79,6 +79,7 @@
     },
     {
         "sequelizeModel": "InstrumentUsers",
+        "isThroughString": true,
         "value": [
             {
                 "field": "userId",
@@ -92,7 +93,9 @@
                 "comment": {
                     "methods": [
                         "list",
-                        "item"
+                        "item",
+                        "put",
+                        "post"
                     ],
                     "description": "User ID"
                 }
@@ -109,7 +112,9 @@
                 "comment": {
                     "methods": [
                         "list",
-                        "item"
+                        "item",
+                        "put",
+                        "post"
                     ],
                     "description": "Instrument ID"
                 }
@@ -185,7 +190,35 @@
                     {
                         "onDelete": "CASCADE",
                         "association": "Posts",
+                        "foreignKey": "userId"
+                    }
+                ]
+            },
+            {
+                "type": "relation",
+                "relation": "belongsToMany",
+                "source": "Post",
+                "target": "Tag",
+                "args": [
+                    "Tag",
+                    {
+                        "through": "PostTags",
+                        "association": "Tags",
                         "foreignKey": "postId"
+                    }
+                ]
+            },
+            {
+                "type": "relation",
+                "relation": "belongsToMany",
+                "source": "Tag",
+                "target": "Post",
+                "args": [
+                    "Post",
+                    {
+                        "through": "PostTags",
+                        "association": "Posts",
+                        "foreignKey": "tagId"
                     }
                 ]
             }
@@ -230,7 +263,7 @@
                     {
                         "onDelete": "CASCADE",
                         "association": "Posts",
-                        "foreignKey": "postId"
+                        "foreignKey": "userId"
                     }
                 ]
             }
@@ -287,7 +320,7 @@
                     {
                         "through": "PostTags",
                         "association": "Tags",
-                        "foreignKey": "tagId"
+                        "foreignKey": "postId"
                     }
                 ]
             },
@@ -301,7 +334,7 @@
                     {
                         "through": "PostTags",
                         "association": "Posts",
-                        "foreignKey": "postId"
+                        "foreignKey": "tagId"
                     }
                 ]
             }
@@ -347,7 +380,7 @@
                 "args": [
                     "Profile",
                     {
-                        "foreignKey": "profileId"
+                        "foreignKey": "userId"
                     }
                 ]
             }
@@ -369,7 +402,36 @@
                 "description": "Tag name"
             }
         ],
-        "relations": []
+        "relations": [
+            {
+                "type": "relation",
+                "relation": "belongsToMany",
+                "source": "Post",
+                "target": "Tag",
+                "args": [
+                    "Tag",
+                    {
+                        "through": "PostTags",
+                        "association": "Tags",
+                        "foreignKey": "postId"
+                    }
+                ]
+            },
+            {
+                "type": "relation",
+                "relation": "belongsToMany",
+                "source": "Tag",
+                "target": "Post",
+                "args": [
+                    "Post",
+                    {
+                        "through": "PostTags",
+                        "association": "Posts",
+                        "foreignKey": "tagId"
+                    }
+                ]
+            }
+        ]
     },
     {
         "sequelizeModel": "Transaction",
