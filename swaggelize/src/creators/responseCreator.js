@@ -58,7 +58,6 @@ function createResponse(services, schemas, models) {
                             ...responses.response404(pathVariables)
                         };
                     } else {
-                        console.log(responses.response200(null, config, relation))
                         services[path][method].responses = {
                             ...commonResponses,
                             ...responses.response200(null, config, relation),

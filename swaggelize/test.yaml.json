@@ -1,0 +1,40 @@
+{
+    "/test/{id}/custom": {
+        "get": {
+            "summary": "Custom path",
+            "description": "Custom path",
+            "tags": [
+                "Custom path"
+            ],
+            "parameters": [
+                {
+                    "$ref": "#/components/parameters/TestId"
+                }
+            ],
+            "responses": {
+                "200": {
+                    "description": "Custom path",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/TestItem"
+                            }
+                        }
+                    }
+                },
+                "401": {
+                    "description": "Unauthorized"
+                },
+                "403": {
+                    "description": "Forbidden"
+                },
+                "404": {
+                    "description": "Test not found"
+                },
+                "500": {
+                    "description": "Internal server error"
+                }
+            }
+        }
+    }
+}

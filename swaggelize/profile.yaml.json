@@ -1,0 +1,233 @@
+{
+    "/profiles": {
+        "get": {
+            "summary": "List of all profiles",
+            "description": "List of all profiles",
+            "tags": [
+                "Profile"
+            ],
+            "responses": {
+                "200": {
+                    "description": "List of all profiles",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ProfileList"
+                            }
+                        }
+                    }
+                },
+                "401": {
+                    "description": "Unauthorized"
+                },
+                "403": {
+                    "description": "Forbidden"
+                },
+                "500": {
+                    "description": "Internal server error"
+                }
+            }
+        },
+        "post": {
+            "summary": "Create a profile",
+            "description": "Create a profile",
+            "tags": [
+                "Profile"
+            ],
+            "requestBody": {
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/ProfilePost"
+                        }
+                    }
+                }
+            },
+            "responses": {
+                "201": {
+                    "description": "Profile created successfully",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ProfileItem"
+                            }
+                        }
+                    }
+                },
+                "400": {
+                    "description": "Bad request (VALIDATION_ERROR)",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Response400Schema"
+                            },
+                            "example": {
+                                "details": []
+                            }
+                        }
+                    }
+                },
+                "401": {
+                    "description": "Unauthorized"
+                },
+                "403": {
+                    "description": "Forbidden"
+                },
+                "409": {
+                    "description": "Unique constraint errors",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Response409Schema"
+                            },
+                            "example": {
+                                "details": []
+                            }
+                        }
+                    }
+                },
+                "500": {
+                    "description": "Internal server error"
+                }
+            }
+        }
+    },
+    "/profiles/{id}": {
+        "get": {
+            "summary": "Get profile by id",
+            "description": "Get profile by id",
+            "tags": [
+                "Profile"
+            ],
+            "parameters": [
+                {
+                    "$ref": "#/components/parameters/ProfileId"
+                }
+            ],
+            "responses": {
+                "200": {
+                    "description": "Get profile by id",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ProfileItem"
+                            }
+                        }
+                    }
+                },
+                "401": {
+                    "description": "Unauthorized"
+                },
+                "403": {
+                    "description": "Forbidden"
+                },
+                "404": {
+                    "description": "Profile not found"
+                },
+                "500": {
+                    "description": "Internal server error"
+                }
+            }
+        },
+        "put": {
+            "summary": "Update a profile by id",
+            "description": "Update a profile by id",
+            "tags": [
+                "Profile"
+            ],
+            "parameters": [
+                {
+                    "$ref": "#/components/parameters/ProfileId"
+                }
+            ],
+            "requestBody": {
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/ProfilePut"
+                        }
+                    }
+                }
+            },
+            "responses": {
+                "200": {
+                    "description": "Update a profile by id",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ProfileItem"
+                            }
+                        }
+                    }
+                },
+                "400": {
+                    "description": "Bad request (VALIDATION_ERROR)",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Response400Schema"
+                            },
+                            "example": {
+                                "details": []
+                            }
+                        }
+                    }
+                },
+                "401": {
+                    "description": "Unauthorized"
+                },
+                "403": {
+                    "description": "Forbidden"
+                },
+                "404": {
+                    "description": "Profile not found"
+                },
+                "409": {
+                    "description": "Unique constraint errors",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Response409Schema"
+                            },
+                            "example": {
+                                "details": []
+                            }
+                        }
+                    }
+                },
+                "500": {
+                    "description": "Internal server error"
+                }
+            }
+        },
+        "delete": {
+            "summary": "Delete a profile by id",
+            "description": "Delete a profile by id",
+            "tags": [
+                "Profile"
+            ],
+            "parameters": [
+                {
+                    "$ref": "#/components/parameters/ProfileId"
+                }
+            ],
+            "responses": {
+                "204": {
+                    "description": "No content"
+                },
+                "401": {
+                    "description": "Unauthorized"
+                },
+                "403": {
+                    "description": "Forbidden"
+                },
+                "404": {
+                    "description": "Profile not found"
+                },
+                "500": {
+                    "description": "Internal server error"
+                }
+            }
+        }
+    }
+}

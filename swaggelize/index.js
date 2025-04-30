@@ -1,5 +1,5 @@
-const {modelParser, addRelationManyToManyToEachModel} = require('./src/parsers/modelParser');
-const {getFileInDirectory, readFileContent} = require("./src/utils/utils");
+const { modelParser, addRelationManyToManyToEachModel } = require('./src/parsers/modelParser');
+const { getFileInDirectory, readFileContent } = require("./src/utils/utils");
 const serviceParser = require("./src/parsers/serviceParser");
 const fs = require("fs");
 const createParameters = require("./src/creators/parameterCreator");
@@ -66,25 +66,35 @@ function parser(swaggelizeOptions) {
     const components = {
         components: {}
     }
-    let services = {};
+    let services = {}; // This will accumulate ALL services
     const servicesFiles = getFileInDirectory(servicesPath);
     let openApiSpec = {};
+
     servicesFiles.forEach(file => {
         const content = readFileContent(`${servicesPath}/${file}`);
         const parameters = createParameters(routesVariable);
         components.components["parameters"] = parameters;
         components.components["schemas"] = schemas;
-        services = serviceParser(content, routesVariable, routePrefix, parameters);
-        createRequestBody(services, schemas);
-        createResponse(services, schemas, models);
-        fs.writeFileSync("../swaggelize/services.json", JSON.stringify(services, null, 4))
 
+        // Get the service definition for this file
+        const currentService = serviceParser(content, routesVariable, routePrefix, parameters);
+
+        // Merge the current service into the accumulated services
+        services = { ...services, ...currentService };
+
+        createRequestBody(currentService, schemas);
+        createResponse(currentService, schemas, models);
+
+        // Write each service file individually (optional)
+        fs.writeFileSync(`../swaggelize/${file}.json`, JSON.stringify(currentService, null, 4));
+
+        // Update openApiSpec with the accumulated services
         openApiSpec = {
             ...openApiInfo,
             ...components,
-            paths: services
-        }
-    })
+            paths: services // Now contains all merged services
+        };
+    });
     fs.writeFileSync("../swaggelize/models.json", JSON.stringify(models, null, 4))
     fs.writeFileSync("../swaggelize/services-full.json", JSON.stringify(openApiSpec, null, 4))
 }
