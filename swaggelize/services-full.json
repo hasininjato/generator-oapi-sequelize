@@ -233,7 +233,10 @@
                         "type": "string",
                         "description": "Post content"
                     }
-                }
+                },
+                "required": [
+                    "title"
+                ]
             },
             "PostPut": {
                 "type": "object",
@@ -246,62 +249,10 @@
                         "type": "string",
                         "description": "Post content"
                     }
-                }
-            },
-            "PostSecondItem": {
-                "type": "object",
-                "properties": {
-                    "title": {
-                        "type": "string",
-                        "description": "Post title"
-                    },
-                    "content": {
-                        "type": "string",
-                        "description": "Post content"
-                    }
-                }
-            },
-            "PostSecondList": {
-                "type": "array",
-                "items": {
-                    "type": "object",
-                    "properties": {
-                        "title": {
-                            "type": "string",
-                            "description": "Post title"
-                        },
-                        "content": {
-                            "type": "string",
-                            "description": "Post content"
-                        }
-                    }
-                }
-            },
-            "PostSecondPost": {
-                "type": "object",
-                "properties": {
-                    "title": {
-                        "type": "string",
-                        "description": "Post title"
-                    },
-                    "content": {
-                        "type": "string",
-                        "description": "Post content"
-                    }
-                }
-            },
-            "PostSecondPut": {
-                "type": "object",
-                "properties": {
-                    "title": {
-                        "type": "string",
-                        "description": "Post title"
-                    },
-                    "content": {
-                        "type": "string",
-                        "description": "Post content"
-                    }
-                }
+                },
+                "required": [
+                    "title"
+                ]
             },
             "PostTagsItem": {
                 "type": "object",
@@ -730,6 +681,31 @@
                     }
                 }
             },
+            "PostTagRelationItem": {
+                "type": "object",
+                "properties": {
+                    "title": {
+                        "type": "string",
+                        "description": "Post title"
+                    },
+                    "content": {
+                        "type": "string",
+                        "description": "Post content"
+                    },
+                    "Tags": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "name": {
+                                    "type": "string",
+                                    "description": "Tag name"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
             "TagPostRelationList": {
                 "type": "array",
                 "items": {
@@ -1004,7 +980,16 @@
                                     "$ref": "#/components/schemas/Response400Schema"
                                 },
                                 "example": {
-                                    "details": []
+                                    "details": [
+                                        {
+                                            "field": "title",
+                                            "message": "Title is required"
+                                        },
+                                        {
+                                            "field": "title",
+                                            "message": "Title cannot be empty"
+                                        }
+                                    ]
                                 }
                             }
                         }
@@ -1041,6 +1026,10 @@
                 "tags": [
                     "Post"
                 ],
+                "output": [
+                    "post:item",
+                    "tag:list"
+                ],
                 "parameters": [
                     {
                         "$ref": "#/components/parameters/PostId"
@@ -1052,7 +1041,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/PostItem"
+                                    "$ref": "#/components/schemas/PostTagRelationItem"
                                 }
                             }
                         }
@@ -1077,6 +1066,10 @@
                 "tags": [
                     "Post"
                 ],
+                "output": [
+                    "post:item",
+                    "tag:list"
+                ],
                 "parameters": [
                     {
                         "$ref": "#/components/parameters/PostId"
@@ -1092,25 +1085,12 @@
                     }
                 },
                 "responses": {
-                    "200": {
-                        "description": "Update a post by id",
+                    "201": {
+                        "description": "Update a post by id successfully",
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/PostItem"
-                                }
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "Bad request (VALIDATION_ERROR)",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Response400Schema"
-                                },
-                                "example": {
-                                    "details": []
+                                    "$ref": "#/components/schemas/PostTagRelationItem"
                                 }
                             }
                         }
@@ -1123,19 +1103,6 @@
                     },
                     "404": {
                         "description": "Post not found"
-                    },
-                    "409": {
-                        "description": "Unique constraint errors",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Response409Schema"
-                                },
-                                "example": {
-                                    "details": []
-                                }
-                            }
-                        }
                     },
                     "500": {
                         "description": "Internal server error"
@@ -2135,10 +2102,6 @@
                 "tags": [
                     "Transaction"
                 ],
-                "output": [
-                    "user:item",
-                    "transaction:list"
-                ],
                 "parameters": [
                     {
                         "$ref": "#/components/parameters/UserId"
@@ -2150,7 +2113,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/UserTransactionRelationItem"
+                                    "$ref": "#/components/schemas/TransactionList"
                                 }
                             }
                         }
@@ -2177,6 +2140,10 @@
                 "tags": [
                     "Transaction"
                 ],
+                "output": [
+                    "user:item",
+                    "transaction:list"
+                ],
                 "parameters": [
                     {
                         "$ref": "#/components/parameters/UserId"
@@ -2191,7 +2158,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/TransactionList"
+                                    "$ref": "#/components/schemas/UserTransactionRelationItem"
                                 }
                             }
                         }

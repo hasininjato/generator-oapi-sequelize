@@ -8,22 +8,15 @@ const Post = sequelize.define('Post', {
      * description: Post title
      * methods: list, item, put, post
      */
-    title: DataTypes.STRING,
-    /**
-     * @swag
-     * description: Post content
-     * methods: list, item, put, post
-     */
-    content: DataTypes.TEXT,
-});
-
-const PostSecond = sequelize.define('PostSecond', {
-    /**
-     * @swag
-     * description: Post title
-     * methods: list, item, put, post
-     */
-    title: DataTypes.STRING,
+    title: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        unique: false,
+        validate: {
+            notNull: { msg: "Title is required" },
+            notEmpty: { msg: "Title cannot be empty" }
+        }
+    },
     /**
      * @swag
      * description: Post content

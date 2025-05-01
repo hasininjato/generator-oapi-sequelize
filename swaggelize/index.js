@@ -85,9 +85,6 @@ function parser(swaggelizeOptions) {
         createRequestBody(currentService, schemas);
         createResponse(currentService, schemas, models);
 
-        // Write each service file individually (optional)
-        fs.writeFileSync(`../swaggelize/${file}.json`, JSON.stringify(currentService, null, 4));
-
         // Update openApiSpec with the accumulated services
         openApiSpec = {
             ...openApiInfo,
