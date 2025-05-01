@@ -790,45 +790,6 @@
                     "password"
                 ]
             },
-            "UserTransactionRelationPost": {
-                "type": "object",
-                "properties": {
-                    "fullname": {
-                        "type": "string",
-                        "description": ""
-                    },
-                    "email": {
-                        "type": "string",
-                        "description": ""
-                    },
-                    "password": {
-                        "type": "string",
-                        "description": ""
-                    },
-                    "transaction": {
-                        "type": "object",
-                        "properties": {
-                            "amount": {
-                                "type": "string",
-                                "description": "Amount of the transaction"
-                            },
-                            "description": {
-                                "type": "string",
-                                "description": "Description of the transaction"
-                            }
-                        },
-                        "required": [
-                            "amount",
-                            "description"
-                        ]
-                    }
-                },
-                "required": [
-                    "fullname",
-                    "email",
-                    "password"
-                ]
-            },
             "UserProfileRelationList": {
                 "type": "array",
                 "items": {
@@ -990,10 +951,6 @@
                 "tags": [
                     "Post"
                 ],
-                "output": [
-                    "post:list",
-                    "tag:list"
-                ],
                 "responses": {
                     "200": {
                         "description": "List of all posts",
@@ -1021,9 +978,6 @@
                 "description": "Create a post",
                 "tags": [
                     "Post"
-                ],
-                "input": [
-                    "post:post"
                 ],
                 "requestBody": {
                     "content": {
@@ -1099,10 +1053,6 @@
                 "tags": [
                     "Post"
                 ],
-                "output": [
-                    "post:item",
-                    "tag:list"
-                ],
                 "parameters": [
                     {
                         "$ref": "#/components/parameters/PostId"
@@ -1138,13 +1088,6 @@
                 "description": "Update a post by id",
                 "tags": [
                     "Post"
-                ],
-                "input": [
-                    "post:put"
-                ],
-                "output": [
-                    "post:item",
-                    "tag:list"
                 ],
                 "parameters": [
                     {
@@ -1250,9 +1193,6 @@
                 "tags": [
                     "Profile"
                 ],
-                "input": [
-                    "profile:post"
-                ],
                 "requestBody": {
                     "content": {
                         "application/json": {
@@ -1353,9 +1293,6 @@
                 "description": "Update a profile by id",
                 "tags": [
                     "Profile"
-                ],
-                "input": [
-                    "profile:put"
                 ],
                 "parameters": [
                     {
@@ -1459,10 +1396,6 @@
                 "tags": [
                     "Tag"
                 ],
-                "output": [
-                    "tag:list",
-                    "post:list"
-                ],
                 "responses": {
                     "200": {
                         "description": "List of all tags",
@@ -1490,9 +1423,6 @@
                 "description": "Create a tag",
                 "tags": [
                     "Tag"
-                ],
-                "input": [
-                    "tag:post"
                 ],
                 "requestBody": {
                     "content": {
@@ -1559,10 +1489,6 @@
                 "tags": [
                     "Tag"
                 ],
-                "output": [
-                    "tag:item",
-                    "post:list"
-                ],
                 "parameters": [
                     {
                         "$ref": "#/components/parameters/TagId"
@@ -1598,13 +1524,6 @@
                 "description": "Update a tag by id",
                 "tags": [
                     "Tag"
-                ],
-                "input": [
-                    "tag:put"
-                ],
-                "output": [
-                    "tag:item",
-                    "post:list"
                 ],
                 "parameters": [
                     {
@@ -1682,10 +1601,6 @@
                 "tags": [
                     "User"
                 ],
-                "output": [
-                    "user:list",
-                    "profile:item"
-                ],
                 "responses": {
                     "200": {
                         "description": "List of all users",
@@ -1713,14 +1628,6 @@
                 "description": "Create a user",
                 "tags": [
                     "User"
-                ],
-                "input": [
-                    "user:post",
-                    "profile:post"
-                ],
-                "output": [
-                    "user:item",
-                    "profile:item"
                 ],
                 "requestBody": {
                     "content": {
@@ -1760,9 +1667,6 @@
                 "description": "Login an user",
                 "tags": [
                     "Authentication"
-                ],
-                "input": [
-                    "user:item"
                 ],
                 "requestBody": {
                     "content": {
@@ -1863,9 +1767,6 @@
                 "tags": [
                     "Token"
                 ],
-                "input": [
-                    "user:item"
-                ],
                 "requestBody": {
                     "content": {
                         "application/json": {
@@ -1897,10 +1798,6 @@
                 "description": "Get user by id",
                 "tags": [
                     "User"
-                ],
-                "output": [
-                    "user:item",
-                    "profile:item"
                 ],
                 "parameters": [
                     {
@@ -1937,9 +1834,6 @@
                 "description": "Update an user by id",
                 "tags": [
                     "User"
-                ],
-                "input": [
-                    "user:put"
                 ],
                 "parameters": [
                     {
@@ -2077,10 +1971,6 @@
                 "tags": [
                     "Transaction"
                 ],
-                "input": [
-                    "user:post",
-                    "transaction:post"
-                ],
                 "parameters": [
                     {
                         "$ref": "#/components/parameters/UserId"
@@ -2090,7 +1980,7 @@
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/UserTransactionRelationPost"
+                                "$ref": "#/components/schemas/TransactionPost"
                             }
                         }
                     }
@@ -2174,10 +2064,6 @@
                 "tags": [
                     "Transaction"
                 ],
-                "output": [
-                    "user:item",
-                    "transaction:list"
-                ],
                 "parameters": [
                     {
                         "$ref": "#/components/parameters/UserId"
@@ -2215,10 +2101,6 @@
                 "description": "List of all transactions with name of an user by id",
                 "tags": [
                     "Transaction"
-                ],
-                "output": [
-                    "user:item",
-                    "transaction:list"
                 ],
                 "parameters": [
                     {

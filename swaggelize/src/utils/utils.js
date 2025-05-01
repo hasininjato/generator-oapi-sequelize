@@ -289,6 +289,29 @@ function getSingularPath(path) {
     return null; // Or return original path if preferred
 }
 
+function removeInputOutput(openApiSpec) {
+    // Make a deep copy of the spec to avoid modifying the original
+    // const spec = JSON.parse(JSON.stringify(openApiSpec));
+
+    // Iterate through all paths
+    for (const path in openApiSpec.paths) {
+        const pathItem = openApiSpec.paths[path];
+
+        // Iterate through all operations (get, post, put, delete, etc.)
+        for (const method in pathItem) {
+            const operation = pathItem[method];
+
+            // Remove input and output fields if they exist
+            if (operation.input) {
+                delete operation.input;
+            }
+            if (operation.output) {
+                delete operation.output;
+            }
+        }
+    }
+}
+
 module.exports = {
     readFileContent,
     getFileInDirectory,
@@ -308,5 +331,6 @@ module.exports = {
     getVariablesFromPath,
     getTypeField,
     getVariableIdFromPath,
-    getSingularPath
+    getSingularPath,
+    removeInputOutput
 }
