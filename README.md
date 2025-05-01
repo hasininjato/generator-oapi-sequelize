@@ -1,12 +1,50 @@
-# About
+# Sequelize2OpenAPI
 
-OpenAPI Sequelize: generate OpenAPI specs, by annotating Sequelize models.
+**Sequelize2OpenAPI** is a tool that automatically generates OpenAPI specifications for Express.js projects based on
+annotations directly written in your Sequelize models.
 
 # Install
 
 Install dependencies in the backend examples project and in the swaggelize folder with the command `npm i`
 
 # Usage
+
+In your main JS file
+
+```javascript
+const sequelize2openapi = require('sequelize2openapi');
+
+// Your OpenAPI configurations
+const openapiOptions = {
+    // main configuration
+    openApiDefinition: {
+        openapi: '3.0.0', // version of OpenAPI, most of the time the latest version
+        info: {
+            title: 'Sequelize2OpenAPI API', // Title of your API
+            description: 'OpenAPI specifications automatic generator based on annotations in Sequelize models', // Its description
+            contact: {
+                name: 'Hasininjato Rojovao (at hrambonimanana@gmail.com)' // The maintainer or the the person to contact 
+            },
+            version: '1.0.0' // Version of the project
+        },
+        // The servers URL endpoint
+        servers: [
+            {
+                url: "http://localhost:8000/api"
+            },
+            {
+                url: "http://localhost:3000/api"
+            }
+        ],
+    },
+    servicesPath: './app/docs/services', // Path to the folder where services (see below) are declared
+    modelsPath: './app/models', // Path to the Sequelize models
+    defaultSecurity: ['jwt'], // Default security of your API 
+    routesVariable: app, // The variable that holds all your routes (const app = express())
+    middlewareAuth: 'verifyToken', // Middleware
+    routePrefix: "/api" // Prefix of your API
+}
+```
 
 ## In your models
 
