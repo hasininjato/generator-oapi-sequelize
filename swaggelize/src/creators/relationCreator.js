@@ -16,9 +16,16 @@ function createRelations(models, service, schemas) {
         const relationModel = models.find(m => m.sequelizeModel === relationModelName);
 
         schemaName += capitalizeFirstLetter(relationTransformed.prefix);
-        const keyName = relationTransformed.suffix === "list"
-            ? relationModel.relations[0]?.args[1]?.association
-            : relationTransformed.prefix;
+        let keyName = "";
+        if (relationTransformed.suffix === "list") {
+            let modelFound = relationModel.relations.find(m => m.target === capitalizeFirstLetter(relationTransformed.prefix));
+            if (modelFound === undefined) {
+                modelFound = relationModel.relations.find(m => m.source === capitalizeFirstLetter(relationTransformed.prefix));
+            }
+            keyName = modelFound.args[1].association;
+        } else {
+            keyName = relationTransformed.prefix;
+        }
 
         // Create a deep clone of the relation schema
         relations[keyName] = JSON.parse(JSON.stringify(schemas[relationTransformed.pascalCase]));

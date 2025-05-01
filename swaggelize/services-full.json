@@ -1587,44 +1587,6 @@
                 }
             }
         },
-        "/test/{id}/custom": {
-            "get": {
-                "summary": "Custom path",
-                "description": "Custom path",
-                "tags": [
-                    "Custom path"
-                ],
-                "parameters": [
-                    {
-                        "$ref": "#/components/parameters/TestId"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Custom path",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/TestItem"
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized"
-                    },
-                    "403": {
-                        "description": "Forbidden"
-                    },
-                    "404": {
-                        "description": "Test not found"
-                    },
-                    "500": {
-                        "description": "Internal server error"
-                    }
-                }
-            }
-        },
         "/users": {
             "get": {
                 "summary": "List of all users",
@@ -2009,20 +1971,15 @@
                 "tags": [
                     "Transaction"
                 ],
+                "input": [
+                    "user:item",
+                    "transaction:post"
+                ],
                 "parameters": [
                     {
                         "$ref": "#/components/parameters/UserId"
                     }
                 ],
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/TransactionPost"
-                            }
-                        }
-                    }
-                },
                 "responses": {
                     "201": {
                         "description": "Creation of a transaction of a user successfully",
@@ -2102,6 +2059,10 @@
                 "tags": [
                     "Transaction"
                 ],
+                "output": [
+                    "user:item",
+                    "transaction:list"
+                ],
                 "parameters": [
                     {
                         "$ref": "#/components/parameters/UserId"
@@ -2113,7 +2074,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/TransactionList"
+                                    "$ref": "#/components/schemas/UserTransactionRelationItem"
                                 }
                             }
                         }
