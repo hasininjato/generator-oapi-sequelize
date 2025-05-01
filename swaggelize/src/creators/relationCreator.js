@@ -1,7 +1,12 @@
 const {transformStr, capitalizeFirstLetter} = require("../utils/utils");
 
-function createRelations(models, service, schemas) {
-    const [parentModelValue, ...relationModels] = service.output;
+function createRelations(models, service, schemas, isBody = false) {
+    let parentModelValue, relationModels;
+    if (isBody) {
+        [parentModelValue, ...relationModels] = service.input;
+    } else {
+        [parentModelValue, ...relationModels] = service.output;
+    }
     if (!parentModelValue) return "";
 
     const parentTransformed = transformStr(parentModelValue);
@@ -30,9 +35,15 @@ function createRelations(models, service, schemas) {
         // Create a deep clone of the relation schema
         relations[keyName] = JSON.parse(JSON.stringify(schemas[relationTransformed.pascalCase]));
     }
+    let suffix = "";
+    if (isBody) {
+        suffix = "Post";
+    } else {
+        suffix = "Item";
+    }
 
     const isList = parentTransformed.suffix === "list";
-    const result = `${schemaName}Relation${isList ? "List" : "Item"}`;
+    const result = `${schemaName}Relation${isList ? "List" : suffix}`;
     const targetProperties = isList ? parentSchema.items.properties : parentSchema.properties;
 
     // Safely merge the relations into the cloned schema

@@ -82,7 +82,7 @@ function parser(swaggelizeOptions) {
         // Merge the current service into the accumulated services
         services = { ...services, ...currentService };
 
-        createRequestBody(currentService, schemas);
+        createRequestBody(currentService, schemas, models, true);
         createResponse(currentService, schemas, models);
 
         // Update openApiSpec with the accumulated services
