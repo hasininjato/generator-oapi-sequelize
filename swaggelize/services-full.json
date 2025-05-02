@@ -65,25 +65,6 @@
             }
         },
         "schemas": {
-            "InstrumentItem": {
-                "type": "object",
-                "properties": {
-                    "id": {
-                        "type": "integer",
-                        "format": "int32",
-                        "description": ""
-                    },
-                    "type": {
-                        "type": "string",
-                        "description": "type of the instrument"
-                    },
-                    "purchaseDate": {
-                        "type": "string",
-                        "format": "date-time",
-                        "description": ""
-                    }
-                }
-            },
             "InstrumentList": {
                 "type": "array",
                 "items": {
@@ -106,17 +87,24 @@
                     }
                 }
             },
-            "InstrumentPost": {
+            "InstrumentItem": {
                 "type": "object",
                 "properties": {
+                    "id": {
+                        "type": "integer",
+                        "format": "int32",
+                        "description": ""
+                    },
                     "type": {
                         "type": "string",
                         "description": "type of the instrument"
+                    },
+                    "purchaseDate": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": ""
                     }
-                },
-                "required": [
-                    "type"
-                ]
+                }
             },
             "InstrumentPut": {
                 "type": "object",
@@ -130,20 +118,21 @@
                     "type"
                 ]
             },
-            "InstrumentUsersItem": {
+            "InstrumentPost": {
                 "type": "object",
                 "properties": {
-                    "userId": {
-                        "type": "integer",
-                        "format": "int32",
-                        "description": "User ID"
-                    },
-                    "instrumentId": {
-                        "type": "integer",
-                        "format": "int32",
-                        "description": "Instrument ID"
+                    "type": {
+                        "type": "string",
+                        "description": "type of the instrument"
                     }
-                }
+                },
+                "required": [
+                    "type"
+                ]
+            },
+            "InstrumentLogin": {
+                "type": "object",
+                "properties": {}
             },
             "InstrumentUsersList": {
                 "type": "array",
@@ -163,7 +152,7 @@
                     }
                 }
             },
-            "InstrumentUsersPost": {
+            "InstrumentUsersItem": {
                 "type": "object",
                 "properties": {
                     "userId": {
@@ -193,18 +182,24 @@
                     }
                 }
             },
-            "PostItem": {
+            "InstrumentUsersPost": {
                 "type": "object",
                 "properties": {
-                    "title": {
-                        "type": "string",
-                        "description": "Post title"
+                    "userId": {
+                        "type": "integer",
+                        "format": "int32",
+                        "description": "User ID"
                     },
-                    "content": {
-                        "type": "string",
-                        "description": "Post content"
+                    "instrumentId": {
+                        "type": "integer",
+                        "format": "int32",
+                        "description": "Instrument ID"
                     }
                 }
+            },
+            "InstrumentUsersLogin": {
+                "type": "object",
+                "properties": {}
             },
             "PostList": {
                 "type": "array",
@@ -222,7 +217,7 @@
                     }
                 }
             },
-            "PostPost": {
+            "PostItem": {
                 "type": "object",
                 "properties": {
                     "title": {
@@ -233,10 +228,7 @@
                         "type": "string",
                         "description": "Post content"
                     }
-                },
-                "required": [
-                    "title"
-                ]
+                }
             },
             "PostPut": {
                 "type": "object",
@@ -254,20 +246,25 @@
                     "title"
                 ]
             },
-            "PostTagsItem": {
+            "PostPost": {
                 "type": "object",
                 "properties": {
-                    "postId": {
-                        "type": "integer",
-                        "format": "int32",
-                        "description": "Tag name"
+                    "title": {
+                        "type": "string",
+                        "description": "Post title"
                     },
-                    "tagId": {
-                        "type": "integer",
-                        "format": "int32",
-                        "description": "Tag name"
+                    "content": {
+                        "type": "string",
+                        "description": "Post content"
                     }
-                }
+                },
+                "required": [
+                    "title"
+                ]
+            },
+            "PostLogin": {
+                "type": "object",
+                "properties": {}
             },
             "PostTagsList": {
                 "type": "array",
@@ -287,7 +284,7 @@
                     }
                 }
             },
-            "PostTagsPost": {
+            "PostTagsItem": {
                 "type": "object",
                 "properties": {
                     "postId": {
@@ -317,19 +314,24 @@
                     }
                 }
             },
-            "ProfileItem": {
+            "PostTagsPost": {
                 "type": "object",
                 "properties": {
-                    "id": {
+                    "postId": {
                         "type": "integer",
                         "format": "int32",
-                        "description": "Profile ID"
+                        "description": "Tag name"
                     },
-                    "bio": {
-                        "type": "string",
-                        "description": "Profile bio"
+                    "tagId": {
+                        "type": "integer",
+                        "format": "int32",
+                        "description": "Tag name"
                     }
                 }
+            },
+            "PostTagsLogin": {
+                "type": "object",
+                "properties": {}
             },
             "ProfileList": {
                 "type": "array",
@@ -348,9 +350,14 @@
                     }
                 }
             },
-            "ProfilePost": {
+            "ProfileItem": {
                 "type": "object",
                 "properties": {
+                    "id": {
+                        "type": "integer",
+                        "format": "int32",
+                        "description": "Profile ID"
+                    },
                     "bio": {
                         "type": "string",
                         "description": "Profile bio"
@@ -366,14 +373,18 @@
                     }
                 }
             },
-            "TagItem": {
+            "ProfilePost": {
                 "type": "object",
                 "properties": {
-                    "name": {
+                    "bio": {
                         "type": "string",
-                        "description": "Tag name"
+                        "description": "Profile bio"
                     }
                 }
+            },
+            "ProfileLogin": {
+                "type": "object",
+                "properties": {}
             },
             "TagList": {
                 "type": "array",
@@ -387,7 +398,7 @@
                     }
                 }
             },
-            "TagPost": {
+            "TagItem": {
                 "type": "object",
                 "properties": {
                     "name": {
@@ -405,38 +416,18 @@
                     }
                 }
             },
-            "TransactionItem": {
+            "TagPost": {
                 "type": "object",
                 "properties": {
-                    "id": {
-                        "type": "integer",
-                        "format": "int32",
-                        "description": "Id of the transaction"
-                    },
-                    "amount": {
+                    "name": {
                         "type": "string",
-                        "description": "Amount of the transaction"
-                    },
-                    "description": {
-                        "type": "string",
-                        "description": "Description of the transaction"
-                    },
-                    "date": {
-                        "type": "string",
-                        "format": "date-time",
-                        "description": ""
-                    },
-                    "createdAt": {
-                        "type": "string",
-                        "format": "date-time",
-                        "description": "Date when the record was created"
-                    },
-                    "updatedAt": {
-                        "type": "string",
-                        "format": "date-time",
-                        "description": "Date when the record was last updated"
+                        "description": "Tag name"
                     }
                 }
+            },
+            "TagLogin": {
+                "type": "object",
+                "properties": {}
             },
             "TransactionList": {
                 "type": "array",
@@ -474,9 +465,14 @@
                     }
                 }
             },
-            "TransactionPost": {
+            "TransactionItem": {
                 "type": "object",
                 "properties": {
+                    "id": {
+                        "type": "integer",
+                        "format": "int32",
+                        "description": "Id of the transaction"
+                    },
                     "amount": {
                         "type": "string",
                         "description": "Amount of the transaction"
@@ -484,12 +480,23 @@
                     "description": {
                         "type": "string",
                         "description": "Description of the transaction"
+                    },
+                    "date": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": ""
+                    },
+                    "createdAt": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Date when the record was created"
+                    },
+                    "updatedAt": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Date when the record was last updated"
                     }
-                },
-                "required": [
-                    "amount",
-                    "description"
-                ]
+                }
             },
             "TransactionPut": {
                 "type": "object",
@@ -508,33 +515,26 @@
                     "description"
                 ]
             },
-            "UserItem": {
+            "TransactionPost": {
                 "type": "object",
                 "properties": {
-                    "id": {
-                        "type": "integer",
-                        "format": "int32",
-                        "description": "Id of the user"
-                    },
-                    "fullname": {
+                    "amount": {
                         "type": "string",
-                        "description": ""
+                        "description": "Amount of the transaction"
                     },
-                    "email": {
+                    "description": {
                         "type": "string",
-                        "description": ""
-                    },
-                    "createdAt": {
-                        "type": "string",
-                        "format": "date-time",
-                        "description": "Date when the record was created"
-                    },
-                    "updatedAt": {
-                        "type": "string",
-                        "format": "date-time",
-                        "description": "Date when the record was last updated"
+                        "description": "Description of the transaction"
                     }
-                }
+                },
+                "required": [
+                    "amount",
+                    "description"
+                ]
+            },
+            "TransactionLogin": {
+                "type": "object",
+                "properties": {}
             },
             "UserList": {
                 "type": "array",
@@ -567,9 +567,14 @@
                     }
                 }
             },
-            "UserPost": {
+            "UserItem": {
                 "type": "object",
                 "properties": {
+                    "id": {
+                        "type": "integer",
+                        "format": "int32",
+                        "description": "Id of the user"
+                    },
                     "fullname": {
                         "type": "string",
                         "description": ""
@@ -578,16 +583,17 @@
                         "type": "string",
                         "description": ""
                     },
-                    "password": {
+                    "createdAt": {
                         "type": "string",
-                        "description": ""
+                        "format": "date-time",
+                        "description": "Date when the record was created"
+                    },
+                    "updatedAt": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Date when the record was last updated"
                     }
-                },
-                "required": [
-                    "fullname",
-                    "email",
-                    "password"
-                ]
+                }
             },
             "UserPut": {
                 "type": "object",
@@ -610,6 +616,46 @@
                     "email",
                     "password"
                 ]
+            },
+            "UserPost": {
+                "type": "object",
+                "properties": {
+                    "fullname": {
+                        "type": "string",
+                        "description": ""
+                    },
+                    "email": {
+                        "type": "string",
+                        "description": ""
+                    },
+                    "password": {
+                        "type": "string",
+                        "description": ""
+                    }
+                },
+                "required": [
+                    "fullname",
+                    "email",
+                    "password"
+                ]
+            },
+            "UserLogin": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "format": "int32",
+                        "description": "Id of the user"
+                    },
+                    "fullname": {
+                        "type": "string",
+                        "description": ""
+                    },
+                    "email": {
+                        "type": "string",
+                        "description": ""
+                    }
+                }
             },
             "Response400Schema": {
                 "type": "object",
@@ -1683,7 +1729,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/UserItem"
+                                    "$ref": "#/components/schemas/UserLogin"
                                 }
                             }
                         }

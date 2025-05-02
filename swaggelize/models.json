@@ -552,7 +552,8 @@
                 },
                 "methods": [
                     "item",
-                    "list"
+                    "list",
+                    "login"
                 ],
                 "description": "Id of the user"
             },
@@ -576,7 +577,8 @@
                     "item",
                     "list",
                     "put",
-                    "post"
+                    "post",
+                    "login"
                 ],
                 "description": ""
             },
@@ -606,7 +608,8 @@
                     "item",
                     "list",
                     "put",
-                    "post"
+                    "post",
+                    "login"
                 ],
                 "description": ""
             },

@@ -6,6 +6,18 @@ const { returnRelations, processRelationArguments, createRelationObject, getType
 } = require("../utils/utils");
 const { SWAG_TAG, getValueFromNode } = require("../utils/constants");
 
+function getAllMethods(models) {
+    const allMethods = new Set();
+    for (const model of Object.values(models)) {
+        for (const field of model.value) {
+            if (field.methods) {
+                field.methods.forEach(method => allMethods.add(method));
+            }
+        }
+    }
+    return allMethods;
+}
+
 /**
  * parse the js code
  * @param code
@@ -397,5 +409,6 @@ module.exports = {
     extractRelations,
     extractRelationsManyToManyThroughString,
     createModelManyToManyThroughString,
-    addRelationManyToManyToEachModel
+    addRelationManyToManyToEachModel,
+    getAllMethods
 };

@@ -1,12 +1,8 @@
 const { getTypeField } = require("../utils/utils");
 
-function createSchemas(models) {
+function createSchemas(models, methodsToProcess) {
     const result = {};
     models.forEach((model) => {
-
-        // Process each method type we want to generate schemas for
-        const methodsToProcess = ['item', 'list', 'post', 'put'];
-
         methodsToProcess.forEach(method => {
             const schemaName = `${model.sequelizeModel}${method.charAt(0).toUpperCase() + method.slice(1)}`;
             if (method === "list") {

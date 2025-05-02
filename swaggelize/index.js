@@ -1,4 +1,4 @@
-const { modelParser, addRelationManyToManyToEachModel } = require('./src/parsers/modelParser');
+const { modelParser, addRelationManyToManyToEachModel, getAllMethods } = require('./src/parsers/modelParser');
 const { getFileInDirectory, readFileContent, removeInputOutput} = require("./src/utils/utils");
 const serviceParser = require("./src/parsers/serviceParser");
 const fs = require("fs");
@@ -30,7 +30,8 @@ function parser(swaggelizeOptions) {
 
     addRelationManyToManyToEachModel(models);
 
-    const schemas = createSchemas(models)
+    const methodsToProcess = getAllMethods(models);
+    const schemas = createSchemas(models, methodsToProcess)
 
     if (schemas && typeof schemas === 'object') {
         const response = {
