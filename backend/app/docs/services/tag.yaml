@@ -6,6 +6,7 @@ Tag:
         description: "List of all tags"
       output:
         - "tag:list"
+        - "post:list"
     post:
       openapi_context:
         summary: "Create a tag"
@@ -21,6 +22,7 @@ Tag:
         description: "Get tag by id"
       output:
         - "tag:item"
+        - "post:list"
     put:
       openapi_context:
         summary: "Update a tag by id"
@@ -29,6 +31,7 @@ Tag:
         - "tag:put"
       output:
         - "tag:item"
+        - "post:list"
     delete:
       openapi_context:
         summary: "Delete a tag by id"

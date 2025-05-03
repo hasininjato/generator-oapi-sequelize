@@ -103,8 +103,8 @@ const processObjectExpression = (objectExpression) => {
     }, {});
 };
 
-const generateDefaultForeignKey = (targetModelName) => {
-    return `${targetModelName.toLowerCase()}Id`;
+const generateDefaultForeignKey = (sourceName) => {
+    return `${sourceName.toLowerCase()}Id`;
 };
 
 const hasForeignKey = (options) => {
@@ -136,7 +136,7 @@ const processRelationArguments = (argsNodes) => {
 
 const createRelationObject = (source, relationType, target, args, options) => {
     if (!hasForeignKey(options)) {
-        const defaultForeignKey = generateDefaultForeignKey(target);
+        const defaultForeignKey = generateDefaultForeignKey(source);
         options = {...options, foreignKey: defaultForeignKey};
 
         if (args.length > 1 && typeof args[1] === 'object') {
@@ -167,22 +167,36 @@ const returnRelations = (modelDefinition) => {
     return {relations, programNode, modelName};
 }
 
-function getVariablesIdFromPath(paths, model) {
-    const route = paths.find(route => {
-        const segments = route.path.split('/');
-        return (
-            segments.length === 4 && // ['', 'api', '<model>s', ':id']
-            segments[1] === 'api' &&
-            segments[2] === `${model}s` &&
-            segments[3].startsWith(':')
-        );
-    });
+function getVariableIdFromPath(path, model) {
+    const result = {
+        lastStaticSegment: null,
+        param: null
+    };
+    const segments = path.split('/').filter(Boolean); // Remove empty segments
 
-    if (route) {
-        return route.path.split('/').pop().substring(1); // remove the colon
+    // Must have at least ['api', model, ':param'] structure
+    if (segments.length < 3 || segments[0] !== 'api') {
+        return false;
     }
 
-    return null;
+    // Handle both versioned and non-versioned paths
+    const modelIndex = segments[1].startsWith('v') ? 2 : 1;
+
+    // Check if we have model segment followed by parameter
+    if (modelIndex >= segments.length - 1) return false;
+
+    const isModelMatch = segments[modelIndex] === model.toLowerCase() ||
+        segments[modelIndex] === `${model.toLowerCase()}s`;
+    const isParam = segments[modelIndex + 1]?.startsWith(':');
+
+    if (isModelMatch && isParam) {
+        // Capitalize the model name for the static segment
+        result.lastStaticSegment = model.charAt(0).toUpperCase() + model.slice(1);
+        result.param = segments[modelIndex + 1].substring(1); // Remove ':'
+        return result;
+    }
+
+    return false;
 }
 
 function getVariablesFromPath(fullPath) {
@@ -193,7 +207,19 @@ function getVariablesFromPath(fullPath) {
 
     for (let i = 0; i < segments.length; i++) {
         const segment = segments[i];
-        if (segment.startsWith('{') && segment.endsWith('}')) {
+        // if (segment.startsWith('{') && segment.endsWith('}')) {
+        if (segment.startsWith(':')) {
+            let lastStaticSegment = segments[i - 1]; // Get segment before {param}
+            if (lastStaticSegment) {
+                // Remove trailing 's' if it exists (e.g., "transactions" → "transaction")
+                lastStaticSegment = lastStaticSegment.replace(/s$/, '');
+                lastStaticSegment = capitalizeFirstLetter(lastStaticSegment);
+                result.push({
+                    lastStaticSegment,
+                    param: segment.replace(":", ""),
+                });
+            }
+        } else if (segment.startsWith('{') && segment.endsWith('}')) {
             let lastStaticSegment = segments[i - 1]; // Get segment before {param}
             if (lastStaticSegment) {
                 // Remove trailing 's' if it exists (e.g., "transactions" → "transaction")
@@ -250,6 +276,42 @@ function getTypeField(sequelizeType) {
     return typeMap[typeKey] || {type: 'string'};
 }
 
+/**
+ * return path based on model
+ * @param {string} path
+ * @returns
+ */
+function getSingularPath(path) {
+    const parts = path.split('/').filter(Boolean);
+    if (parts.length === 1 && parts[0].endsWith('s')) {
+        return capitalizeFirstLetter(parts[0].slice(0, -1)); // Remove last 's'
+    }
+    return null; // Or return original path if preferred
+}
+
+function removeInputOutput(openApiSpec) {
+    // Make a deep copy of the spec to avoid modifying the original
+    // const spec = JSON.parse(JSON.stringify(openApiSpec));
+
+    // Iterate through all paths
+    for (const path in openApiSpec.paths) {
+        const pathItem = openApiSpec.paths[path];
+
+        // Iterate through all operations (get, post, put, delete, etc.)
+        for (const method in pathItem) {
+            const operation = pathItem[method];
+
+            // Remove input and output fields if they exist
+            if (operation.input) {
+                delete operation.input;
+            }
+            if (operation.output) {
+                delete operation.output;
+            }
+        }
+    }
+}
+
 module.exports = {
     readFileContent,
     getFileInDirectory,
@@ -266,7 +328,9 @@ module.exports = {
     hasForeignKey,
     returnRelations,
     getEndPointsApi,
-    getVariablesIdFromPath,
     getVariablesFromPath,
-    getTypeField
+    getTypeField,
+    getVariableIdFromPath,
+    getSingularPath,
+    removeInputOutput
 }

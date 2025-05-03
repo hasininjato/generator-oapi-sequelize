@@ -6,6 +6,7 @@ Post:
         description: "List of all posts"
       output:
         - "post:list"
+        - "tag:list"
     post:
       openapi_context:
         summary: "Create a post"
@@ -21,6 +22,7 @@ Post:
         description: "Get post by id"
       output:
         - "post:item"
+        - "tag:list"
     put:
       openapi_context:
         summary: "Update a post by id"
@@ -29,6 +31,7 @@ Post:
         - "post:put"
       output:
         - "post:item"
+        - "tag:list"
     delete:
       openapi_context:
         summary: "Delete a post by id"

@@ -1,10 +1,22 @@
 const parser = require("@babel/parser");
-const {default: traverse} = require("@babel/traverse");
+const { default: traverse } = require("@babel/traverse");
 const t = require("@babel/types");
-const {returnRelations, processRelationArguments, createRelationObject, getTypeField, getDescriptionFromComment,
+const { returnRelations, processRelationArguments, createRelationObject, getTypeField, getDescriptionFromComment,
     getMethodsFromComment
-} = require("./utils/utils");
-const {SWAG_TAG, getValueFromNode} = require("./utils/constants");
+} = require("../utils/utils");
+const { SWAG_TAG, getValueFromNode } = require("../utils/constants");
+
+function getAllMethods(models) {
+    const allMethods = new Set();
+    for (const model of Object.values(models)) {
+        for (const field of model.value) {
+            if (field.methods) {
+                field.methods.forEach(method => allMethods.add(method));
+            }
+        }
+    }
+    return allMethods;
+}
 
 /**
  * parse the js code
@@ -78,7 +90,6 @@ function extractFields(modelDefinition) {
             const methods = getMethodsFromComment(swagComment.value.trim());
             const description = getDescriptionFromComment(swagComment.value.trim());
 
-            console.log("extract fields", methods)
             fields.push({
                 field: fieldName,
                 type: 'field',
@@ -138,7 +149,7 @@ function extractTimestampFields(modelDefinition) {
  * @returns {{relations: []}}
  */
 function extractRelations(modelDefinition) {
-    const {relations, programNode, modelName} = returnRelations(modelDefinition);
+    const { relations, programNode, modelName } = returnRelations(modelDefinition);
     traverse(programNode, {
         ExpressionStatement(path) {
             if (!t.isCallExpression(path.node.expression)) return;
@@ -156,7 +167,7 @@ function extractRelations(modelDefinition) {
             const relationType = memberExpr.property.name;
             const target = callExpr.arguments[0]?.name || modelName;
 
-            const {args, options} = processRelationArguments(callExpr.arguments);
+            const { args, options } = processRelationArguments(callExpr.arguments);
 
             // Extract swag comment with relations
             const leadingComments = path.node.leadingComments;
@@ -179,7 +190,7 @@ function extractRelations(modelDefinition) {
         }
     });
 
-    return {relations};
+    return { relations };
 }
 
 /**
@@ -198,7 +209,7 @@ function extractRelationsManyToManyThroughString(ast) {
             if (
                 t.isCallExpression(expr) &&
                 t.isMemberExpression(expr.callee) &&
-                t.isIdentifier(expr.callee.property, {name: 'belongsToMany'})
+                t.isIdentifier(expr.callee.property, { name: 'belongsToMany' })
             ) {
                 const source = expr.callee.object.name;
                 const target = expr.arguments[0]?.name;
@@ -208,7 +219,7 @@ function extractRelationsManyToManyThroughString(ast) {
                 if (t.isObjectExpression(secondArg)) {
                     const throughProp = secondArg.properties.find(
                         (p) =>
-                            t.isIdentifier(p.key, {name: 'through'}) &&
+                            t.isIdentifier(p.key, { name: 'through' }) &&
                             t.isStringLiteral(p.value)
                     );
                     if (throughProp) {
@@ -251,6 +262,56 @@ function extractRelationsManyToManyThroughString(ast) {
     return relations;
 }
 
+function addRelationManyToManyToEachModel(models) {
+    for (const model of Object.values(models)) {
+        let relationsMany = [];
+        if (model.relations.length > 1) {
+            const relations = model.relations;
+            for (const relation of Object.values(relations)) {
+                if (relation.relation === "belongsToMany" && !model.isThroughString) {
+                    if (model.sequelizeModel !== relation.source && model.sequelizeModel !== relation.target) {
+                        relationsMany.push(relation);
+                    }
+                }
+            }
+        }
+        if (relationsMany.length > 0) { // Changed to > 0 since you might want to add even single relations
+            const source = relationsMany[0]?.source;
+            const target = relationsMany[0]?.target;
+
+            if (!source || !target) {
+                throw new Error('Relations must have source and target defined');
+            }
+
+            const sourceModel = models.find(elt => elt.sequelizeModel === source);
+            const targetModel = models.find(elt => elt.sequelizeModel === target);
+
+            if (!sourceModel || !targetModel) {
+                throw new Error(`Source or target model not found (${source}, ${target})`);
+            }
+
+            // Initialize relations array if it doesn't exist
+            sourceModel.relations = sourceModel.relations || [];
+            targetModel.relations = targetModel.relations || [];
+
+            // Filter out duplicates before adding
+            const newSourceRelations = relationsMany.filter(newRel =>
+                !sourceModel.relations.some(existingRel =>
+                    JSON.stringify(existingRel) === JSON.stringify(newRel)
+                ));
+
+            const newTargetRelations = relationsMany.filter(newRel =>
+                !targetModel.relations.some(existingRel =>
+                    JSON.stringify(existingRel) === JSON.stringify(newRel)
+                ));
+
+            // Add new relations
+            sourceModel.relations.push(...newSourceRelations);
+            targetModel.relations.push(...newTargetRelations);
+        }
+    }
+}
+
 /**
  * create the model for the many-to-many relationship using through if it is string. relations parameter is from the function extractRelationsManyToManyThroughString
  * @param relations
@@ -271,7 +332,7 @@ function createModelManyToManyThroughString(relations) {
                 }
             },
             comment: {
-                methods: ["list", "item"],
+                methods: ["list", "item", "put", "post"],
                 description: `${relation.source} ID`
             }
         };
@@ -279,6 +340,7 @@ function createModelManyToManyThroughString(relations) {
     })
     return {
         sequelizeModel: sequelizeModelName,
+        isThroughString: true,
         value: values,
         relations: relations
     }
@@ -287,12 +349,12 @@ function createModelManyToManyThroughString(relations) {
 function getFieldsWithMethod(models) {
     const modelMethod = {};
 
-    models.forEach(({sequelizeModel, value}) => {
+    models.forEach(({ sequelizeModel, value }) => {
         if (!modelMethod[sequelizeModel]) {
             modelMethod[sequelizeModel] = {};
         }
 
-        value.forEach(({field, type, object, methods, description}) => {
+        value.forEach(({ field, type, object, methods, description }) => {
             methods?.forEach((method) => {
                 if (!modelMethod[sequelizeModel][method]) {
                     modelMethod[sequelizeModel][method] = [];
@@ -346,5 +408,7 @@ module.exports = {
     extractTimestampFields,
     extractRelations,
     extractRelationsManyToManyThroughString,
-    createModelManyToManyThroughString
+    createModelManyToManyThroughString,
+    addRelationManyToManyToEachModel,
+    getAllMethods
 };

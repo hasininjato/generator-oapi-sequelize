@@ -5,7 +5,7 @@ const User = require('./user.model');
 const Instrument = sequelize.define('Instrument', {
     /**
      * @swag
-     * methods: list, item, put, post
+     * methods: list, item
      */
     id: {
         allowNull: false,

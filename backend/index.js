@@ -83,6 +83,7 @@ app.use('/api/tags', require('./app/routes/tag.route'));
 app.use('/api/posts', require('./app/routes/post.route'));
 
 const swaggerSpec = swaggerJsDoc(swaggerOptions);
+// fs.writeFileSync("swagger.json", JSON.stringify(swaggerSpec, null, 4));
 
 swagglizeConfig(app)
 

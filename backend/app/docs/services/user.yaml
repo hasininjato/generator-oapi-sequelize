@@ -6,14 +6,17 @@ User:
         description: "List of all users"
       output:
         - "user:list"
+        - "profile:item"
     post:
       openapi_context:
         summary: "Create a user"
         description: "Create a user"
       input:
         - "user:post"
+        - "profile:post"
       output:
         - "user:item"
+        - "profile:item"
     login:
       tags: "Authentication"
       path: "/auth/login"
@@ -24,7 +27,7 @@ User:
       input:
         - "user:item"
       output:
-        - "user:list"
+        - "user:login"
     validate_token:
       tags: "Token"
       path: "/validate/token"
@@ -44,6 +47,7 @@ User:
         description: "Get user by id"
       output:
         - "user:item"
+        - "profile:item"
     put:
       openapi_context:
         summary: "Update an user by id"
@@ -61,7 +65,7 @@ User:
       method: "POST"
       path: "/users/{id}/transactions"
       openapi_context:
-        summary: "Create a transaction of the user sent in param"
+        summary: "Creation of a transaction of a user"
         description: "Create a transaction of the user sent in param"
       input:
         - "transaction:post"
