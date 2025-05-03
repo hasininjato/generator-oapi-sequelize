@@ -32,40 +32,6 @@ app.use(helmet());
 
 const port = 8000
 
-// swagger configuration
-const swaggerOptions = {
-    swaggerDefinition: {
-        openapi: '3.0.0',
-        info: {
-            title: 'Swaggelize API',
-            description: 'API automatic generator using Swagger API and Swaggelize',
-            contact: {
-                name: 'Hasininjato Rojovao'
-            },
-            version: "1.0.0"
-        },
-        components: {
-            securitySchemes: {
-                BearerAuth: {
-                    type: 'http',
-                    scheme: 'bearer',
-                    bearerFormat: 'JWT',
-                },
-                basicAuth: {
-                    type: 'http',
-                    scheme: 'basic',
-                }
-            },
-        },
-        servers: [
-            {
-                url: "http://localhost:8000/api"
-            }
-        ],
-    },
-    apis: ['./app/routes/*.js']
-}
-
 const syncDb = async () => {
     try {
         await sequelize.sync({ force: false }); // set to false if no need to recreate tables and all existing data
@@ -82,10 +48,10 @@ app.use('/api/profiles', require('./app/routes/profile.route'));
 app.use('/api/tags', require('./app/routes/tag.route'));
 app.use('/api/posts', require('./app/routes/post.route'));
 
-const swaggerSpec = swaggerJsDoc(swaggerOptions);
+// const swaggerSpec = swaggerJsDoc(swaggerOptions);
 // fs.writeFileSync("swagger.json", JSON.stringify(swaggerSpec, null, 4));
 
-swagglizeConfig(app)
+const swaggerSpec = swagglizeConfig(app)
 
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 

@@ -1,4 +1,4 @@
-const parser = require('../swaggelize');
+const sqlize2oas = require('sqlize2oas');
 
 function swagglizeConfig(app) {
     const swaggelizeOptions = {
@@ -28,7 +28,7 @@ function swagglizeConfig(app) {
         middlewareAuth: 'verifyToken',
         routePrefix: "/api"
     }
-    return parser(swaggelizeOptions);
+    return sqlize2oas(swaggelizeOptions);
 }
 
 module.exports = swagglizeConfig;
