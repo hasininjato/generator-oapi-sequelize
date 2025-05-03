@@ -1,7 +1,6 @@
 const { modelParser, addRelationManyToManyToEachModel, getAllMethods } = require('./src/parsers/modelParser');
 const { getFileInDirectory, readFileContent, removeInputOutput} = require("./src/utils/utils");
 const serviceParser = require("./src/parsers/serviceParser");
-const fs = require("fs");
 const createParameters = require("./src/creators/parameterCreator");
 const createSchemas = require('./src/creators/schemaCreator');
 const createResponse = require('./src/creators/responseCreator');
@@ -94,8 +93,6 @@ function parser(swaggelizeOptions) {
         };
     });
     removeInputOutput(openApiSpec);
-    fs.writeFileSync("../swaggelize/models.json", JSON.stringify(models, null, 4))
-    fs.writeFileSync("../swaggelize/services-full.json", JSON.stringify(openApiSpec, null, 4))
     return openApiSpec;
 }
 
