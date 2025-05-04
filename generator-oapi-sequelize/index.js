@@ -6,7 +6,6 @@ const createSchemas = require('./src/creators/schemaCreator');
 const createResponse = require('./src/creators/responseCreator');
 const createRequestBody = require("./src/creators/requestBodyCreator");
 const path = require('path');
-const fs = require('fs');
 
 function getModels(modelsPath, modelsFiles) {
     const models = []
@@ -19,89 +18,89 @@ function getModels(modelsPath, modelsFiles) {
 }
 
 function parser(swaggelizeOptions) {
-    const swaggerDefinition = swaggelizeOptions.swaggerDefinition;
-    const servicesPath = swaggelizeOptions.servicesPath;
-    const modelsPath = swaggelizeOptions.modelsPath;
-    const routesVariable = swaggelizeOptions.routesVariable;
-    const middlewareAuth = swaggelizeOptions.middlewareAuth;
-    const routePrefix = swaggelizeOptions.routePrefix;
+    try {
+        const configPath = path.join(require.main.path, 'generator-oapi-sequelize.json');
+        const swaggerDefinition = require(configPath);
 
-    const modelsFiles = getFileInDirectory(modelsPath);
-    const models = getModels(modelsPath, modelsFiles);
+        const servicesPath = swaggelizeOptions.servicesPath;
+        const modelsPath = swaggelizeOptions.modelsPath;
+        const routesVariable = swaggelizeOptions.routesVariable;
+        const routePrefix = swaggelizeOptions.routePrefix;
 
-    addRelationManyToManyToEachModel(models);
+        const modelsFiles = getFileInDirectory(modelsPath);
+        const models = getModels(modelsPath, modelsFiles);
 
-    const methodsToProcess = getAllMethods(models);
-    const schemas = createSchemas(models, methodsToProcess)
+        addRelationManyToManyToEachModel(models);
 
-    if (schemas && typeof schemas === 'object') {
-        const response = {
-            type: "object",
-            properties: {
-                details: {
-                    type: "array",
-                    items: {
-                        type: "object",
-                        properties: {
-                            field: {
-                                type: "string",
-                                description: "Name of the field"
-                            },
-                            message: {
-                                type: "string",
-                                description: "Message on validation"
+        const methodsToProcess = getAllMethods(models);
+        const schemas = createSchemas(models, methodsToProcess)
+
+        if (schemas && typeof schemas === 'object') {
+            const response = {
+                type: "object",
+                properties: {
+                    details: {
+                        type: "array",
+                        items: {
+                            type: "object",
+                            properties: {
+                                field: {
+                                    type: "string",
+                                    description: "Name of the field"
+                                },
+                                message: {
+                                    type: "string",
+                                    description: "Message on validation"
+                                }
                             }
                         }
                     }
                 }
             }
+            schemas["Response400Schema"] = response;
+            schemas["Response409Schema"] = response;
         }
-        schemas["Response400Schema"] = response;
-        schemas["Response409Schema"] = response;
+
+        const openApiInfo = {
+            openapi: swaggerDefinition.openapi,
+            info: swaggerDefinition.info,
+            servers: swaggerDefinition.servers
+        }
+        const components = {
+            components: {}
+        }
+        let services = {}; // This will accumulate ALL services
+        const servicesFiles = getFileInDirectory(servicesPath);
+        let openApiSpec = {};
+
+        servicesFiles.forEach(file => {
+            const content = readFileContent(`${servicesPath}/${file}`);
+            const parameters = createParameters(routesVariable);
+            components.components["parameters"] = parameters;
+            components.components["schemas"] = schemas;
+
+            // Get the service definition for this file
+            const currentService = serviceParser(content, routesVariable, routePrefix, parameters);
+
+            // Merge the current service into the accumulated services
+            services = {...services, ...currentService};
+
+            createRequestBody(currentService, schemas, models, true);
+            createResponse(currentService, schemas, models);
+
+            // Update openApiSpec with the accumulated services
+            openApiSpec = {
+                ...openApiInfo,
+                ...components,
+                paths: services // Now contains all merged services
+            };
+        });
+
+        removeInputOutput(openApiSpec);
+        return openApiSpec;
+    } catch (err) {
+        throw new Error("Configuration file generator-oapi-sequelize.json is missing. Create it as described in the documentation.");
     }
-
-    const openApiInfo = {
-        openapi: swaggerDefinition.openapi,
-        info: swaggerDefinition.info,
-        servers: swaggerDefinition.servers
-    }
-    const components = {
-        components: {}
-    }
-    let services = {}; // This will accumulate ALL services
-    const servicesFiles = getFileInDirectory(servicesPath);
-    let openApiSpec = {};
-
-    servicesFiles.forEach(file => {
-        const content = readFileContent(`${servicesPath}/${file}`);
-        const parameters = createParameters(routesVariable);
-        components.components["parameters"] = parameters;
-        components.components["schemas"] = schemas;
-
-        // Get the service definition for this file
-        const currentService = serviceParser(content, routesVariable, routePrefix, parameters);
-
-        // Merge the current service into the accumulated services
-        services = {...services, ...currentService};
-
-        createRequestBody(currentService, schemas, models, true);
-        createResponse(currentService, schemas, models);
-
-        // Update openApiSpec with the accumulated services
-        openApiSpec = {
-            ...openApiInfo,
-            ...components,
-            paths: services // Now contains all merged services
-        };
-    });
-
-    const configPath = path.join(require.main.path, 'sqlize2oas.js');
-    const config = require(configPath); // <- this gives you the exported object
-
-    console.log(config); // All exported variables
-
-    removeInputOutput(openApiSpec);
-    return openApiSpec;
 }
 
 module.exports = parser;

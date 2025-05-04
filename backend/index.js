@@ -1,19 +1,13 @@
 require('dotenv').config();
-const fs = require('fs');
 const express = require('express');
-const sequelize = require('./app/config/db.conf');
 const cors = require('cors');
 const helmet = require("helmet")
 
 // swagger documentation
-const swaggerJsDoc = require('swagger-jsdoc')
 const swaggerUi = require('swagger-ui-express')
 
-// models
-const User = require('./app/models/user.model');
-const Transaction = require('./app/models/transaction.model');
-
-const swagglizeConfig = require('./swaggerDoc')
+// generator-oapi-sequelize
+const genOApiSqlize = require("generator-oapi-sequelize")
 
 const app = express()
 
@@ -32,28 +26,18 @@ app.use(helmet());
 
 const port = 8000
 
-const syncDb = async () => {
-    try {
-        await sequelize.sync({ force: false }); // set to false if no need to recreate tables and all existing data
-    } catch (error) {
-        console.error('Database connection error:', error);
-    }
-}
-
-// syncDb()
-
 app.use('/api/users', require('./app/routes/user.transaction.route'));
 app.use('/api/auth', require('./app/routes/auth.route'));
 app.use('/api/profiles', require('./app/routes/profile.route'));
 app.use('/api/tags', require('./app/routes/tag.route'));
 app.use('/api/posts', require('./app/routes/post.route'));
 
-// const swaggerSpec = swaggerJsDoc(swaggerOptions);
-// fs.writeFileSync("swagger.json", JSON.stringify(swaggerSpec, null, 4));
-
-const swaggerSpec = swagglizeConfig(app)
-
-app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+try {
+    const swaggerSpec = genOApiSqlize(app)
+    app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+} catch (err) {
+    throw err;
+}
 
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`)

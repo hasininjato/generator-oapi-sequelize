@@ -1,6 +1,6 @@
 {
-  "name": "sqlize2oas",
-  "description": "sqlize2oas is a tool to automatically generate OpenAPI specifications from annotations on Sequelize models",
+  "name": "generator-oapi-sequelize",
+  "description": "generator-oapi-sequelize is a tool to automatically generate OpenAPI specifications from annotations on Sequelize models",
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
