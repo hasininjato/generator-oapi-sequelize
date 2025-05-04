@@ -1,10 +1,12 @@
-const { modelParser, addRelationManyToManyToEachModel, getAllMethods } = require('./src/parsers/modelParser');
-const { getFileInDirectory, readFileContent, removeInputOutput} = require("./src/utils/utils");
+const {modelParser, addRelationManyToManyToEachModel, getAllMethods} = require('./src/parsers/modelParser');
+const {getFileInDirectory, readFileContent, removeInputOutput} = require("./src/utils/utils");
 const serviceParser = require("./src/parsers/serviceParser");
 const createParameters = require("./src/creators/parameterCreator");
 const createSchemas = require('./src/creators/schemaCreator');
 const createResponse = require('./src/creators/responseCreator');
 const createRequestBody = require("./src/creators/requestBodyCreator");
+const path = require('path');
+const fs = require('fs');
 
 function getModels(modelsPath, modelsFiles) {
     const models = []
@@ -80,7 +82,7 @@ function parser(swaggelizeOptions) {
         const currentService = serviceParser(content, routesVariable, routePrefix, parameters);
 
         // Merge the current service into the accumulated services
-        services = { ...services, ...currentService };
+        services = {...services, ...currentService};
 
         createRequestBody(currentService, schemas, models, true);
         createResponse(currentService, schemas, models);
@@ -92,6 +94,12 @@ function parser(swaggelizeOptions) {
             paths: services // Now contains all merged services
         };
     });
+
+    const configPath = path.join(require.main.path, 'sqlize2oas.js');
+    const config = require(configPath); // <- this gives you the exported object
+
+    console.log(config); // All exported variables
+
     removeInputOutput(openApiSpec);
     return openApiSpec;
 }
