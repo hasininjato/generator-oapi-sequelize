@@ -9,6 +9,35 @@ Install dependencies in the backend examples project and in the swaggelize folde
 
 # Usage
 
+Create a configuration file *sequelize2openapi.json* with this content
+```json
+{
+    "openApiDefinition": {
+        "openapi": "3.0.0",
+        "info": {
+            "title": "OpenAPI specs",
+            "description": "OpenAPI specifications generator with Sequelize",
+            "contact": {
+                "name": "Hasininjato Rojovao"
+            },
+            "version": "1.0.0"
+        },
+        "servers": [
+            {
+                "url": "http://localhost:8000/api"
+            },
+            {
+                "url": "http://localhost:3000/api"
+            }
+        ]
+    },
+    "servicesPath": "./app/docs/services",
+    "modelsPath": "./app/models",
+    "defaultSecurity": "jwt",
+    "routePrefix": "/api"
+}
+```
+
 In your main JS file
 
 ```javascript
