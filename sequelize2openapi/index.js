@@ -6,6 +6,7 @@ const createSchemas = require('./src/creators/schemaCreator');
 const createResponse = require('./src/creators/responseCreator');
 const createRequestBody = require("./src/creators/requestBodyCreator");
 const path = require('path');
+const { open } = require('inspector/promises');
 
 function getModels(modelsPath, modelsFiles) {
     const models = []
@@ -17,15 +18,14 @@ function getModels(modelsPath, modelsFiles) {
     return models;
 }
 
-function parser(swaggelizeOptions) {
+function parser(routesVariable) {
     try {
-        const configPath = path.join(require.main.path, 'generator-oapi-sequelize.json');
-        const swaggerDefinition = require(configPath);
+        const configPath = path.join(require.main.path, 'sequelize2openapi.json');
+        const sequelizeConfig = require(configPath);
 
-        const servicesPath = swaggelizeOptions.servicesPath;
-        const modelsPath = swaggelizeOptions.modelsPath;
-        const routesVariable = swaggelizeOptions.routesVariable;
-        const routePrefix = swaggelizeOptions.routePrefix;
+        const servicesPath = sequelizeConfig.servicesPath;
+        const modelsPath = sequelizeConfig.modelsPath;
+        const routePrefix = sequelizeConfig.routePrefix;
 
         const modelsFiles = getFileInDirectory(modelsPath);
         const models = getModels(modelsPath, modelsFiles);
@@ -62,9 +62,9 @@ function parser(swaggelizeOptions) {
         }
 
         const openApiInfo = {
-            openapi: swaggerDefinition.openapi,
-            info: swaggerDefinition.info,
-            servers: swaggerDefinition.servers
+            openapi: sequelizeConfig.openApiDefinition.openapi,
+            info: sequelizeConfig.openApiDefinition.info,
+            servers: sequelizeConfig.openApiDefinition.servers
         }
         const components = {
             components: {}

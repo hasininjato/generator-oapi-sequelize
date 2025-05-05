@@ -1,5 +1,5 @@
 {
-  "name": "generator-oapi-sequelize",
+  "name": "sequelize2openapi",
   "description": "generator-oapi-sequelize is a tool to automatically generate OpenAPI specifications from annotations on Sequelize models",
   "version": "1.0.0",
   "main": "index.js",

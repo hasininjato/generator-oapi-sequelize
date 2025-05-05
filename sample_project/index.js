@@ -7,7 +7,7 @@ const helmet = require("helmet")
 const swaggerUi = require('swagger-ui-express')
 
 // generator-oapi-sequelize
-const genOApiSqlize = require("generator-oapi-sequelize")
+const genOApiSqlize = require("sequelize2openapi")
 
 const app = express()
 
@@ -33,7 +33,7 @@ app.use('/api/tags', require('./app/routes/tag.route'));
 app.use('/api/posts', require('./app/routes/post.route'));
 
 try {
-    const swaggerSpec = genOApiSqlize(app)
+    const swaggerSpec = genOApiSqlize(app);
     app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 } catch (err) {
     throw err;
