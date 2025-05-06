@@ -1,14 +1,14 @@
-const {modelParser, addRelationManyToManyToEachModel, getAllMethods} = require('./src/parsers/modelParser');
-const {getFileInDirectory, readFileContent, removeInputOutput} = require("./src/utils/utils");
+const { modelParser, addRelationManyToManyToEachModel, getAllMethods } = require('./src/parsers/modelParser');
+const { getFileInDirectory, readFileContent, removeInputOutput } = require("./src/utils/utils");
 const serviceParser = require("./src/parsers/serviceParser");
 const createParameters = require("./src/creators/parameterCreator");
 const createSchemas = require('./src/creators/schemaCreator');
 const createResponse = require('./src/creators/responseCreator');
 const createRequestBody = require("./src/creators/requestBodyCreator");
 const path = require('path');
-const { open } = require('inspector/promises');
 
-function getModels(modelsPath, modelsFiles) {
+function getModels(modelsPath) {
+    const modelsFiles = getFileInDirectory(modelsPath);
     const models = []
     modelsFiles.forEach(file => {
         const code = readFileContent(`${modelsPath}/${file}`)
@@ -27,8 +27,7 @@ function parser(routesVariable) {
         const modelsPath = sequelizeConfig.modelsPath;
         const routePrefix = sequelizeConfig.routePrefix;
 
-        const modelsFiles = getFileInDirectory(modelsPath);
-        const models = getModels(modelsPath, modelsFiles);
+        const models = getModels(modelsPath);
 
         addRelationManyToManyToEachModel(models);
 
@@ -83,7 +82,7 @@ function parser(routesVariable) {
             const currentService = serviceParser(content, routesVariable, routePrefix, parameters);
 
             // Merge the current service into the accumulated services
-            services = {...services, ...currentService};
+            services = { ...services, ...currentService };
 
             createRequestBody(currentService, schemas, models, true);
             createResponse(currentService, schemas, models);
@@ -103,4 +102,4 @@ function parser(routesVariable) {
     }
 }
 
-module.exports = parser;
+module.exports = { parser, getModels };
