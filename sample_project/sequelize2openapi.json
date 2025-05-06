@@ -18,8 +18,8 @@
             }
         ]
     },
-    "servicesPath": "./app/docs/services",
-    "modelsPath": "./app/models",
+    "servicesPath": "app/docs/services",
+    "modelsPath": "app/models",
     "defaultSecurity": "jwt",
     "routePrefix": "/api"
 }

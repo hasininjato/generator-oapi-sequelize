@@ -7,7 +7,7 @@ const helmet = require("helmet")
 const swaggerUi = require('swagger-ui-express')
 
 // generator-oapi-sequelize
-const sequelize2openapi = require("sequelize2openapi")
+const { parser } = require("sequelize2openapi")
 
 const app = express()
 
@@ -33,12 +33,12 @@ app.use('/api/tags', require('./app/routes/tag.route'));
 app.use('/api/posts', require('./app/routes/post.route'));
 
 try {
-    const swaggerSpec = sequelize2openapi(app);
+    const swaggerSpec = parser(app);
     app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 } catch (err) {
     throw err;
 }
 
-app.listen(port, () => {
+app.listen(port, '127.0.0.1', () => {
     console.log(`Example app listening on port ${port}`)
 })
