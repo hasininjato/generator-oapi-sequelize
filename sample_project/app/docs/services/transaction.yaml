@@ -1,0 +1,35 @@
+Transaction:
+  collectionOperations:
+    get:
+      openapi_context:
+        summary: List all transactions
+        description: Returns a list of transactions
+      output:
+        - transaction:list
+    post:
+      openapi_context:
+        summary: Create a transaction
+        description: Creates a new transaction
+      input:
+        - transaction:post
+      output:
+        - transaction:item
+  itemOperations:
+    get:
+      openapi_context:
+        summary: Get a transaction by ID
+        description: Returns a transaction by ID
+      output:
+        - transaction:item
+    put:
+      openapi_context:
+        summary: Update a transaction by ID
+        description: Updates a transaction by ID
+      input:
+        - transaction:put
+      output:
+        - transaction:item
+    delete:
+      openapi_context:
+        summary: Delete a transaction by ID
+        description: Deletes a transaction by ID

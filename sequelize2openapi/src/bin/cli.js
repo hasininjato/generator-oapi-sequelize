@@ -5,6 +5,8 @@ const pkg = require('../../package.json');
 const main = require("../../index");
 const path = require('path');
 const fs = require('fs');
+const configTemplate = require("./model");
+const yaml = require('js-yaml');
 
 program
     .version(pkg.version)
@@ -16,7 +18,6 @@ program
 const options = program.opts();
 
 function runCustomTask(model) {
-    console.log(`Processing ${model}`);
     return Promise.resolve();
 }
 
@@ -29,7 +30,26 @@ runCustomTask(options.model)
 
         const servicesPath = sequelizeConfig.servicesPath;
         const modelsPath = sequelizeConfig.modelsPath;
-        console.log(main.getModels(`${projectRoot}/${modelsPath}`));
+        const models = main.getModels(`${projectRoot}/${modelsPath}`);
+        const modelFound = models.find((model) => model.sequelizeModel === options.model);
+        if (!modelFound) {
+            throw new Error(`Model ${options.model} not found`);
+        }
+        const modelPath = path.join(projectRoot, servicesPath, `${options.model.toLowerCase()}.yaml`);
+        if (fs.existsSync(modelPath)) {
+            console.error('Error: Config file already exists at', `${projectRoot}/${servicesPath}`);
+            process.exit(1);
+        }
+        const dynamicConfig = {
+            ...configTemplate(options.model) // Pass model name to template
+        };
+        const yamlString = yaml.dump(dynamicConfig, {
+            lineWidth: -1, // No line wrapping
+            noRefs: true   // Prevent anchor/ref generation
+        });
+        const outputPath = path.join(projectRoot, servicesPath, `${options.model.toLowerCase()}.yaml`);
+        console.log(`Creating config file at ${outputPath}`);
+        fs.writeFileSync(outputPath, yamlString);
     })
     .catch((err) => {
         console.error('Failed:', err);
