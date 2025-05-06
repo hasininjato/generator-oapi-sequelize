@@ -1,13 +1,17 @@
 {
   "name": "sequelize2openapi",
-  "description": "generator-oapi-sequelize is a tool to automatically generate OpenAPI specifications from annotations on Sequelize models",
+  "description": "sequelize2openapi is a tool to automatically generate OpenAPI specifications from annotations on Sequelize models",
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
+  "bin": {
+    "sequelize2openapi": "./src/bin/cli.js"
+  },
   "dependencies": {
     "@babel/parser": "^7.27.0",
     "@babel/traverse": "^7.27.0",
     "@babel/types": "^7.27.0",
+    "commander": "^13.1.0",
     "express-list-endpoints": "^7.1.1",
     "js-yaml": "^4.1.0"
   },

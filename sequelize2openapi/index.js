@@ -6,7 +6,6 @@ const createSchemas = require('./src/creators/schemaCreator');
 const createResponse = require('./src/creators/responseCreator');
 const createRequestBody = require("./src/creators/requestBodyCreator");
 const path = require('path');
-const { open } = require('inspector/promises');
 
 function getModels(modelsPath, modelsFiles) {
     const models = []
