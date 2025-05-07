@@ -1,4 +1,4 @@
-const {transformStr, getSingularPath, getVariablesFromPath} = require("../utils/utils");
+const { transformStr, getSingularPath, getVariablesFromPath } = require("../utils/utils");
 const responses = require("../utils/statusCode");
 const createRelations = require("./relationCreator");
 
@@ -19,10 +19,18 @@ function createResponse(services, schemas, models) {
 
                 // for modification method
                 if (["post", "put", "patch"].includes(method)) {
+                    let responseOk = null;
+                    if (method === "post") {
+                        if (config.isCreation) {
+                            responseOk = responses.response201(transformedObj, getSingularPath(path), config);
+                        } else {
+                            responseOk = responses.response200(transformedObj, config);
+                        }
+                    }
                     // for post, we return 201. for put or patch, we return 200 and 404.
                     const successResponse = method === "post"
-                        ? responses.response201(transformedObj, getSingularPath(path), config)
-                        : {...responses.response200(transformedObj, config, null), ...responses.response404(pathVariables)};
+                        ? responseOk
+                        : { ...responses.response200(transformedObj, config, null), ...responses.response404(pathVariables) };
 
                     // we add responses
                     services[path][method].responses = {
@@ -51,10 +59,18 @@ function createResponse(services, schemas, models) {
                     }
                 } else {
                     const relation = createRelations(models, config, schemas);
+                    let responseOk = null;
+                    if (method === "post") {
+                        if (config.isCreation) {
+                            responseOk = responses.response201(null, getSingularPath(path), config, relation);
+                        } else {
+                            responseOk = responses.response200(null, config, relation);
+                        }
+                    }
                     if (["post", "put", "patch"].includes(method)) {
                         services[path][method].responses = {
                             ...commonResponses,
-                            ...responses.response201(null, getSingularPath(path), config, relation),
+                            ...responseOk,
                             ...responses.response404(pathVariables)
                         };
                     } else {

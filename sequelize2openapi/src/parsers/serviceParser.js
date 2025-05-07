@@ -1,6 +1,6 @@
 const yaml = require("js-yaml");
-const {getEndPointsApi} = require("../utils/utils");
-const {getVariablesFromPath, capitalizeFirstLetter} = require("../utils/utils");
+const { getEndPointsApi } = require("../utils/utils");
+const { getVariablesFromPath, capitalizeFirstLetter } = require("../utils/utils");
 
 /**
  * get the model name from the parsed yaml
@@ -125,6 +125,10 @@ function parseOperations(operations, routesVariable, routePrefix, model, isColle
                 input: operation.input,
                 output: operation.output
             };
+            if (method === "POST") {
+                const creation = operation.isCreation ?? (operationName === "post" || true);
+                operationsResult[updatePath][method.toLowerCase()].isCreation = creation;
+            }
             if (parameter) {
                 operationsResult[updatePath][method.toLowerCase()]["parameters"] = [
                     ...parameter
@@ -146,7 +150,7 @@ function serviceParser(content, routesVariable, routePrefix, parameters) {
     let operationsResult = {};
     const parsedYaml = yaml.load(content);
     const [model] = getModelName(parsedYaml);
-    const {collectionOperations, itemOperations} = parsedYaml[model];
+    const { collectionOperations, itemOperations } = parsedYaml[model];
     operationsResult = {
         ...parseOperations(collectionOperations, routesVariable, routePrefix, model, true, parameters),
         ...parseOperations(itemOperations, routesVariable, routePrefix, model, false, parameters)

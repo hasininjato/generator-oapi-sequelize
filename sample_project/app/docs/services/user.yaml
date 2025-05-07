@@ -28,6 +28,7 @@ User:
         - "user:item"
       output:
         - "user:login"
+      isCreation: false
     validate_token:
       tags: "Token"
       path: "/validate/token"
