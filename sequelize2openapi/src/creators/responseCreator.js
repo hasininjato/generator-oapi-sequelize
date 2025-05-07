@@ -68,10 +68,14 @@ function createResponse(services, schemas, models) {
                         }
                     }
                     if (["post", "put", "patch"].includes(method)) {
+                        const firstOutput = config.output[0];
+                        const transformedObj = transformStr(firstOutput); // parse the output value
                         services[path][method].responses = {
                             ...commonResponses,
                             ...responseOk,
-                            ...responses.response404(pathVariables)
+                            ...responses.response404(pathVariables),
+                            ...responses.response400(transformedObj, models),
+                            ...responses.response409(transformedObj, models)
                         };
                     } else {
                         services[path][method].responses = {
