@@ -38,7 +38,13 @@ function parser(routesVariable) {
             const response = {
                 type: "object",
                 properties: {
-                    details: {
+                    name: {
+                        type: "string",
+                        description: "Name of the error",
+                        example: "ValidationError",
+                        enum: ["ValidationError", "UniqueConstraintError"]
+                    },
+                    errors: {
                         type: "array",
                         items: {
                             type: "object",

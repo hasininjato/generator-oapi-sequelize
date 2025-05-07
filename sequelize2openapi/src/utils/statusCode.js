@@ -108,7 +108,8 @@ function response400(obj, models) {
                         "$ref": "#/components/schemas/Response400Schema"
                     },
                     example: {
-                        details: [...details]
+                        name: "ValidationError",
+                        errors: [...details]
                     }
                 }
             }
@@ -177,7 +178,8 @@ function response409(obj, models) {
                         "$ref": "#/components/schemas/Response409Schema"
                     },
                     example: {
-                        details: [...details]
+                        name: "UniqueConstraintError",
+                        errors: [...details]
                     }
                 }
             }

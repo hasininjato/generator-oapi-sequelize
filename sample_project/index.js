@@ -7,7 +7,8 @@ const helmet = require("helmet")
 const swaggerUi = require('swagger-ui-express')
 
 // generator-oapi-sequelize
-const { parser } = require("sequelize2openapi")
+// @TODO: uncomment before merging to main
+// const { parser } = require("sequelize2openapi")
 
 const app = express()
 
@@ -34,8 +35,13 @@ app.use('/api/posts', require('./app/routes/post.route'));
 
 try {
     const fs = require("node:fs");
-    const swaggerSpec = parser(app);
-    fs.writeFileSync("./swagger.json", JSON.stringify(swaggerSpec, null, 4));
+    // @todo: comment before merging to main
+    const sequelize2openapi = require("../sequelize2openapi")
+    // @todo: on main
+    // const swaggerSpec = parser(app);
+    // @todo: on other branch
+    const swaggerSpec = sequelize2openapi.parser(app);
+    // fs.writeFileSync("./swagger.json", JSON.stringify(swaggerSpec, null, 4));
     app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 } catch (err) {
     throw err;
