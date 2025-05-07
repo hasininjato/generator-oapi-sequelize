@@ -8,188 +8,1631 @@
         },
         "version": "1.0.0"
     },
+    "servers": [
+        {
+            "url": "http://localhost:8000/api"
+        },
+        {
+            "url": "http://localhost:3000/api"
+        }
+    ],
     "components": {
-        "securitySchemes": {
-            "BearerAuth": {
-                "type": "http",
-                "scheme": "bearer",
-                "bearerFormat": "JWT"
+        "parameters": {
+            "UserId": {
+                "name": "id",
+                "in": "path",
+                "schema": {
+                    "type": "string"
+                },
+                "required": true,
+                "description": "User id"
             },
-            "basicAuth": {
-                "type": "http",
-                "scheme": "basic"
+            "TransactionName": {
+                "name": "name",
+                "in": "path",
+                "schema": {
+                    "type": "string"
+                },
+                "required": true,
+                "description": "Transaction name"
+            },
+            "ProfileId": {
+                "name": "id",
+                "in": "path",
+                "schema": {
+                    "type": "string"
+                },
+                "required": true,
+                "description": "Profile id"
+            },
+            "TagId": {
+                "name": "id",
+                "in": "path",
+                "schema": {
+                    "type": "string"
+                },
+                "required": true,
+                "description": "Tag id"
+            },
+            "PostId": {
+                "name": "id",
+                "in": "path",
+                "schema": {
+                    "type": "string"
+                },
+                "required": true,
+                "description": "Post id"
             }
         },
         "schemas": {
-            "UserLogin": {
-                "type": "object",
-                "required": [
-                    "email",
-                    "password"
-                ],
-                "properties": {
-                    "email": {
-                        "type": "string",
-                        "description": "Email de l'utilisateur"
-                    },
-                    "password": {
-                        "type": "string",
-                        "description": "Mot de passe de l'utilisateur"
+            "InstrumentList": {
+                "type": "array",
+                "items": {
+                    "type": "object",
+                    "properties": {
+                        "id": {
+                            "type": "integer",
+                            "format": "int32",
+                            "description": ""
+                        },
+                        "type": {
+                            "type": "string",
+                            "description": "type of the instrument"
+                        },
+                        "purchaseDate": {
+                            "type": "string",
+                            "format": "date-time",
+                            "description": ""
+                        }
                     }
-                },
-                "example": {
-                    "email": "email@test.com",
-                    "password": "test"
                 }
             },
-            "UserLoginResponse": {
+            "InstrumentItem": {
                 "type": "object",
                 "properties": {
                     "id": {
-                        "type": "string",
-                        "description": "Id de l'utilisateur"
+                        "type": "integer",
+                        "format": "int32",
+                        "description": ""
                     },
-                    "fullname": {
+                    "type": {
                         "type": "string",
-                        "description": "Nom de l'utilisateur"
+                        "description": "type of the instrument"
                     },
-                    "email": {
+                    "purchaseDate": {
                         "type": "string",
-                        "description": "Email de l'utilisateur"
-                    },
-                    "access_token": {
-                        "type": "string",
-                        "description": "Access token généré"
+                        "format": "date-time",
+                        "description": ""
                     }
-                },
-                "example": {
-                    "email": "email@test.com",
-                    "password": "test"
                 }
             },
-            "UserGet": {
+            "InstrumentPut": {
                 "type": "object",
-                "required": [
-                    "fullname",
-                    "email"
-                ],
                 "properties": {
-                    "fullname": {
+                    "type": {
                         "type": "string",
-                        "description": "Nom de l'utilisateur"
-                    },
-                    "email": {
-                        "type": "string",
-                        "description": "Email de l'utilisateur"
+                        "description": "type of the instrument"
                     }
                 },
-                "example": {
-                    "fullname": "Name",
-                    "email": "email@test.com"
+                "required": [
+                    "type"
+                ]
+            },
+            "InstrumentPost": {
+                "type": "object",
+                "properties": {
+                    "type": {
+                        "type": "string",
+                        "description": "type of the instrument"
+                    }
+                },
+                "required": [
+                    "type"
+                ]
+            },
+            "InstrumentLogin": {
+                "type": "object",
+                "properties": {}
+            },
+            "InstrumentUsersList": {
+                "type": "array",
+                "items": {
+                    "type": "object",
+                    "properties": {
+                        "userId": {
+                            "type": "integer",
+                            "format": "int32",
+                            "description": "User ID"
+                        },
+                        "instrumentId": {
+                            "type": "integer",
+                            "format": "int32",
+                            "description": "Instrument ID"
+                        }
+                    }
                 }
             },
-            "UserCreationResponse": {
+            "InstrumentUsersItem": {
+                "type": "object",
+                "properties": {
+                    "userId": {
+                        "type": "integer",
+                        "format": "int32",
+                        "description": "User ID"
+                    },
+                    "instrumentId": {
+                        "type": "integer",
+                        "format": "int32",
+                        "description": "Instrument ID"
+                    }
+                }
+            },
+            "InstrumentUsersPut": {
+                "type": "object",
+                "properties": {
+                    "userId": {
+                        "type": "integer",
+                        "format": "int32",
+                        "description": "User ID"
+                    },
+                    "instrumentId": {
+                        "type": "integer",
+                        "format": "int32",
+                        "description": "Instrument ID"
+                    }
+                }
+            },
+            "InstrumentUsersPost": {
+                "type": "object",
+                "properties": {
+                    "userId": {
+                        "type": "integer",
+                        "format": "int32",
+                        "description": "User ID"
+                    },
+                    "instrumentId": {
+                        "type": "integer",
+                        "format": "int32",
+                        "description": "Instrument ID"
+                    }
+                }
+            },
+            "InstrumentUsersLogin": {
+                "type": "object",
+                "properties": {}
+            },
+            "PostList": {
+                "type": "array",
+                "items": {
+                    "type": "object",
+                    "properties": {
+                        "title": {
+                            "type": "string",
+                            "description": "Post title"
+                        },
+                        "content": {
+                            "type": "string",
+                            "description": "Post content"
+                        }
+                    }
+                }
+            },
+            "PostItem": {
+                "type": "object",
+                "properties": {
+                    "title": {
+                        "type": "string",
+                        "description": "Post title"
+                    },
+                    "content": {
+                        "type": "string",
+                        "description": "Post content"
+                    }
+                }
+            },
+            "PostPut": {
+                "type": "object",
+                "properties": {
+                    "title": {
+                        "type": "string",
+                        "description": "Post title"
+                    },
+                    "content": {
+                        "type": "string",
+                        "description": "Post content"
+                    }
+                },
+                "required": [
+                    "title"
+                ]
+            },
+            "PostPost": {
+                "type": "object",
+                "properties": {
+                    "title": {
+                        "type": "string",
+                        "description": "Post title"
+                    },
+                    "content": {
+                        "type": "string",
+                        "description": "Post content"
+                    }
+                },
+                "required": [
+                    "title"
+                ]
+            },
+            "PostLogin": {
+                "type": "object",
+                "properties": {}
+            },
+            "PostTagsList": {
+                "type": "array",
+                "items": {
+                    "type": "object",
+                    "properties": {
+                        "postId": {
+                            "type": "integer",
+                            "format": "int32",
+                            "description": "Tag name"
+                        },
+                        "tagId": {
+                            "type": "integer",
+                            "format": "int32",
+                            "description": "Tag name"
+                        }
+                    }
+                }
+            },
+            "PostTagsItem": {
+                "type": "object",
+                "properties": {
+                    "postId": {
+                        "type": "integer",
+                        "format": "int32",
+                        "description": "Tag name"
+                    },
+                    "tagId": {
+                        "type": "integer",
+                        "format": "int32",
+                        "description": "Tag name"
+                    }
+                }
+            },
+            "PostTagsPut": {
+                "type": "object",
+                "properties": {
+                    "postId": {
+                        "type": "integer",
+                        "format": "int32",
+                        "description": "Tag name"
+                    },
+                    "tagId": {
+                        "type": "integer",
+                        "format": "int32",
+                        "description": "Tag name"
+                    }
+                }
+            },
+            "PostTagsPost": {
+                "type": "object",
+                "properties": {
+                    "postId": {
+                        "type": "integer",
+                        "format": "int32",
+                        "description": "Tag name"
+                    },
+                    "tagId": {
+                        "type": "integer",
+                        "format": "int32",
+                        "description": "Tag name"
+                    }
+                }
+            },
+            "PostTagsLogin": {
+                "type": "object",
+                "properties": {}
+            },
+            "ProfileList": {
+                "type": "array",
+                "items": {
+                    "type": "object",
+                    "properties": {
+                        "id": {
+                            "type": "integer",
+                            "format": "int32",
+                            "description": "Profile ID"
+                        },
+                        "bio": {
+                            "type": "string",
+                            "description": "Profile bio"
+                        }
+                    }
+                }
+            },
+            "ProfileItem": {
                 "type": "object",
                 "properties": {
                     "id": {
-                        "type": "string",
-                        "description": "Id de l'utilisateur"
+                        "type": "integer",
+                        "format": "int32",
+                        "description": "Profile ID"
                     },
-                    "fullname": {
+                    "bio": {
                         "type": "string",
-                        "description": "Nom de l'utilisateur"
-                    },
-                    "email": {
-                        "type": "string",
-                        "description": "Email de l'utilisateur"
-                    },
-                    "access_token": {
-                        "type": "string",
-                        "description": "Access token généré"
+                        "description": "Profile bio"
                     }
-                },
-                "example": {
-                    "email": "email@test.com",
-                    "password": "test"
                 }
             },
-            "User": {
+            "ProfilePut": {
                 "type": "object",
                 "properties": {
-                    "fullname": {
+                    "bio": {
                         "type": "string",
-                        "description": "Nom de l'utilisateur"
-                    },
-                    "email": {
-                        "type": "string",
-                        "description": "Email de l'utilisateur"
-                    },
-                    "password": {
-                        "type": "string",
-                        "description": "Mot de passe"
+                        "description": "Profile bio"
                     }
-                },
-                "example": {
-                    "fullname": "Nom de l'utilisateur",
-                    "email": "email@test.com",
-                    "password": "test"
                 }
             },
-            "Transaction": {
+            "ProfilePost": {
                 "type": "object",
                 "properties": {
-                    "description": {
+                    "bio": {
                         "type": "string",
-                        "description": "Description de la transaction"
+                        "description": "Profile bio"
+                    }
+                }
+            },
+            "ProfileLogin": {
+                "type": "object",
+                "properties": {}
+            },
+            "TagList": {
+                "type": "array",
+                "items": {
+                    "type": "object",
+                    "properties": {
+                        "name": {
+                            "type": "string",
+                            "description": "Tag name"
+                        }
+                    }
+                }
+            },
+            "TagItem": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "description": "Tag name"
+                    }
+                }
+            },
+            "TagPut": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "description": "Tag name"
+                    }
+                }
+            },
+            "TagPost": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "description": "Tag name"
+                    }
+                }
+            },
+            "TagLogin": {
+                "type": "object",
+                "properties": {}
+            },
+            "TransactionList": {
+                "type": "array",
+                "items": {
+                    "type": "object",
+                    "properties": {
+                        "id": {
+                            "type": "integer",
+                            "format": "int32",
+                            "description": "Id of the transaction"
+                        },
+                        "amount": {
+                            "type": "string",
+                            "description": "Amount of the transaction"
+                        },
+                        "description": {
+                            "type": "string",
+                            "description": "Description of the transaction"
+                        },
+                        "date": {
+                            "type": "string",
+                            "format": "date-time",
+                            "description": ""
+                        },
+                        "createdAt": {
+                            "type": "string",
+                            "format": "date-time",
+                            "description": "Date when the record was created"
+                        },
+                        "updatedAt": {
+                            "type": "string",
+                            "format": "date-time",
+                            "description": "Date when the record was last updated"
+                        }
+                    }
+                }
+            },
+            "TransactionItem": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "format": "int32",
+                        "description": "Id of the transaction"
                     },
                     "amount": {
                         "type": "string",
-                        "description": "Montant de l transaction"
+                        "description": "Amount of the transaction"
+                    },
+                    "description": {
+                        "type": "string",
+                        "description": "Description of the transaction"
+                    },
+                    "date": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": ""
+                    },
+                    "createdAt": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Date when the record was created"
+                    },
+                    "updatedAt": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Date when the record was last updated"
+                    }
+                }
+            },
+            "TransactionPut": {
+                "type": "object",
+                "properties": {
+                    "amount": {
+                        "type": "string",
+                        "description": "Amount of the transaction"
+                    },
+                    "description": {
+                        "type": "string",
+                        "description": "Description of the transaction"
                     }
                 },
-                "example": {
-                    "description": "transaction 01",
-                    "amount": 20.5
+                "required": [
+                    "amount",
+                    "description"
+                ]
+            },
+            "TransactionPost": {
+                "type": "object",
+                "properties": {
+                    "amount": {
+                        "type": "string",
+                        "description": "Amount of the transaction"
+                    },
+                    "description": {
+                        "type": "string",
+                        "description": "Description of the transaction"
+                    }
+                },
+                "required": [
+                    "amount",
+                    "description"
+                ]
+            },
+            "TransactionLogin": {
+                "type": "object",
+                "properties": {}
+            },
+            "UserList": {
+                "type": "array",
+                "items": {
+                    "type": "object",
+                    "properties": {
+                        "id": {
+                            "type": "integer",
+                            "format": "int32",
+                            "description": "Id of the user"
+                        },
+                        "fullname": {
+                            "type": "string",
+                            "description": ""
+                        },
+                        "email": {
+                            "type": "string",
+                            "description": ""
+                        },
+                        "createdAt": {
+                            "type": "string",
+                            "format": "date-time",
+                            "description": "Date when the record was created"
+                        },
+                        "updatedAt": {
+                            "type": "string",
+                            "format": "date-time",
+                            "description": "Date when the record was last updated"
+                        }
+                    }
+                }
+            },
+            "UserItem": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "format": "int32",
+                        "description": "Id of the user"
+                    },
+                    "fullname": {
+                        "type": "string",
+                        "description": ""
+                    },
+                    "email": {
+                        "type": "string",
+                        "description": ""
+                    },
+                    "createdAt": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Date when the record was created"
+                    },
+                    "updatedAt": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Date when the record was last updated"
+                    }
+                }
+            },
+            "UserPut": {
+                "type": "object",
+                "properties": {
+                    "fullname": {
+                        "type": "string",
+                        "description": ""
+                    },
+                    "email": {
+                        "type": "string",
+                        "description": ""
+                    },
+                    "password": {
+                        "type": "string",
+                        "description": ""
+                    }
+                },
+                "required": [
+                    "fullname",
+                    "email",
+                    "password"
+                ]
+            },
+            "UserPost": {
+                "type": "object",
+                "properties": {
+                    "fullname": {
+                        "type": "string",
+                        "description": ""
+                    },
+                    "email": {
+                        "type": "string",
+                        "description": ""
+                    },
+                    "password": {
+                        "type": "string",
+                        "description": ""
+                    }
+                },
+                "required": [
+                    "fullname",
+                    "email",
+                    "password"
+                ]
+            },
+            "UserLogin": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "format": "int32",
+                        "description": "Id of the user"
+                    },
+                    "fullname": {
+                        "type": "string",
+                        "description": ""
+                    },
+                    "email": {
+                        "type": "string",
+                        "description": ""
+                    }
+                }
+            },
+            "Response400Schema": {
+                "type": "object",
+                "properties": {
+                    "details": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "field": {
+                                    "type": "string",
+                                    "description": "Name of the field"
+                                },
+                                "message": {
+                                    "type": "string",
+                                    "description": "Message on validation"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "Response409Schema": {
+                "type": "object",
+                "properties": {
+                    "details": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "field": {
+                                    "type": "string",
+                                    "description": "Name of the field"
+                                },
+                                "message": {
+                                    "type": "string",
+                                    "description": "Message on validation"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "PostTagRelationList": {
+                "type": "array",
+                "items": {
+                    "type": "object",
+                    "properties": {
+                        "title": {
+                            "type": "string",
+                            "description": "Post title"
+                        },
+                        "content": {
+                            "type": "string",
+                            "description": "Post content"
+                        },
+                        "Tags": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "description": "Tag name"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "PostTagRelationItem": {
+                "type": "object",
+                "properties": {
+                    "title": {
+                        "type": "string",
+                        "description": "Post title"
+                    },
+                    "content": {
+                        "type": "string",
+                        "description": "Post content"
+                    },
+                    "Tags": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "name": {
+                                    "type": "string",
+                                    "description": "Tag name"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "TagPostRelationList": {
+                "type": "array",
+                "items": {
+                    "type": "object",
+                    "properties": {
+                        "name": {
+                            "type": "string",
+                            "description": "Tag name"
+                        },
+                        "Posts": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "title": {
+                                        "type": "string",
+                                        "description": "Post title"
+                                    },
+                                    "content": {
+                                        "type": "string",
+                                        "description": "Post content"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "TagPostRelationItem": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "description": "Tag name"
+                    },
+                    "Posts": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "title": {
+                                    "type": "string",
+                                    "description": "Post title"
+                                },
+                                "content": {
+                                    "type": "string",
+                                    "description": "Post content"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "UserProfileRelationPost": {
+                "type": "object",
+                "properties": {
+                    "fullname": {
+                        "type": "string",
+                        "description": ""
+                    },
+                    "email": {
+                        "type": "string",
+                        "description": ""
+                    },
+                    "password": {
+                        "type": "string",
+                        "description": ""
+                    },
+                    "profile": {
+                        "type": "object",
+                        "properties": {
+                            "bio": {
+                                "type": "string",
+                                "description": "Profile bio"
+                            }
+                        }
+                    }
+                },
+                "required": [
+                    "fullname",
+                    "email",
+                    "password"
+                ]
+            },
+            "UserProfileRelationList": {
+                "type": "array",
+                "items": {
+                    "type": "object",
+                    "properties": {
+                        "id": {
+                            "type": "integer",
+                            "format": "int32",
+                            "description": "Id of the user"
+                        },
+                        "fullname": {
+                            "type": "string",
+                            "description": ""
+                        },
+                        "email": {
+                            "type": "string",
+                            "description": ""
+                        },
+                        "createdAt": {
+                            "type": "string",
+                            "format": "date-time",
+                            "description": "Date when the record was created"
+                        },
+                        "updatedAt": {
+                            "type": "string",
+                            "format": "date-time",
+                            "description": "Date when the record was last updated"
+                        },
+                        "profile": {
+                            "type": "object",
+                            "properties": {
+                                "id": {
+                                    "type": "integer",
+                                    "format": "int32",
+                                    "description": "Profile ID"
+                                },
+                                "bio": {
+                                    "type": "string",
+                                    "description": "Profile bio"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "UserProfileRelationItem": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "format": "int32",
+                        "description": "Id of the user"
+                    },
+                    "fullname": {
+                        "type": "string",
+                        "description": ""
+                    },
+                    "email": {
+                        "type": "string",
+                        "description": ""
+                    },
+                    "createdAt": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Date when the record was created"
+                    },
+                    "updatedAt": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Date when the record was last updated"
+                    },
+                    "profile": {
+                        "type": "object",
+                        "properties": {
+                            "id": {
+                                "type": "integer",
+                                "format": "int32",
+                                "description": "Profile ID"
+                            },
+                            "bio": {
+                                "type": "string",
+                                "description": "Profile bio"
+                            }
+                        }
+                    }
+                }
+            },
+            "UserTransactionRelationItem": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "format": "int32",
+                        "description": "Id of the user"
+                    },
+                    "fullname": {
+                        "type": "string",
+                        "description": ""
+                    },
+                    "email": {
+                        "type": "string",
+                        "description": ""
+                    },
+                    "createdAt": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Date when the record was created"
+                    },
+                    "updatedAt": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Date when the record was last updated"
+                    },
+                    "Transactions": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "id": {
+                                    "type": "integer",
+                                    "format": "int32",
+                                    "description": "Id of the transaction"
+                                },
+                                "amount": {
+                                    "type": "string",
+                                    "description": "Amount of the transaction"
+                                },
+                                "description": {
+                                    "type": "string",
+                                    "description": "Description of the transaction"
+                                },
+                                "date": {
+                                    "type": "string",
+                                    "format": "date-time",
+                                    "description": ""
+                                },
+                                "createdAt": {
+                                    "type": "string",
+                                    "format": "date-time",
+                                    "description": "Date when the record was created"
+                                },
+                                "updatedAt": {
+                                    "type": "string",
+                                    "format": "date-time",
+                                    "description": "Date when the record was last updated"
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }
     },
-    "servers": [
-        {
-            "url": "http://localhost:8000/api"
-        }
-    ],
     "paths": {
-        "/auth/login": {
-            "post": {
-                "summary": "Authentifier un utilisateur",
-                "description": "Authentifier un utilisateur",
+        "/posts": {
+            "get": {
+                "summary": "List of all posts",
+                "description": "List of all posts",
                 "tags": [
-                    "Authentification"
+                    "Post"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List of all posts",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/PostTagRelationList"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            },
+            "post": {
+                "summary": "Create a post",
+                "description": "Create a post",
+                "tags": [
+                    "Post"
                 ],
                 "requestBody": {
-                    "required": true,
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/UserLogin"
+                                "$ref": "#/components/schemas/PostPost"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Post created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/PostItem"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request (VALIDATION_ERROR)",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Response400Schema"
+                                },
+                                "example": {
+                                    "details": [
+                                        {
+                                            "field": "title",
+                                            "message": "Title is required"
+                                        },
+                                        {
+                                            "field": "title",
+                                            "message": "Title cannot be empty"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "409": {
+                        "description": "Unique constraint errors",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Response409Schema"
+                                },
+                                "example": {
+                                    "details": []
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/posts/{id}": {
+            "get": {
+                "summary": "Get post by id",
+                "description": "Get post by id",
+                "tags": [
+                    "Post"
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/PostId"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Get post by id",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/PostTagRelationItem"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Post not found"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            },
+            "put": {
+                "summary": "Update a post by id",
+                "description": "Update a post by id",
+                "tags": [
+                    "Post"
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/PostId"
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PostPut"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Update a post by id successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/PostTagRelationItem"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Post not found"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            },
+            "delete": {
+                "summary": "Delete a post by id",
+                "description": "Delete a post by id",
+                "tags": [
+                    "Post"
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/PostId"
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No content"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Post not found"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/profiles": {
+            "get": {
+                "summary": "List of all profiles",
+                "description": "List of all profiles",
+                "tags": [
+                    "Profile"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List of all profiles",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProfileList"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            },
+            "post": {
+                "summary": "Create a profile",
+                "description": "Create a profile",
+                "tags": [
+                    "Profile"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ProfilePost"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Profile created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProfileItem"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request (VALIDATION_ERROR)",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Response400Schema"
+                                },
+                                "example": {
+                                    "details": []
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "409": {
+                        "description": "Unique constraint errors",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Response409Schema"
+                                },
+                                "example": {
+                                    "details": []
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/profiles/{id}": {
+            "get": {
+                "summary": "Get profile by id",
+                "description": "Get profile by id",
+                "tags": [
+                    "Profile"
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/ProfileId"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Get profile by id",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProfileItem"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Profile not found"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            },
+            "put": {
+                "summary": "Update a profile by id",
+                "description": "Update a profile by id",
+                "tags": [
+                    "Profile"
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/ProfileId"
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ProfilePut"
                             }
                         }
                     }
                 },
                 "responses": {
                     "200": {
-                        "description": "Login réussi",
-                        "contents": {
-                            "applciation/json": {
+                        "description": "Update a profile by id",
+                        "content": {
+                            "application/json": {
                                 "schema": {
-                                    "$ref": "#components/schemas/UserLoginResponse"
+                                    "$ref": "#/components/schemas/ProfileItem"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request (VALIDATION_ERROR)",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Response400Schema"
+                                },
+                                "example": {
+                                    "details": []
                                 }
                             }
                         }
                     },
                     "401": {
-                        "description": "Invalid credentials"
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Profile not found"
+                    },
+                    "409": {
+                        "description": "Unique constraint errors",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Response409Schema"
+                                },
+                                "example": {
+                                    "details": []
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            },
+            "delete": {
+                "summary": "Delete a profile by id",
+                "description": "Delete a profile by id",
+                "tags": [
+                    "Profile"
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/ProfileId"
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No content"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Profile not found"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/tags": {
+            "get": {
+                "summary": "List of all tags",
+                "description": "List of all tags",
+                "tags": [
+                    "Tag"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List of all tags",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/TagPostRelationList"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            },
+            "post": {
+                "summary": "Create a tag",
+                "description": "Create a tag",
+                "tags": [
+                    "Tag"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/TagPost"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Tag created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/TagItem"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request (VALIDATION_ERROR)",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Response400Schema"
+                                },
+                                "example": {
+                                    "details": []
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "409": {
+                        "description": "Unique constraint errors",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Response409Schema"
+                                },
+                                "example": {
+                                    "details": []
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/tags/{id}": {
+            "get": {
+                "summary": "Get tag by id",
+                "description": "Get tag by id",
+                "tags": [
+                    "Tag"
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/TagId"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Get tag by id",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/TagPostRelationItem"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Tag not found"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            },
+            "put": {
+                "summary": "Update a tag by id",
+                "description": "Update a tag by id",
+                "tags": [
+                    "Tag"
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/TagId"
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/TagPut"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Update a tag by id successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/TagPostRelationItem"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Tag not found"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            },
+            "delete": {
+                "summary": "Delete a tag by id",
+                "description": "Delete a tag by id",
+                "tags": [
+                    "Tag"
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/TagId"
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No content"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Tag not found"
                     },
                     "500": {
                         "description": "Internal server error"
@@ -198,38 +1641,65 @@
             }
         },
         "/users": {
-            "post": {
-                "summary": "Créer un utilisateur",
+            "get": {
+                "summary": "List of all users",
+                "description": "List of all users",
                 "tags": [
-                    "Utilisateur"
+                    "User"
                 ],
-                "description": "Créer un utilisateur",
+                "responses": {
+                    "200": {
+                        "description": "List of all users",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UserProfileRelationList"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            },
+            "post": {
+                "summary": "Create a user",
+                "description": "Create a user",
+                "tags": [
+                    "User"
+                ],
                 "requestBody": {
-                    "required": true,
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/User"
+                                "$ref": "#/components/schemas/UserProfileRelationPost"
                             }
                         }
                     }
                 },
                 "responses": {
-                    "200": {
-                        "description": "Création réussie",
-                        "contents": {
-                            "applciation/json": {
+                    "201": {
+                        "description": "User created successfully",
+                        "content": {
+                            "application/json": {
                                 "schema": {
-                                    "$ref": "#components/schemas/UserCreationResponse"
+                                    "$ref": "#/components/schemas/UserProfileRelationItem"
                                 }
                             }
                         }
                     },
-                    "400": {
-                        "description": "Bad request"
+                    "401": {
+                        "description": "Unauthorized"
                     },
-                    "409": {
-                        "description": "Unique constraint error"
+                    "403": {
+                        "description": "Forbidden"
                     },
                     "500": {
                         "description": "Internal server error"
@@ -237,79 +1707,130 @@
                 }
             }
         },
-        "/users/{id}/transactions": {
+        "/auth/login": {
             "post": {
-                "summary": "Créer une nouvelle transaction",
-                "description": "Créer une nouvelle transaction",
+                "summary": "Login an user",
+                "description": "Login an user",
                 "tags": [
-                    "Transaction"
+                    "Authentication"
                 ],
                 "requestBody": {
-                    "required": true,
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/Transaction"
+                                "$ref": "#/components/schemas/UserItem"
                             }
                         }
                     }
                 },
-                "parameters": [
-                    {
-                        "in": "path",
-                        "name": "id",
-                        "schema": {
-                            "type": "string"
-                        },
-                        "required": true,
-                        "description": "Id de l'utilisateur"
-                    }
-                ],
-                "security": [
-                    {
-                        "BearerAuth": []
-                    }
-                ],
                 "responses": {
-                    "200": {
-                        "description": "Transactions"
+                    "201": {
+                        "description": "Login an user successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UserLogin"
+                                }
+                            }
+                        }
                     },
-                    "404": {
-                        "description": "User not found"
+                    "400": {
+                        "description": "Bad request (VALIDATION_ERROR)",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Response400Schema"
+                                },
+                                "example": {
+                                    "details": [
+                                        {
+                                            "field": "fullname",
+                                            "message": "Full name is required"
+                                        },
+                                        {
+                                            "field": "fullname",
+                                            "message": "Full name cannot be empty"
+                                        },
+                                        {
+                                            "field": "email",
+                                            "message": "Email is required"
+                                        },
+                                        {
+                                            "field": "email",
+                                            "message": "Email cannot be empty"
+                                        },
+                                        {
+                                            "field": "email",
+                                            "message": "Invalid email"
+                                        },
+                                        {
+                                            "field": "password",
+                                            "message": "Password is required"
+                                        },
+                                        {
+                                            "field": "password",
+                                            "message": "Password cannot be empty"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "409": {
+                        "description": "Unique constraint errors",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Response409Schema"
+                                },
+                                "example": {
+                                    "details": [
+                                        {
+                                            "field": "email",
+                                            "message": "This email is already in use"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
                     },
                     "500": {
                         "description": "Internal server error"
                     }
                 }
-            },
+            }
+        },
+        "/validate/token": {
             "get": {
-                "summary": "Récupérer les transactions d'un utilisateur",
-                "description": "Récupérer les transactions d'un utilisateur",
+                "summary": "Validate token sent in parameter",
+                "description": "Validate token sent in parameter",
                 "tags": [
-                    "Transaction"
+                    "Token"
                 ],
-                "security": [
-                    {
-                        "BearerAuth": []
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UserItem"
+                            }
+                        }
                     }
-                ],
-                "parameters": [
-                    {
-                        "in": "path",
-                        "name": "id",
-                        "schema": {
-                            "type": "string"
-                        },
-                        "required": true,
-                        "description": "Id de l'utilisateur"
-                    }
-                ],
+                },
                 "responses": {
-                    "200": {
-                        "description": "Transactions"
+                    "204": {
+                        "description": "No content"
                     },
-                    "404": {
-                        "description": "User not found"
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
                     },
                     "500": {
                         "description": "Internal server error"
@@ -319,47 +1840,32 @@
         },
         "/users/{id}": {
             "get": {
-                "summary": "Récupérer un utilisateur par son id",
-                "description": "Récupérer un utilisateur par son id",
+                "summary": "Get user by id",
+                "description": "Get user by id",
                 "tags": [
-                    "Utilisateur"
+                    "User"
                 ],
                 "parameters": [
                     {
-                        "in": "path",
-                        "name": "id",
-                        "schema": {
-                            "type": "string"
-                        },
-                        "required": true,
-                        "description": "Id de l'utilisateur"
+                        "$ref": "#/components/parameters/UserId"
                     }
                 ],
                 "responses": {
                     "200": {
-                        "description": "Utilisateur",
+                        "description": "Get user by id",
                         "content": {
-                            "applciation/json": {
+                            "application/json": {
                                 "schema": {
-                                    "allOf": [
-                                        {
-                                            "$ref": "#components/schemas/UserGet"
-                                        },
-                                        {
-                                            "type": "object",
-                                            "properties": {
-                                                "Transactions": {
-                                                    "type": "array",
-                                                    "items": {
-                                                        "$ref": "#components/schemas/Transaction"
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    ]
+                                    "$ref": "#/components/schemas/UserProfileRelationItem"
                                 }
                             }
                         }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
                     },
                     "404": {
                         "description": "User not found"
@@ -370,47 +1876,130 @@
                 }
             },
             "put": {
-                "summary": "Mettre à jour un utilisateur",
-                "description": "Mettre à jour un utilisateur",
+                "summary": "Update an user by id",
+                "description": "Update an user by id",
                 "tags": [
-                    "Utilisateur"
+                    "User"
                 ],
                 "parameters": [
                     {
-                        "in": "path",
-                        "name": "id",
-                        "schema": {
-                            "type": "string"
-                        },
-                        "required": true,
-                        "description": "Id de l'utilisateur"
-                    }
-                ],
-                "security": [
-                    {
-                        "BearerAuth": []
+                        "$ref": "#/components/parameters/UserId"
                     }
                 ],
                 "requestBody": {
-                    "required": true,
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/User"
+                                "$ref": "#/components/schemas/UserPut"
                             }
                         }
                     }
                 },
                 "responses": {
                     "200": {
-                        "description": "Utilisateur",
-                        "contents": {
-                            "applciation/json": {
+                        "description": "Update an user by id",
+                        "content": {
+                            "application/json": {
                                 "schema": {
-                                    "$ref": "#components/schemas/User"
+                                    "$ref": "#/components/schemas/UserItem"
                                 }
                             }
                         }
+                    },
+                    "400": {
+                        "description": "Bad request (VALIDATION_ERROR)",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Response400Schema"
+                                },
+                                "example": {
+                                    "details": [
+                                        {
+                                            "field": "fullname",
+                                            "message": "Full name is required"
+                                        },
+                                        {
+                                            "field": "fullname",
+                                            "message": "Full name cannot be empty"
+                                        },
+                                        {
+                                            "field": "email",
+                                            "message": "Email is required"
+                                        },
+                                        {
+                                            "field": "email",
+                                            "message": "Email cannot be empty"
+                                        },
+                                        {
+                                            "field": "email",
+                                            "message": "Invalid email"
+                                        },
+                                        {
+                                            "field": "password",
+                                            "message": "Password is required"
+                                        },
+                                        {
+                                            "field": "password",
+                                            "message": "Password cannot be empty"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "User not found"
+                    },
+                    "409": {
+                        "description": "Unique constraint errors",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Response409Schema"
+                                },
+                                "example": {
+                                    "details": [
+                                        {
+                                            "field": "email",
+                                            "message": "This email is already in use"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            },
+            "delete": {
+                "summary": "Delete an user by id",
+                "description": "Delete an user by id",
+                "tags": [
+                    "User"
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/UserId"
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No content"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
                     },
                     "404": {
                         "description": "User not found"
@@ -419,32 +2008,173 @@
                         "description": "Internal server error"
                     }
                 }
-            },
-            "delete": {
-                "summary": "Supprimer un utilisateur",
-                "description": "Supprimer un utilisateur",
+            }
+        },
+        "/users/{id}/transactions": {
+            "post": {
+                "summary": "Creation of a transaction of a user",
+                "description": "Create a transaction of the user sent in param",
                 "tags": [
-                    "Utilisateur"
+                    "Transaction"
                 ],
                 "parameters": [
                     {
-                        "in": "path",
-                        "name": "id",
-                        "schema": {
-                            "type": "string"
-                        },
-                        "required": true,
-                        "description": "Id de l'utilisateur"
+                        "$ref": "#/components/parameters/UserId"
                     }
                 ],
-                "security": [
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/TransactionPost"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Creation of a transaction of a user successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/TransactionItem"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request (VALIDATION_ERROR)",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Response400Schema"
+                                },
+                                "example": {
+                                    "details": [
+                                        {
+                                            "field": "amount",
+                                            "message": "Amount is required"
+                                        },
+                                        {
+                                            "field": "amount",
+                                            "message": "Amount must be a valid decimal number"
+                                        },
+                                        {
+                                            "field": "amount",
+                                            "message": "Amount cannot be empty"
+                                        },
+                                        {
+                                            "field": "amount",
+                                            "message": "Amount must be greater than 0"
+                                        },
+                                        {
+                                            "field": "description",
+                                            "message": "Description is required"
+                                        },
+                                        {
+                                            "field": "description",
+                                            "message": "Description cannot be empty"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "409": {
+                        "description": "Unique constraint errors",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Response409Schema"
+                                },
+                                "example": {
+                                    "details": []
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            },
+            "get": {
+                "summary": "List of all transactions of an user by id",
+                "description": "List of all transactions of an user by id",
+                "tags": [
+                    "Transaction"
+                ],
+                "parameters": [
                     {
-                        "BearerAuth": []
+                        "$ref": "#/components/parameters/UserId"
                     }
                 ],
                 "responses": {
-                    "204": {
-                        "description": "No content"
+                    "200": {
+                        "description": "List of all transactions of an user by id",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UserTransactionRelationItem"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "User not found"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/users/{id}/transactions/{name}": {
+            "get": {
+                "summary": "List of all transactions with name of an user by id",
+                "description": "List of all transactions with name of an user by id",
+                "tags": [
+                    "Transaction"
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/UserId"
+                    },
+                    {
+                        "$ref": "#/components/parameters/TransactionName"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List of all transactions with name of an user by id",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UserTransactionRelationItem"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "User, Transaction not found"
                     },
                     "500": {
                         "description": "Internal server error"
@@ -452,6 +2182,5 @@
                 }
             }
         }
-    },
-    "tags": []
+    }
 }
