@@ -941,6 +941,83 @@
                     }
                 }
             },
+            "UserRelationItem": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "format": "int32",
+                        "description": "Id of the user"
+                    },
+                    "fullname": {
+                        "type": "string",
+                        "description": ""
+                    },
+                    "email": {
+                        "type": "string",
+                        "description": ""
+                    }
+                }
+            },
+            "CustomUserRelationItem": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "format": "int32",
+                        "description": "Id of the user"
+                    },
+                    "fullname": {
+                        "type": "string",
+                        "description": ""
+                    },
+                    "email": {
+                        "type": "string",
+                        "description": ""
+                    },
+                    "access_token": {
+                        "type": "string",
+                        "description": "Access token"
+                    },
+                    "refresh_token": {
+                        "type": "string",
+                        "description": "Refresh token",
+                        "example": "fkasjd;ur  rqfj asudf"
+                    },
+                    "array_tokens": {
+                        "type": "array",
+                        "description": "",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "access_token": {
+                                    "type": "string",
+                                    "description": "Access token"
+                                },
+                                "refresh_token": {
+                                    "type": "string",
+                                    "description": "Refresh token"
+                                }
+                            }
+                        }
+                    },
+                    "object_tokens": {
+                        "type": "object",
+                        "description": "",
+                        "properties": {
+                            "access_token": {
+                                "type": "string",
+                                "description": "Access token"
+                            },
+                            "refresh_token": {
+                                "type": "string",
+                                "description": "Refresh token",
+                                "example": "ejgh8ta582.afkrioakljflkjsdfk"
+                            }
+                        }
+                    }
+                }
+            },
             "UserTransactionRelationItem": {
                 "type": "object",
                 "properties": {
@@ -1043,7 +1120,6 @@
                 "tags": [
                     "Post"
                 ],
-                "isCreation": true,
                 "requestBody": {
                     "content": {
                         "application/json": {
@@ -1287,7 +1363,6 @@
                 "tags": [
                     "Profile"
                 ],
-                "isCreation": true,
                 "requestBody": {
                     "content": {
                         "application/json": {
@@ -1523,7 +1598,6 @@
                 "tags": [
                     "Tag"
                 ],
-                "isCreation": true,
                 "requestBody": {
                     "content": {
                         "application/json": {
@@ -1749,7 +1823,6 @@
                 "tags": [
                     "User"
                 ],
-                "isCreation": true,
                 "requestBody": {
                     "content": {
                         "application/json": {
@@ -1851,7 +1924,6 @@
                 "tags": [
                     "Authentication"
                 ],
-                "isCreation": false,
                 "requestBody": {
                     "content": {
                         "application/json": {
@@ -1867,7 +1939,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/UserLogin"
+                                    "$ref": "#/components/schemas/CustomUserRelationItem"
                                 }
                             }
                         }
@@ -2159,7 +2231,6 @@
                 "tags": [
                     "Transaction"
                 ],
-                "isCreation": true,
                 "parameters": [
                     {
                         "$ref": "#/components/parameters/UserId"

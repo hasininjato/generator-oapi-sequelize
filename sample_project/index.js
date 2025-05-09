@@ -42,7 +42,9 @@ try {
     // @todo: on other branch
     const swaggerSpec = sequelize2openapi.parser(app);
     // fs.writeFileSync("./swagger.json", JSON.stringify(swaggerSpec, null, 4));
-    app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+    const jsonSpec = fs.readFileSync("./swagger.json", "utf8");
+    // app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+    app.use('/docs', swaggerUi.serve, swaggerUi.setup(JSON.parse(jsonSpec)));
 } catch (err) {
     throw err;
 }

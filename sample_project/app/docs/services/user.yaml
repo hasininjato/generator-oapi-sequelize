@@ -28,14 +28,34 @@ User:
         - "user:item"
       output:
         - "user:login"
-        - "profile:item"
         - custom:
+            type: "string"
             access_token:
               type: "string"
               description: "Access token"
             refresh_token:
               type: "string"
               description: "Refresh token"
+              example: "fkasjd;ur  rqfj asudf"
+            array_tokens:
+              type: "array"
+              items:
+                access_token:
+                  type: "string"
+                  description: "Access token"
+                refresh_token:
+                  type: "string"
+                  description: "Refresh token"
+            object_tokens:
+              type: "object"
+              items:
+                access_token:
+                  type: "string"
+                  description: "Access token"
+                refresh_token:
+                  type: "string"
+                  description: "Refresh token"
+                  example: "ejgh8ta582.afkrioakljflkjsdfk"
       isCreation: false
     validate_token:
       tags: "Token"
