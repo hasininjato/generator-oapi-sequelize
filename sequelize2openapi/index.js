@@ -104,7 +104,8 @@ function parser(routesVariable) {
         removeInputOutput(openApiSpec);
         return openApiSpec;
     } catch (err) {
-        throw new Error("Configuration file generator-oapi-sequelize.json is missing. Create it as described in the documentation.");
+        throw err;
+        // throw new Error("Configuration file generator-oapi-sequelize.json is missing. Create it as described in the documentation.");
     }
 }
 

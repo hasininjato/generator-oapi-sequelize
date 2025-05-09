@@ -28,6 +28,14 @@ User:
         - "user:item"
       output:
         - "user:login"
+        - "profile:item"
+        - custom:
+            access_token:
+              type: "string"
+              description: "Access token"
+            refresh_token:
+              type: "string"
+              description: "Refresh token"
       isCreation: false
     validate_token:
       tags: "Token"

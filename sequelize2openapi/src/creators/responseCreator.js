@@ -2,6 +2,18 @@ const { transformStr, getSingularPath, getVariablesFromPath } = require("../util
 const responses = require("../utils/statusCode");
 const createRelations = require("./relationCreator");
 
+function isCustomOutput(output) {
+    if (output) {
+        for (const obj of output) {
+            if (typeof obj === "object") {
+                return true;
+            }
+        }
+        return false;
+    }
+    return false;
+}
+
 function createResponse(services, schemas, models) {
     // common responses are 401, 403 and 500 for each route
     const commonResponses = {
@@ -51,6 +63,16 @@ function createResponse(services, schemas, models) {
             } else {
                 // if there is no output (for delete) or more than one (for relation)
                 // @TODO: when there are more than one output
+                let customResponse = null;
+                if (isCustomOutput(config.output)) {
+                    const customIndex = config.output.findIndex(item => typeof item === 'object' && item.custom);
+
+                    // Extract and remove
+                    if (customIndex !== -1) {
+                        customResponse = config.output[customIndex];
+                        config.output.splice(customIndex, 1);
+                    }
+                }
                 if (method === "delete" || config.output?.length === undefined) {
                     services[path][method].responses = {
                         ...responses.response204(),
@@ -64,7 +86,7 @@ function createResponse(services, schemas, models) {
                         if (config.isCreation) {
                             responseOk = responses.response201(null, getSingularPath(path), config, relation);
                         } else {
-                            responseOk = responses.response200(null, config, relation);
+                            responseOk = responses.response200(null, config, relation, schemas, customResponse);
                         }
                     }
                     if (["post", "put", "patch"].includes(method)) {
@@ -80,7 +102,7 @@ function createResponse(services, schemas, models) {
                     } else {
                         services[path][method].responses = {
                             ...commonResponses,
-                            ...responses.response200(null, config, relation),
+                            ...responses.response200(null, config, relation, schemas, customResponse),
                             ...responses.response404(pathVariables)
                         }
                     }
