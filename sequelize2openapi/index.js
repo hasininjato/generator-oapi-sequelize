@@ -1,5 +1,5 @@
 const { modelParser, addRelationManyToManyToEachModel, getAllMethods } = require('./src/parsers/modelParser');
-const { getFileInDirectory, readFileContent, removeInputOutput } = require("./src/utils/utils");
+const { getFileInDirectory, readFileContent, removeKeyDeep} = require("./src/utils/utils");
 const serviceParser = require("./src/parsers/serviceParser");
 const createParameters = require("./src/creators/parameterCreator");
 const createSchemas = require('./src/creators/schemaCreator');
@@ -101,7 +101,9 @@ function parser(routesVariable) {
             };
         });
 
-        removeInputOutput(openApiSpec);
+        openApiSpec = removeKeyDeep(openApiSpec, "input");
+        openApiSpec = removeKeyDeep(openApiSpec, "output");
+        openApiSpec = removeKeyDeep(openApiSpec, "isCreation");
         return openApiSpec;
     } catch (err) {
         throw err;

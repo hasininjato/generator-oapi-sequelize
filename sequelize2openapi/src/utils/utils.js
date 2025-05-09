@@ -167,38 +167,6 @@ const returnRelations = (modelDefinition) => {
     return {relations, programNode, modelName};
 }
 
-function getVariableIdFromPath(path, model) {
-    const result = {
-        lastStaticSegment: null,
-        param: null
-    };
-    const segments = path.split('/').filter(Boolean); // Remove empty segments
-
-    // Must have at least ['api', model, ':param'] structure
-    if (segments.length < 3 || segments[0] !== 'api') {
-        return false;
-    }
-
-    // Handle both versioned and non-versioned paths
-    const modelIndex = segments[1].startsWith('v') ? 2 : 1;
-
-    // Check if we have model segment followed by parameter
-    if (modelIndex >= segments.length - 1) return false;
-
-    const isModelMatch = segments[modelIndex] === model.toLowerCase() ||
-        segments[modelIndex] === `${model.toLowerCase()}s`;
-    const isParam = segments[modelIndex + 1]?.startsWith(':');
-
-    if (isModelMatch && isParam) {
-        // Capitalize the model name for the static segment
-        result.lastStaticSegment = model.charAt(0).toUpperCase() + model.slice(1);
-        result.param = segments[modelIndex + 1].substring(1); // Remove ':'
-        return result;
-    }
-
-    return false;
-}
-
 function getVariablesFromPath(fullPath) {
     if (typeof fullPath !== 'string') return null;
 
@@ -289,27 +257,19 @@ function getSingularPath(path) {
     return null; // Or return original path if preferred
 }
 
-function removeInputOutput(openApiSpec) {
-    // Make a deep copy of the spec to avoid modifying the original
-    // const spec = JSON.parse(JSON.stringify(openApiSpec));
-
-    // Iterate through all paths
-    for (const path in openApiSpec.paths) {
-        const pathItem = openApiSpec.paths[path];
-
-        // Iterate through all operations (get, post, put, delete, etc.)
-        for (const method in pathItem) {
-            const operation = pathItem[method];
-
-            // Remove input and output fields if they exist
-            if (operation.input) {
-                delete operation.input;
-            }
-            if (operation.output) {
-                delete operation.output;
+function removeKeyDeep(obj, keyToRemove) {
+    if (Array.isArray(obj)) {
+        return obj.map(item => removeKeyDeep(item, keyToRemove));
+    } else if (typeof obj === 'object' && obj !== null) {
+        const newObj = {};
+        for (const [key, value] of Object.entries(obj)) {
+            if (key !== keyToRemove) {
+                newObj[key] = removeKeyDeep(value, keyToRemove);
             }
         }
+        return newObj;
     }
+    return obj;
 }
 
 module.exports = {
@@ -330,7 +290,6 @@ module.exports = {
     getEndPointsApi,
     getVariablesFromPath,
     getTypeField,
-    getVariableIdFromPath,
     getSingularPath,
-    removeInputOutput
+    removeKeyDeep
 }

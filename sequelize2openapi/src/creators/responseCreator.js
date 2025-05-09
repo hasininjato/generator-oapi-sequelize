@@ -36,13 +36,13 @@ function createResponse(services, schemas, models) {
                         if (config.isCreation) {
                             responseOk = responses.response201(transformedObj, getSingularPath(path), config);
                         } else {
-                            responseOk = responses.response200(transformedObj, config);
+                            responseOk = responses.response200(transformedObj, config, null, null);
                         }
                     }
                     // for post, we return 201. for put or patch, we return 200 and 404.
                     const successResponse = method === "post"
                         ? responseOk
-                        : { ...responses.response200(transformedObj, config, null), ...responses.response404(pathVariables) };
+                        : { ...responses.response200(transformedObj, config, null, null), ...responses.response404(pathVariables) };
 
                     // we add responses
                     services[path][method].responses = {
@@ -54,7 +54,7 @@ function createResponse(services, schemas, models) {
                 } else if (method === "get") {
                     // for get method
                     services[path][method].responses = {
-                        ...responses.response200(transformedObj, config, null),
+                        ...responses.response200(transformedObj, config, null, null, null),
                         ...commonResponses,
                         ...responses.response404(pathVariables)
                     };

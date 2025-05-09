@@ -1,5 +1,5 @@
-const { capitalizeFirstLetter } = require('./utils');
-const { sequelizeValidationHandlers } = require('./constants');
+const {capitalizeFirstLetter} = require('./utils');
+const {sequelizeValidationHandlers} = require('./constants');
 
 function createResponseSchema(ref) {
     return {
@@ -10,22 +10,66 @@ function createResponseSchema(ref) {
 function response200(obj, service, relation, schemas, customResponse = null) {
     const summary = service.summary || "";
     let ref = obj ? obj.pascalCase : relation;
-    if (customResponse !== null) {
-        const customRef = JSON.parse(JSON.stringify(schemas[ref]));
-        Object.assign(customRef.properties, customResponse.custom);
-        ref = `Custom${ref}`;
-        // console.log(customRef);
-        for (const [elt, index] of Object.entries(customResponse)) {
-            console.log(elt, index)
-        }
+
+    if (customResponse?.custom) {
+        const customRef = `Custom${ref}`;
+        const copyRef = JSON.parse(JSON.stringify(schemas[ref]));
+
+        const transform = (value) => {
+            if (typeof value !== 'object' || value === null) return value;
+
+            const {type, description = '', items, ...rest} = value;
+
+            if (type === 'array' && items) {
+                const properties = Object.fromEntries(
+                    Object.entries(items).map(([k, v]) => [k, transform(v)])
+                );
+                return {
+                    type: 'array',
+                    description,
+                    items: {
+                        type: 'object',
+                        properties
+                    }
+                };
+            }
+
+            if (items) {
+                const properties = Object.fromEntries(
+                    Object.entries(items).map(([k, v]) => [k, transform(v)])
+                );
+                return {
+                    type: 'object',
+                    description,
+                    properties
+                };
+            }
+
+            return {type, description, ...rest};
+        };
+
+        const transformed = Object.fromEntries(
+            Object.entries(customResponse.custom)
+                .filter(([key]) => key !== 'type')
+                .map(([key, val]) => [key, transform(val)])
+        );
+
+        const isComplex = ['array', 'object'].includes(customResponse.custom.type);
+        copyRef.properties = {
+            ...copyRef.properties,
+            ...(isComplex ? transformed.items || {} : transformed)
+        };
+
+        schemas[customRef] = copyRef;
+        ref = customRef;
     }
 
     return {
         200: {
             description: summary,
             content: {
-                "application/json": {
-                    schema: createResponseSchema(ref)
+                'application/json': {
+                    schema: {$ref: `#/components/schemas/${ref}`}
                 }
             }
         }
@@ -62,7 +106,7 @@ function getValidationDetails(modelFields) {
     const details = [];
 
     modelFields?.forEach(field => {
-        const { field: name, object: { validate } } = field;
+        const {field: name, object: {validate}} = field;
 
         if (validate) {
             for (const [validationType, validationConfig] of Object.entries(validate)) {
@@ -130,7 +174,7 @@ function getUniqueConstraints(modelFields) {
     const details = [];
 
     modelFields?.forEach(field => {
-        const { field: name, object: { unique } } = field;
+        const {field: name, object: {unique}} = field;
 
         if (unique) {
             const message = typeof unique === "boolean"
