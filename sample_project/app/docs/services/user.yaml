@@ -65,7 +65,14 @@ User:
         summary: "Validate token sent in parameter"
         description: "Validate token sent in parameter"
       input:
-        - user:item
+        - "user:item"
+      output:
+        - custom:
+            type: "string"
+            message:
+              type: "string"
+              description: "Validity of the token"
+              example: "The token is still valid"
       params:
         query:
           name: "token"

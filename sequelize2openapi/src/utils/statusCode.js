@@ -12,8 +12,21 @@ function response200(obj, service, relation, schemas, customResponse = null) {
     let ref = obj ? obj.pascalCase : relation;
 
     if (customResponse?.custom) {
-        const customRef = `Custom${ref}`;
-        const copyRef = JSON.parse(JSON.stringify(schemas[ref]));
+        const customRef = `Custom${service.customPath}`;
+        let copyRef = {};
+        console.error(customResponse.custom.type);
+        let customType = "array";
+        if (["string", "object"].includes(customResponse.custom.type)) {
+            customType = "object";
+        }
+        if (ref !== undefined && ref !== null) {
+            copyRef = JSON.parse(JSON.stringify(schemas[ref]));
+        } else {
+            schemas[customRef] = {
+                type: customType,
+                properties: {}
+            };
+        }
 
         const transform = (value) => {
             if (typeof value !== 'object' || value === null) return value;
@@ -55,12 +68,18 @@ function response200(obj, service, relation, schemas, customResponse = null) {
         );
 
         const isComplex = ['array', 'object'].includes(customResponse.custom.type);
-        copyRef.properties = {
-            ...copyRef.properties,
-            ...(isComplex ? transformed.items || {} : transformed)
-        };
+        if (ref) {
+            copyRef.properties = {
+                ...copyRef.properties,
+                ...(isComplex ? transformed.items || {} : transformed)
+            };
+            schemas[customRef] = copyRef;
+        } else {
+            schemas[customRef].properties = {
+                ...(isComplex ? transformed.items || {} : transformed)
+            }
+        }
 
-        schemas[customRef] = copyRef;
         ref = customRef;
     }
 

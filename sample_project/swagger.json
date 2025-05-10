@@ -959,7 +959,7 @@
                     }
                 }
             },
-            "CustomUserRelationItem": {
+            "CustomLogin": {
                 "type": "object",
                 "properties": {
                     "id": {
@@ -1015,6 +1015,16 @@
                                 "example": "ejgh8ta582.afkrioakljflkjsdfk"
                             }
                         }
+                    }
+                }
+            },
+            "CustomValidateToken": {
+                "type": "object",
+                "properties": {
+                    "message": {
+                        "type": "string",
+                        "description": "Validity of the token",
+                        "example": "The token is still valid"
                     }
                 }
             },
@@ -1092,6 +1102,7 @@
                 "tags": [
                     "Post"
                 ],
+                "customPath": "Get",
                 "responses": {
                     "200": {
                         "description": "List of all posts",
@@ -1120,6 +1131,7 @@
                 "tags": [
                     "Post"
                 ],
+                "customPath": "Post",
                 "requestBody": {
                     "content": {
                         "application/json": {
@@ -1196,6 +1208,7 @@
                 "tags": [
                     "Post"
                 ],
+                "customPath": "Get",
                 "parameters": [
                     {
                         "$ref": "#/components/parameters/PostId"
@@ -1232,6 +1245,7 @@
                 "tags": [
                     "Post"
                 ],
+                "customPath": "Put",
                 "parameters": [
                     {
                         "$ref": "#/components/parameters/PostId"
@@ -1304,6 +1318,7 @@
                 "tags": [
                     "Post"
                 ],
+                "customPath": "Delete",
                 "parameters": [
                     {
                         "$ref": "#/components/parameters/PostId"
@@ -1335,6 +1350,7 @@
                 "tags": [
                     "Profile"
                 ],
+                "customPath": "Get",
                 "responses": {
                     "200": {
                         "description": "List of all profiles",
@@ -1363,6 +1379,7 @@
                 "tags": [
                     "Profile"
                 ],
+                "customPath": "Post",
                 "requestBody": {
                     "content": {
                         "application/json": {
@@ -1430,6 +1447,7 @@
                 "tags": [
                     "Profile"
                 ],
+                "customPath": "Get",
                 "parameters": [
                     {
                         "$ref": "#/components/parameters/ProfileId"
@@ -1466,6 +1484,7 @@
                 "tags": [
                     "Profile"
                 ],
+                "customPath": "Put",
                 "parameters": [
                     {
                         "$ref": "#/components/parameters/ProfileId"
@@ -1539,6 +1558,7 @@
                 "tags": [
                     "Profile"
                 ],
+                "customPath": "Delete",
                 "parameters": [
                     {
                         "$ref": "#/components/parameters/ProfileId"
@@ -1570,6 +1590,7 @@
                 "tags": [
                     "Tag"
                 ],
+                "customPath": "Get",
                 "responses": {
                     "200": {
                         "description": "List of all tags",
@@ -1598,6 +1619,7 @@
                 "tags": [
                     "Tag"
                 ],
+                "customPath": "Post",
                 "requestBody": {
                     "content": {
                         "application/json": {
@@ -1665,6 +1687,7 @@
                 "tags": [
                     "Tag"
                 ],
+                "customPath": "Get",
                 "parameters": [
                     {
                         "$ref": "#/components/parameters/TagId"
@@ -1701,6 +1724,7 @@
                 "tags": [
                     "Tag"
                 ],
+                "customPath": "Put",
                 "parameters": [
                     {
                         "$ref": "#/components/parameters/TagId"
@@ -1764,6 +1788,7 @@
                 "tags": [
                     "Tag"
                 ],
+                "customPath": "Delete",
                 "parameters": [
                     {
                         "$ref": "#/components/parameters/TagId"
@@ -1795,6 +1820,7 @@
                 "tags": [
                     "User"
                 ],
+                "customPath": "Get",
                 "responses": {
                     "200": {
                         "description": "List of all users",
@@ -1823,6 +1849,7 @@
                 "tags": [
                     "User"
                 ],
+                "customPath": "Post",
                 "requestBody": {
                     "content": {
                         "application/json": {
@@ -1924,6 +1951,7 @@
                 "tags": [
                     "Authentication"
                 ],
+                "customPath": "Login",
                 "requestBody": {
                     "content": {
                         "application/json": {
@@ -1939,7 +1967,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/CustomUserRelationItem"
+                                    "$ref": "#/components/schemas/CustomLogin"
                                 }
                             }
                         }
@@ -2025,6 +2053,7 @@
                 "tags": [
                     "Token"
                 ],
+                "customPath": "ValidateToken",
                 "requestBody": {
                     "content": {
                         "application/json": {
@@ -2035,8 +2064,15 @@
                     }
                 },
                 "responses": {
-                    "204": {
-                        "description": "No content"
+                    "200": {
+                        "description": "Validate token sent in parameter",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CustomValidateToken"
+                                }
+                            }
+                        }
                     },
                     "401": {
                         "description": "Unauthorized"
@@ -2057,6 +2093,7 @@
                 "tags": [
                     "User"
                 ],
+                "customPath": "Get",
                 "parameters": [
                     {
                         "$ref": "#/components/parameters/UserId"
@@ -2093,6 +2130,7 @@
                 "tags": [
                     "User"
                 ],
+                "customPath": "Put",
                 "parameters": [
                     {
                         "$ref": "#/components/parameters/UserId"
@@ -2200,6 +2238,7 @@
                 "tags": [
                     "User"
                 ],
+                "customPath": "Delete",
                 "parameters": [
                     {
                         "$ref": "#/components/parameters/UserId"
@@ -2231,6 +2270,7 @@
                 "tags": [
                     "Transaction"
                 ],
+                "customPath": "CreateTransaction",
                 "parameters": [
                     {
                         "$ref": "#/components/parameters/UserId"
@@ -2326,6 +2366,7 @@
                 "tags": [
                     "Transaction"
                 ],
+                "customPath": "ListTransaction",
                 "parameters": [
                     {
                         "$ref": "#/components/parameters/UserId"
@@ -2364,6 +2405,7 @@
                 "tags": [
                     "Transaction"
                 ],
+                "customPath": "ListTransactionWithName",
                 "parameters": [
                     {
                         "$ref": "#/components/parameters/UserId"

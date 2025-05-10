@@ -80,12 +80,11 @@ function parser(routesVariable) {
 
         servicesFiles.forEach(file => {
             const content = readFileContent(`${servicesPath}/${file}`);
-            const parameters = createParameters(routesVariable);
-            components.components["parameters"] = parameters;
+            components.components["parameters"] = createParameters(routesVariable);
             components.components["schemas"] = schemas;
 
             // Get the service definition for this file
-            const currentService = serviceParser(content, routesVariable, routePrefix, parameters);
+            const currentService = serviceParser(content, routesVariable, routePrefix);
 
             // Merge the current service into the accumulated services
             services = { ...services, ...currentService };

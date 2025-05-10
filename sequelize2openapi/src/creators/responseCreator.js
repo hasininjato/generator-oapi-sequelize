@@ -23,11 +23,22 @@ function createResponse(services, schemas, models) {
     };
     for (const [path, service] of Object.entries(services)) {
         const pathVariables = getVariablesFromPath(path);
-        for (const [method, config] of Object.entries(service)) {
 
+        for (const [method, config] of Object.entries(service)) {
             // first process when there is no relation in the output
             if (config.output?.length === 1) {
-                const transformedObj = transformStr(config.output[0]); // parse the output value
+                let transformedObj = null;
+                if (isCustomOutput(config.output)) {
+                    const customIndex = config.output.findIndex(item => typeof item === 'object' && item.custom);
+
+                    // Extract and remove
+                    if (customIndex !== -1) {
+                        transformedObj = config.output[customIndex];
+                        config.output.splice(customIndex, 1);
+                    }
+                } else {
+                    transformedObj = transformStr(config.output[0]); // parse the output value
+                }
 
                 // for modification method
                 if (["post", "put", "patch"].includes(method)) {
@@ -54,7 +65,7 @@ function createResponse(services, schemas, models) {
                 } else if (method === "get") {
                     // for get method
                     services[path][method].responses = {
-                        ...responses.response200(transformedObj, config, null, null, null),
+                        ...responses.response200(transformedObj, config, null, schemas, transformedObj),
                         ...commonResponses,
                         ...responses.response404(pathVariables)
                     };

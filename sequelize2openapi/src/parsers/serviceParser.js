@@ -1,6 +1,6 @@
 const yaml = require("js-yaml");
-const { getEndPointsApi } = require("../utils/utils");
-const { getVariablesFromPath, capitalizeFirstLetter } = require("../utils/utils");
+const {getEndPointsApi, toPascalCase} = require("../utils/utils");
+const {getVariablesFromPath, capitalizeFirstLetter} = require("../utils/utils");
 
 /**
  * get the model name from the parsed yaml
@@ -89,7 +89,7 @@ function getParameters(path) {
  * @param {Boolean} isCollection
  * @returns
  */
-function parseOperations(operations, routesVariable, routePrefix, model, isCollection, parameters) {
+function parseOperations(operations, routesVariable, routePrefix, model, isCollection) {
     const operationsResult = {};
     if (operations) {
         for (const [operationName, operation] of Object.entries(operations)) {
@@ -118,16 +118,21 @@ function parseOperations(operations, routesVariable, routePrefix, model, isColle
             const parameter = getParameters(updatePath);
 
             // Add the method operation
+            // add the custom path name to further processing
+            let customOperation = {};
+            customOperation = {
+                customPath: toPascalCase(operationName),
+            };
             operationsResult[updatePath][method.toLowerCase()] = {
                 summary,
                 description,
                 tags,
                 input: operation.input,
-                output: operation.output
+                output: operation.output,
+                ...customOperation
             };
             if (method === "POST") {
-                const creation = operation.isCreation ?? (operationName === "post" || true);
-                operationsResult[updatePath][method.toLowerCase()].isCreation = creation;
+                operationsResult[updatePath][method.toLowerCase()].isCreation = operation.isCreation ?? (operationName === "post" || true);
             }
             if (parameter) {
                 operationsResult[updatePath][method.toLowerCase()]["parameters"] = [
@@ -146,14 +151,14 @@ function parseOperations(operations, routesVariable, routePrefix, model, isColle
  * @param {string} routesVariable
  * @param {string} routePrefix
  */
-function serviceParser(content, routesVariable, routePrefix, parameters) {
+function serviceParser(content, routesVariable, routePrefix) {
     let operationsResult = {};
     const parsedYaml = yaml.load(content);
     const [model] = getModelName(parsedYaml);
-    const { collectionOperations, itemOperations } = parsedYaml[model];
+    const {collectionOperations, itemOperations} = parsedYaml[model];
     operationsResult = {
-        ...parseOperations(collectionOperations, routesVariable, routePrefix, model, true, parameters),
-        ...parseOperations(itemOperations, routesVariable, routePrefix, model, false, parameters)
+        ...parseOperations(collectionOperations, routesVariable, routePrefix, model, true),
+        ...parseOperations(itemOperations, routesVariable, routePrefix, model, false)
     };
     return operationsResult
 }

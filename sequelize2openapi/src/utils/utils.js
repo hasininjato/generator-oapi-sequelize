@@ -272,6 +272,13 @@ function removeKeyDeep(obj, keyToRemove) {
     return obj;
 }
 
+function toPascalCase(str) {
+    return str
+        .split('_')
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+        .join('');
+}
+
 module.exports = {
     readFileContent,
     getFileInDirectory,
@@ -291,5 +298,6 @@ module.exports = {
     getVariablesFromPath,
     getTypeField,
     getSingularPath,
-    removeKeyDeep
+    removeKeyDeep,
+    toPascalCase
 }
