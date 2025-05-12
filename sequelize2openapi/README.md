@@ -1,15 +1,17 @@
 # Sequelize2OpenAPI
 
-**Sequelize2OpenAPI** is a tool that automatically generates OpenAPI specifications for Express.js projects based on
-annotations directly written in your Sequelize models.
+**Sequelize2OpenAPI** is a tool that automatically generates OpenAPI specifications (formerly Swagger) for Express.js API applications by analyzing annotations directly written in Sequelize models. This allows developers to maintain API documentation alongside their data models, ensuring consistency and reducing documentation overhead.
 
 # Install
 
-Install dependencies in the backend examples project and in the swaggelize folder with the command `npm i`
+This package is still under development and not yet published on npmjs. But it can be installed with the command `npm install sequelize2openapi`.
 
 # Usage
 
-Create a configuration file *sequelize2openapi.json* with this content
+## Configuration
+
+First, create a configuration file *sequelize2openapi.json* with this content:
+
 ```json
 {
     "openApiDefinition": {
@@ -31,31 +33,46 @@ Create a configuration file *sequelize2openapi.json* with this content
             }
         ]
     },
-    "servicesPath": "app/docs/services",
-    "modelsPath": "app/models",
+    "servicesPath": "./app/docs/services",
+    "modelsPath": "./app/models",
     "defaultSecurity": "jwt",
     "routePrefix": "/api"
 }
 ```
 
-In your main JS file
+### Options
+
+- `openApiDefinition`: Definitions of the OpenAPI specification for the project
+  - `openApi`: Version of the specification
+  - `info`: Information about the project
+    - `title`: Title of your project
+    - `description`: Description of your project
+    - `contact`: Contact information of the creator of the project
+      - `name`: Name of the creator of the project
+      - `email`: His/Her email address
+    - `version`: Version of your project
+  - `servers`: Array of server URLs where the API is hosted
+- `servicesPath`: Path to your service files
+- `modelsPath`: Path to your Sequelize models files
+- `defaultSecurity`: Security to be used (this is still ongoing)
+- `routePrefix`: Prefix for all API routes (e.g., "/api")
+
+## In main JS file
+
+In your main JS file, this is how you use the package:
 
 ```javascript
+const app = express()
 const sequelize2openapi = require('sequelize2openapi');
-
-try {
-  const swaggerSpec = sequelize2openapi(app);
-  app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
-} catch (err) {
-  throw err;
-}
+const swaggerSpec = sequelize2openapi(app);
+app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 ```
 
-## In your models
+## In models
 
 ### Simple usage
 
-In your Sequelize model, declare your model and annotate your fields with the `@swag` comment like this
+In your Sequelize model, declare your model and annotate your fields with the `@swag` comment like this:
 
 ```javascript
 const Profile = sequelize.define('Profile', {
@@ -73,14 +90,20 @@ const Profile = sequelize.define('Profile', {
     /**
      * @swag
      * description: Profile bio
+     * example: Biography of the user
      * methods: list, item, put, post
      */
     bio: DataTypes.TEXT
 });
 ```
 
-where `description` is the description of the field and `methods` is the group where the fields will be used in your api
-endpoints.
+#### Options
+
+- `description`: Descriptioin of your field
+- `example`: Example value
+- `methods`: To group fields to be used later on request payload or responses.
+  - Typically corresponds to CRUD operations (get [divided into `list` and `item`], post,put) or custom methods
+  - Other possible values depend on your API implementation
 
 ### Usage with relationships
 
@@ -93,9 +116,7 @@ User.hasOne(Profile);
 Profile.belongsTo(User);
 ```
 
-- One-to-many association: let's say you have two models User and Transaction, and one user has many transactions and a
-  transaction is attached to only one user.
-  For this association, you have to annotate your source model (here the User model) with a keyword like this:
+- One-to-many association: let's say you have two models User and Transaction, and one user has many transactions and a transaction is attached to only one user. For this association, you have to annotate your source model (here the User model) with the keyword `relations` which will hold the values of the associations:
 
 ```javascript
 /**
@@ -110,13 +131,9 @@ User.hasMany(Transaction, {
 Transaction.belongsTo(User, {foreignKey: 'userId'});
 ```
 
-which means on each user, there is a `Transactions` key which holds his/her transactions. If you don't specify so, a
-default value as the name of the target model + s
-is generated.
+If no relations value is specified, a default value as the name of the target model + s is generated.
 
-- Many-to-many association: let's say you have two models Tag and Post, and a tag can be attached to many posts, and a
-  post can have many tags. For this association,
-  you have to annotate both your source and target models with keywords that will hold the relations on each model:
+- Many-to-many association: let's say you have two models Tag and Post, and a tag can be attached to many posts, and a post can have many tags. For this association, you have to annotate both your source and target models with the keyword `relations` that will hold the relations on each model:
 
 ```javascript
 /**
@@ -131,111 +148,210 @@ Post.belongsToMany(Tag, {through: PostTags});
 Tag.belongsToMany(Post, {through: PostTags});
 ```
 
-## In your services YAML files
+## In services
 
-To hold the description of your API endpoints (paths, input or response of a request and so on), you need to create a
-`docs/services` folder inside your project. Inside it, create a YAML config file for each of your model. Its content is
-like below:
+A service is a YAML file that describes the API endpoints (paths, request payload, response of a request, etc.). It is stored in the folder `servicesPath` as described in the `sequelize2openapi.json` configuration file. Its content is something like:
 
 ```yaml
-User:
+ModelName:
   collectionOperations:
     get:
       openapi_context:
-        summary: "List of all users"
-        description: "List of all users"
+        summary: "List all items"
+        description: "Get paginated list of items"
       output:
-        - "user:list"
-        - "profile:item"
+        - "modelname:list"
     post:
       openapi_context:
-        summary: "Create a user"
-        description: "Create a user"
+        summary: "Create new item"
+        description: "Create a new item"
       input:
-        - "user:post"
-        - "profile:post"
+        - "modelname:post"
       output:
-        - "user:item"
-        - "profile:item"
-    login:
-      tags: "Authentication"
-      path: "/auth/login"
-      method: "POST"
-      openapi_context:
-        summary: "Login an user"
-        description: "Login an user"
-      input:
-        - "user:item"
-      output:
-        - "user:item"
-    validate_token:
-      tags: "Token"
-      path: "/validate/token"
-      method: "GET"
-      openapi_context:
-        summary: "Validate token sent in parameter"
-        description: "Validate token sent in parameter"
-      input:
-        - user:item
-      params:
-        query:
-          name: "token"
+        - "modelname:item"
+      isCreation: true
+  
   itemOperations:
     get:
       openapi_context:
-        summary: "Get user by id"
-        description: "Get user by id"
+        summary: "Get item by ID"
+        description: "Get single item by its ID"
       output:
-        - "user:item"
+        - "modelname:item"
     put:
       openapi_context:
-        summary: "Update an user by id"
-        description: "Update an user by id"
+        summary: "Update item"
+        description: "Update existing item"
       input:
-        - "user:put"
+        - "modelname:put"
       output:
-        - "user:item"
+        - "modelname:item"
     delete:
       openapi_context:
-        summary: "Delete an user by id"
-        description: "Delete an user by id"
-    create_transaction:
-      tags: "Transaction"
-      method: "POST"
-      path: "/users/{id}/transactions"
-      openapi_context:
-        summary: "Creation of a transaction of a user"
-        description: "Create a transaction of the user sent in param"
-      input:
-        - "transaction:post"
-      output:
-        - "transaction:item"
-    list_transaction:
-      tags: "Transaction"
-      method: "GET"
-      path: "/users/{id}/transactions"
-      openapi_context:
-        summary: "List of all transactions of an user by id"
-        description: "List of all transactions of an user by id"
-      output:
-        - "user:item"
-        - "transaction:list"
-    list_transaction_with_name:
-      tags: "Transaction"
-      method: "GET"
-      path: "/users/{id}/transactions/{name}"
-      openapi_context:
-        summary: "List of all transactions with name of an user by id"
-        description: "List of all transactions with name of an user by id"
-      output:
-        - "user:item"
-        - "transaction:list"
+        summary: "Delete item"
+        description: "Delete an item"
 ```
 
-First, you declare the name of the model in the first line. Then you declare `collectionOperations` (which act on a list
-of resources or the entire collection of a resource. Typically, you would use collection operations for actions like
-listing all resources or creating a new resource. Example: GET /users (list all users), POST /users (create a new
-user).) and `itemOperations` that act on individual resources (items) identified by a unique identifier (They often
-include actions like retrieving, updating, or deleting a single resource. Example: GET /users/{id} (get a user by ID),
-PUT /users/{id} (update a user by ID).). In each operation, for default routes, you specify the route method (for
-collection they are `post` and `get`, for item they are `get`, `put`, `post` (in rare case) and `delete`).
+### Options
+
+The service file begins with the name of the model.
+
+- `collectionOperations`: act on a list of resources or the entire collection of a resource. Typically, you would use collection operations for actions like listing all resources or creating a new resource. Example: GET /users (list all users), POST /users (create a new user).
+- `itemOperations`: act on individual resources (items) identified by a unique identifier (often include actions like retrieving, updating, or deleting a single resource. Example: GET /users/{id} (get a user by ID), PUT /users/{id} (update a user by ID).)
+- On each operation, for default routes, you specify the route method (for collection they are `post` and `get`, for item they are `get`, `put`, `post` (in rare case) and `delete`)
+- `openapi_context`: Description of the routes
+  - `summary`: Summary of the route
+  - `description`: Long description of the route
+- `output`: Fields output to show in responses of a request. It takes an array of a string like this: **model:method**, **model** is the name of the model in lowercase and **method** is the value as described in the Sequelize model annotation **methods**.
+- `input`: Fields input to show in request payload of a route. This option is basically declared on `put` or `post` operation.
+
+### CLI tool
+
+Sequelize2OpenAPI offers a CLI tool to automatically generate the default service file based on a Sequelize model, by running `sequelize2openapi --m ModelName`. This creates a service file in your configured `servicesPath` with default content for the specified model.
+
+### Custom operations
+
+You can define custom routes that don't follow the standard CRUD patterns.
+
+```yaml
+Model:
+  custom_path:
+    tags: "Custom path"
+    path: "/custom/path"
+    method: "POST"
+    openapi_context:
+        summary: "Custom path"
+        description: "Declaring custom path"
+    input:
+        - "model:post"
+    output:
+        - "model:custom"
+```
+
+### Custom output
+
+If annotating Sequelize models fields are unsufficient, you can declare custom fields to your responses. There are 3 types of custom output.
+- `inline`: If custom is type of string, the declared custom fields will be appended directly in the other fields.
+```yaml
+output:
+  - "model:custom"
+  - custom:
+      type: "inline"
+      items:
+        - type: "object"
+          properties:
+            access_token:
+              type: "string"
+              description: "Access token"
+              example: "Access token"
+            refresh_token:
+              type: "string"
+              description: "Refresh token"
+              example: "Refresh token"
+```
+This will output in the OpenAPI specifications something like:
+```json
+{
+    "model": {},
+    "access_token": {
+        "type": "string",
+        "description": "Access token",
+        "example": "Access token"
+    },
+    "refresh_token": {
+        "type": "string",
+        "description": "Refresh token",
+        "example": "Refresh token"
+    }
+}
+```
+
+- `object`: If custom is type of object, the declared custom fields will be appended directly in the output other fields as an object.
+```yaml
+output:
+  - "model:custom"
+  - custom:
+      type: "object"
+      items:
+        - type: "object"
+          properties:
+            access_token:
+              type: "string"
+              description: "Access token"
+              example: "Access token"
+            refresh_token:
+              type: "string"
+              description: "Refresh token"
+              example: "Refresh token"
+
+```
+This will output in the OpenAPI specifications something like:
+```json
+{
+	"model": {},
+	"tokens": {
+		"access_token": {
+			"type": "string",
+			"description": "Access token",
+			"example": "Access token"
+		},
+		"refresh_token": {
+			"type": "string",
+			"description": "Refresh token",
+			"example": "Refresh token"
+		}
+	}
+}
+```
+
+- `array`: If custom is type of array, the declared custom fields will be appended directly in the output other fields as an array.
+```yaml
+output:
+  - "model:custom"
+  - custom:
+      type: "array"
+      items:
+        - type: "object"
+          properties:
+            access_token:
+              type: "string"
+              description: "Access token"
+              example: "Access token"
+            refresh_token:
+              type: "string"
+              description: "Refresh token"
+              example: "Refresh token"
+
+```
+This will output in the OpenAPI specifications something like:
+```json
+{
+	"model": {},
+	"tokens": [
+		{
+			"access_token": {
+				"type": "string",
+				"description": "Access token",
+				"example": "Access token"
+			},
+			"refresh_token": {
+				"type": "string",
+				"description": "Refresh token",
+				"example": "Refresh token"
+			}
+		}
+	]
+}
+```
+
+# Best Practices
+
+1. Keep your model annotations up-to-date with your actual API behavior
+2. Use descriptive field descriptions to help API consumers
+3. Explicitly specify which methods include each field for clarity
+4. Regularly review the generated documentation to ensure accuracy
+5. Use the CLI tool to bootstrap new service files when adding models
+
+# Support
+
+For issues or feature requests, please contact Hasininjato Rojovao or open an issue in the project repository.
