@@ -1,114 +1,159 @@
 const {capitalizeFirstLetter} = require('./utils');
 const {sequelizeValidationHandlers} = require('./constants');
 
-/**
- *
- * @param obj
- * @param {*} service
- * @param relation
- * @returns
- */
-function response200(obj, service, relation) {
-    const summary = service.summary || "";
-    let ref = "";
-    if (obj) {
-        ref = obj.pascalCase;
-    } else {
-        ref = relation;
-    }
+function createResponseSchema(ref) {
     return {
-        200: {
-            "description": summary,
-            "content": {
-                "application/json": {
-                    "schema": {
-                        "$ref": `#/components/schemas/${ref}`
-                    }
-                }
-            }
-        }
-    }
+        "$ref": `#/components/schemas/${ref}`
+    };
 }
 
-/**
- *
- * @param {Object} obj
- * @param model
- * @param {*} service
- * @param relation
- * @returns
- */
-function response201(obj, model, service, relation = null) {
-    let description = "";
-    let componentName = "";
-    if (model) {
-        description = `${model} created successfully`;
-    } else {
-        description = `${service.summary} successfully`
-    }
-    if (obj) {
-        componentName = `${obj.pascalCase}`;
-    } else {
-        componentName = relation;
-    }
-    return {
-        201: {
-            "description": description,
-            "content": {
-                "application/json": {
-                    "schema": {
-                        "$ref": `#/components/schemas/${componentName}`,
+function response200(obj, service, relation, schemas, customOutput = null) {
+    const summary = service.summary || "";
+    let ref = obj ? obj.pascalCase : relation;
+
+    if (customOutput?.custom) {
+        const customRef = `Custom${service.customPath}`;
+        let copyRef = {};
+        let customType = "array";
+        if (["string", "object"].includes(customOutput.custom.type)) {
+            customType = "object";
+        }
+        if (ref !== undefined && ref !== null) {
+            copyRef = JSON.parse(JSON.stringify(schemas[ref]));
+        } else {
+            schemas[customRef] = {
+                type: customType,
+                properties: {}
+            };
+        }
+
+        const transform = (value) => {
+            if (typeof value !== 'object' || value === null) return value;
+
+            const {type, description = '', items, ...rest} = value;
+
+            if (type === 'array' && items) {
+                const properties = Object.fromEntries(
+                    Object.entries(items).map(([k, v]) => [k, transform(v)])
+                );
+                return {
+                    type: 'array',
+                    description,
+                    items: {
+                        type: 'object',
+                        properties
                     }
+                };
+            }
+
+            if (items) {
+                const properties = Object.fromEntries(
+                    Object.entries(items).map(([k, v]) => [k, transform(v)])
+                );
+                return {
+                    type: 'object',
+                    description,
+                    properties
+                };
+            }
+
+            return {type, description, ...rest};
+        };
+
+        const transformed = Object.fromEntries(
+            Object.entries(customOutput.custom)
+                .filter(([key]) => key !== 'type')
+                .map(([key, val]) => [key, transform(val)])
+        );
+
+        const isComplex = ['array', 'object'].includes(customOutput.custom.type);
+        if (ref) {
+            copyRef.properties = {
+                ...copyRef.properties,
+                ...(isComplex ? transformed.items || {} : transformed)
+            };
+            schemas[customRef] = copyRef;
+        } else {
+            schemas[customRef].properties = {
+                ...(isComplex ? transformed.items || {} : transformed)
+            }
+        }
+
+        ref = customRef;
+    }
+
+    return {
+        200: {
+            description: summary,
+            content: {
+                'application/json': {
+                    schema: {$ref: `#/components/schemas/${ref}`}
                 }
             }
         }
-    }
+    };
+}
+
+function response201(obj, model, service, relation = null) {
+    const description = model
+        ? `${model} created successfully`
+        : `${service.summary} successfully`;
+    const componentName = obj ? obj.pascalCase : relation;
+
+    return {
+        201: {
+            description,
+            content: {
+                "application/json": {
+                    schema: createResponseSchema(componentName)
+                }
+            }
+        }
+    };
 }
 
 function response204() {
     return {
-        "204": {
-            "description": "No content"
+        204: {
+            description: "No content"
         }
-    }
+    };
 }
 
-/**
- * Validation error on fields based on Sequelize
- * @param {Object} obj
- * @param {Object} models
- * @returns
- */
-function response400(obj, models) {
-    const modelName = capitalizeFirstLetter(obj.prefix);
-    const findModel = models.find((model => model.sequelizeModel === modelName));
-
+function getValidationDetails(modelFields) {
     const details = [];
 
-    // Extract possible validation errors from each field
-    findModel.value?.forEach(field => {
+    modelFields?.forEach(field => {
         const {field: name, object: {validate}} = field;
 
         if (validate) {
             for (const [validationType, validationConfig] of Object.entries(validate)) {
                 if (sequelizeValidationHandlers[validationType]) {
-                    details.push(sequelizeValidationHandlers[validationType](name, validationConfig));
+                    details.push(
+                        sequelizeValidationHandlers[validationType](name, validationConfig)
+                    );
                 }
             }
         }
     });
 
-    // Return the 400 response structure
+    return details;
+}
+
+function response400(obj, models) {
+    const modelName = capitalizeFirstLetter(obj.prefix);
+    const findModel = models.find(model => model.sequelizeModel === modelName);
+    const details = getValidationDetails(findModel?.value);
+
     return {
         400: {
             description: "Bad request (VALIDATION_ERROR)",
             content: {
                 "application/json": {
-                    schema: {
-                        "$ref": "#/components/schemas/Response400Schema"
-                    },
+                    schema: createResponseSchema("Response400Schema"),
                     example: {
-                        details: [...details]
+                        name: "ValidationError",
+                        errors: details
                     }
                 }
             }
@@ -119,78 +164,78 @@ function response400(obj, models) {
 function response401() {
     return {
         401: {
-            "description": "Unauthorized"
+            description: "Unauthorized"
         }
-    }
+    };
 }
 
 function response403() {
     return {
         403: {
-            "description": "Forbidden"
+            description: "Forbidden"
         }
-    }
+    };
 }
 
 function response404(paths) {
-    if (paths) {
-        let models = "";
-        for (const path of paths) {
-            models += path.lastStaticSegment + ", ";
+    if (!paths) return null;
+
+    const models = paths.map(path => path.lastStaticSegment).join(", ");
+    return {
+        404: {
+            description: `${models} not found`
         }
-        return {
-            404: {
-                "description": `${models.slice(0, -2)} not found`,
-            }
+    };
+}
+
+function getUniqueConstraints(modelFields) {
+    const details = [];
+
+    modelFields?.forEach(field => {
+        const {field: name, object: {unique}} = field;
+
+        if (unique) {
+            const message = typeof unique === "boolean"
+                ? `Constraint violations on ${field.field}`
+                : unique.msg;
+
+            details.push({
+                field: field.field,
+                message
+            });
         }
-    }
-    return null;
+    });
+
+    return details;
 }
 
 function response409(obj, models) {
     const modelName = capitalizeFirstLetter(obj.prefix);
-    const findModel = models.find((model => model.sequelizeModel === modelName));
+    const findModel = models.find(model => model.sequelizeModel === modelName);
+    const details = getUniqueConstraints(findModel?.value);
 
-    const details = [];
-    // extract unique validation message from each field
-    findModel.value?.forEach(field => {
-        const {field: name, object: {unique}} = field;
-        if (unique) {
-            let message = "";
-            if (typeof unique === "boolean") {
-                message = `Constraint violations on ${field.field}`;
-            } else {
-                message = unique.msg;
-            }
-            details.push({
-                field: field.field,
-                message: message
-            })
-        }
-    })
     return {
         409: {
             description: "Unique constraint errors",
             content: {
                 "application/json": {
-                    schema: {
-                        "$ref": "#/components/schemas/Response409Schema"
-                    },
+                    schema: createResponseSchema("Response409Schema"),
                     example: {
-                        details: [...details]
+                        name: "UniqueConstraintError",
+                        errors: details
                     }
                 }
             }
         }
-    }
+    };
 }
 
 function response500() {
     return {
-        "500": {
-            "description": "Internal server error"
+        500: {
+            description: "Internal server error"
         }
-    }
+    };
 }
 
 module.exports = {

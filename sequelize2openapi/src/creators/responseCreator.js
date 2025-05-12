@@ -1,4 +1,4 @@
-const {transformStr, getSingularPath, getVariablesFromPath} = require("../utils/utils");
+const {transformStr, getSingularPath, getVariablesFromPath, isCustomOutput, applyCustomResponses} = require("../utils/utils");
 const responses = require("../utils/statusCode");
 const createRelations = require("./relationCreator");
 
@@ -11,18 +11,41 @@ function createResponse(services, schemas, models) {
     };
     for (const [path, service] of Object.entries(services)) {
         const pathVariables = getVariablesFromPath(path);
-        for (const [method, config] of Object.entries(service)) {
 
+        for (const [method, config] of Object.entries(service)) {
+            let customResponses = null;
+            if (config.responses) {
+                customResponses = JSON.parse(JSON.stringify(config.responses))
+            }
             // first process when there is no relation in the output
             if (config.output?.length === 1) {
-                const transformedObj = transformStr(config.output[0]); // parse the output value
+                let transformedObj = null;
+                if (isCustomOutput(config.output)) {
+                    const customIndex = config.output.findIndex(item => typeof item === 'object' && item.custom);
+
+                    // Extract and remove
+                    if (customIndex !== -1) {
+                        transformedObj = config.output[customIndex];
+                        config.output.splice(customIndex, 1);
+                    }
+                } else {
+                    transformedObj = transformStr(config.output[0]); // parse the output value
+                }
 
                 // for modification method
                 if (["post", "put", "patch"].includes(method)) {
+                    let responseOk = null;
+                    if (method === "post") {
+                        if (config.isCreation) {
+                            responseOk = responses.response201(transformedObj, getSingularPath(path), config);
+                        } else {
+                            responseOk = responses.response200(transformedObj, config, null, null);
+                        }
+                    }
                     // for post, we return 201. for put or patch, we return 200 and 404.
                     const successResponse = method === "post"
-                        ? responses.response201(transformedObj, getSingularPath(path), config)
-                        : {...responses.response200(transformedObj, config, null), ...responses.response404(pathVariables)};
+                        ? responseOk
+                        : {...responses.response200(transformedObj, config, null, null, config.responses), ...responses.response404(pathVariables)};
 
                     // we add responses
                     services[path][method].responses = {
@@ -34,7 +57,7 @@ function createResponse(services, schemas, models) {
                 } else if (method === "get") {
                     // for get method
                     services[path][method].responses = {
-                        ...responses.response200(transformedObj, config, null),
+                        ...responses.response200(transformedObj, config, null, schemas, transformedObj),
                         ...commonResponses,
                         ...responses.response404(pathVariables)
                     };
@@ -43,6 +66,16 @@ function createResponse(services, schemas, models) {
             } else {
                 // if there is no output (for delete) or more than one (for relation)
                 // @TODO: when there are more than one output
+                let customOutput = null;
+                if (isCustomOutput(config.output)) {
+                    const customIndex = config.output.findIndex(item => typeof item === 'object' && item.custom);
+
+                    // Extract and remove
+                    if (customIndex !== -1) {
+                        customOutput = config.output[customIndex];
+                        config.output.splice(customIndex, 1);
+                    }
+                }
                 if (method === "delete" || config.output?.length === undefined) {
                     services[path][method].responses = {
                         ...responses.response204(),
@@ -51,21 +84,36 @@ function createResponse(services, schemas, models) {
                     }
                 } else {
                     const relation = createRelations(models, config, schemas);
+                    let responseOk = null;
+                    if (method === "post") {
+                        if (config.isCreation) {
+                            responseOk = responses.response201(null, getSingularPath(path), config, relation);
+                        } else {
+                            responseOk = responses.response200(null, config, relation, schemas, customOutput);
+                        }
+                    }
                     if (["post", "put", "patch"].includes(method)) {
+                        const firstOutput = config.output[0];
+                        const transformedObj = transformStr(firstOutput); // parse the output value
                         services[path][method].responses = {
                             ...commonResponses,
-                            ...responses.response201(null, getSingularPath(path), config, relation),
-                            ...responses.response404(pathVariables)
+                            ...responseOk,
+                            ...responses.response404(pathVariables),
+                            ...responses.response400(transformedObj, models),
+                            ...responses.response409(transformedObj, models)
                         };
                     } else {
                         services[path][method].responses = {
                             ...commonResponses,
-                            ...responses.response200(null, config, relation),
+                            ...responses.response200(null, config, relation, schemas, customOutput),
                             ...responses.response404(pathVariables)
                         }
                     }
                 }
             }
+
+            // apply custom responses
+            applyCustomResponses(config.responses, customResponses);
 
             // Optional: Remove output key if needed
             // to delete services[path][method].output;

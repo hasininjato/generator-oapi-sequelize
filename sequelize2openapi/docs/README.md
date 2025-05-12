@@ -2,7 +2,9 @@
 
 ## Overview
 
-**Sequelize2OpenAPI** is a tool that automatically generates OpenAPI specifications (formerly Swagger) for Express.js API applications by analyzing annotations directly written in Sequelize models. This allows developers to maintain API documentation alongside their data models, ensuring consistency and reducing documentation overhead.
+**Sequelize2OpenAPI** is a tool that automatically generates OpenAPI specifications (formerly Swagger) for Express.js
+API applications by analyzing annotations directly written in Sequelize models. This allows developers to maintain API
+documentation alongside their data models, ensuring consistency and reducing documentation overhead.
 
 ## Installation
 
@@ -11,6 +13,7 @@
 ## Configuration
 
 Create a configuration file named `sequelize2openapi.json` in your project root with the following structure:
+
 ```json
 {
     "openApiDefinition": {
@@ -42,17 +45,16 @@ Create a configuration file named `sequelize2openapi.json` in your project root 
 ### Configuration Options
 
 - **openApiDefinition**: Base OpenAPI specification that will be extended with your model definitions
-  - **openapi**: OpenAPI version
-  - **info**: Metadata about your API
-    - **title**: Title of your project
-    - **description**: Description of your project
-    - **contact**: Contact info about the maintainers of the project
-  - **servers**: Array of server URLs where the API is hosted
+    - **openapi**: OpenAPI version
+    - **info**: Metadata about your API
+        - **title**: Title of your project
+        - **description**: Description of your project
+        - **contact**: Contact info about the maintainers of the project
+    - **servers**: Array of server URLs where the API is hosted
 - **servicesPath**: Path to where service files (based on models) are stored
 - **modelsPath**: Folder containing your Sequelize models
 - **defaultSecurity**: Default security scheme for API endpoints (e.g., "jwt") (@todo: in progress)
 - **routePrefix**: Prefix for all API routes (e.g., "/api")
-
 
 ## Usage
 
@@ -65,10 +67,10 @@ const sequelize2openapi = require('sequelize2openapi');
 const swaggerUi = require('swagger-ui-express');
 
 try {
-  const swaggerSpec = sequelize2openapi(app);
-  app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+    const swaggerSpec = sequelize2openapi(app);
+    app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 } catch (err) {
-  throw err;
+    throw err;
 }
 ```
 
@@ -79,9 +81,12 @@ This package also includes a CLI tool that generates a default service file for 
 ```bash
 sequelize2openapi -m Model
 ```
+
 where Model is your Sequelize model name.
 
-This creates a service file called `model.yaml` in your `servicesPath` with default content for the specified model like:
+This creates a service file called `model.yaml` in your `servicesPath` with default content for the specified model
+like:
+
 ```yaml
 Model:
   collectionOperations:
@@ -119,6 +124,7 @@ Model:
         summary: "Delete a model by id"
         description: "Delete a model by id"
 ```
+
 We will see the structure of this service file later.
 
 ## Model Annotations
@@ -127,33 +133,32 @@ You need to annotate your Sequelize models fields with a structured comment, by 
 
 ```js
 const Model = sequelize.define('Model', {
-  /**
-   * @swag
-   * description: Model ID
-   * methods: list, item
-   */
-  id: {
-    allowNull: false,
-    autoIncrement: true,
-    primaryKey: true,
-    type: DataTypes.INTEGER
-  },
-  /**
-   * @swag
-   * description: Model description
-   * methods: list, item, put, post
-   */
-  description: DataTypes.TEXT
+    /**
+     * @swag
+     * description: Model ID
+     * methods: list, item
+     */
+    id: {
+        allowNull: false,
+        autoIncrement: true,
+        primaryKey: true,
+        type: DataTypes.INTEGER
+    },
+    /**
+     * @swag
+     * description: Model description
+     * methods: list, item, put, post
+     */
+    description: DataTypes.TEXT
 });
 ```
 
 ### Annotation Options
 
 | Field         | Description                                                                                                              |
-| ------------- | ------------------------------------------------------------------------------------------------------------------------ |
+|---------------|--------------------------------------------------------------------------------------------------------------------------|
 | `description` | Appears in API docs as the field description                                                                             |
 | `methods`     | Determines which CRUD or custom operations this field applies to, this will be used in your service file for your models |
-
 
 ## Service Files & Custom Operations
 
@@ -195,50 +200,65 @@ ModelName:
 #### Services file options
 
 The file begins with the name of the Sequelize model. Then, you have two types of operations:
-- **collectionOperations**: collection operations represent operations that apply to a collection of resources (for example, `/api/books`).
-- **itemOperations**: item operations represent operations that apply to a specific instance of resources (for example, `/api/books/1`).
+
+- **collectionOperations**: collection operations represent operations that apply to a collection of resources (for
+  example, `/api/books`).
+- **itemOperations**: item operations represent operations that apply to a specific instance of resources (for example,
+  `/api/books/1`).
 - **openapi_context**: definition of OpenAPI documentation metadata (`description` and `summary`)
-- **input**: specifies the validation groups for the request payload. This value follows the structure `model:method`, where `method` is one of the `methods` values listed in your models annotations.
-- **output**: specifies the serialization groups for the response. The value follows the same structure as `input`.
-- **isCreation**: optional for `POST` method. It specifies whether the operation creates a resource or is only used to send data via form (like search). If not specified (for POST default operation, it is set to true), otherwhise you need to specify it. This option is useful to properly return responses.
+- **input**: specifies the validation groups for the request payload. This value follows the structure `model:method`,
+  where `method` is one of the `methods` values listed in your models annotations. This option is only for creation or
+  update endpoint (POST, PATCH or PUT).
+- **output**: specifies the serialization groups for the response. The value follows the same structure as `input`. This
+  option allows to return data to client with status code 200 or 201.
+- **isCreation**: optional for `POST` method. It specifies whether the operation creates a resource or is only used to
+  send data via form (like search). If not specified (for POST default operation, it is set to true), otherwise you
+  need to specify it. This option is useful to properly return responses for POST operation.
 
 ### Custom Route Example
 
-In addition of the default operations, you can create your own (custom) operations like:
+In addition, of the default operations, you can create your own (custom) operations like:
+
 ```yaml
 collectionOperations:
-    login:
-        tags:
-            - name: "Authentication"
-              description: "Authenticate user with email and password"
-        path: "/auth/login"
-        method: "POST"
-        openapi_context:
-            summary: "Login"
-            description: "Authenticate user"
-            responses:
-                401:
-                    description: "Invalid credentials"
-        isCreation: false
-        input:
-            - "user:login"
-        output:
-            - "user:login"
-            - "custom"
-                - name: "access_token"
-                  description: "Access token"
+  login:
+    tags:
+      - name: "Authentication"
+        description: "Authenticate user with email and password"
+    path: "/auth/login"
+    method: "POST"
+    openapi_context:
+      summary: "Login"
+      description: "Authenticate user"
+      responses:
+        401:
+          description: "Invalid credentials"
+    isCreation: false
+    input:
+      - "user:login"
+    output:
+      - "user:login"
+      - custom:
+          - name: "access_token"
+            description: "Access token"
 ```
 
 #### Services file options
 
 The custom operation begins with its name (example `login`).
 In addition of default operations, you need to specify:
-- **tags**: used to group related operations together in the documentation. Tags for default operations are set to the name of the model, but you can specify it.
+
+- **tags**: used to group related operations together in the documentation. Tags for default operations are set to the
+  name of the model, but you can specify it.
 - **path**: path of the endpoint of your operation, without the prefix (if you add prefix to your API endpoints).
-- **responses**: it is declared inside the openapi_context, and used to list custom responses of your endpoint instead of the default ones.
+- **responses**: it is declared inside the openapi_context, and used to list custom responses of your endpoint instead
+  of the default ones.
+
+#### Custom output
 
 #### Default responses
 
 Responses are generated based on the output values.
 
-- For POST creation of a resource (or isCreation is set to true), responses are 201 Created, 400 Bad Request (with errors details automatically generated based on your Sequelize configurations), 
+- For POST creation of a resource (or isCreation is set to true), responses are 201 Created, 400 Bad Request (with
+  errors details automatically generated based on your Sequelize configurations), 

@@ -43,15 +43,15 @@ First, create a configuration file *sequelize2openapi.json* with this content:
 ### Options
 
 - `openApiDefinition`: Definitions of the OpenAPI specification for the project
-  - `openApi`: Version of the specification
-  - `info`: Information about the project
-    - `title`: Title of your project
-    - `description`: Description of your project
-    - `contact`: Contact information of the creator of the project
-      - `name`: Name of the creator of the project
-      - `email`: His/Her email address
-    - `version`: Version of your project
-  - `servers`: Array of server URLs where the API is hosted
+    - `openApi`: Version of the specification
+    - `info`: Information about the project
+        - `title`: Title of your project
+        - `description`: Description of your project
+        - `contact`: Contact information of the creator of the project
+            - `name`: Name of the creator of the project
+            - `email`: His/Her email address
+        - `version`: Version of your project
+    - `servers`: Array of server URLs where the API is hosted
 - `servicesPath`: Path to your service files
 - `modelsPath`: Path to your Sequelize models files
 - `defaultSecurity`: Security to be used (this is still ongoing)
@@ -102,8 +102,8 @@ const Profile = sequelize.define('Profile', {
 - `description`: Descriptioin of your field
 - `example`: Example value
 - `methods`: To group fields to be used later on request payload or responses.
-  - Typically corresponds to CRUD operations (get [divided into `list` and `item`], post,put) or custom methods
-  - Other possible values depend on your API implementation
+    - Typically corresponds to CRUD operations (get [divided into `list` and `item`], post,put) or custom methods
+    - Other possible values depend on your API implementation
 
 ### Usage with relationships
 
@@ -200,8 +200,8 @@ The service file begins with the name of the model.
 - `itemOperations`: act on individual resources (items) identified by a unique identifier (often include actions like retrieving, updating, or deleting a single resource. Example: GET /users/{id} (get a user by ID), PUT /users/{id} (update a user by ID).)
 - On each operation, for default routes, you specify the route method (for collection they are `post` and `get`, for item they are `get`, `put`, `post` (in rare case) and `delete`)
 - `openapi_context`: Description of the routes
-  - `summary`: Summary of the route
-  - `description`: Long description of the route
+    - `summary`: Summary of the route
+    - `description`: Long description of the route
 - `output`: Fields output to show in responses of a request. It takes an array of a string like this: **model:method**, **model** is the name of the model in lowercase and **method** is the value as described in the Sequelize model annotation **methods**.
 - `input`: Fields input to show in request payload of a route. This option is basically declared on `put` or `post` operation.
 

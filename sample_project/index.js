@@ -33,9 +33,9 @@ app.use('/api/tags', require('./app/routes/tag.route'));
 app.use('/api/posts', require('./app/routes/post.route'));
 
 try {
-    const fs = require("node:fs");
+    // const fs = require("node:fs");
     const swaggerSpec = parser(app);
-    fs.writeFileSync("./swagger.json", JSON.stringify(swaggerSpec, null, 4));
+    // fs.writeFileSync("./swagger.json", JSON.stringify(swaggerSpec, null, 4));
     app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 } catch (err) {
     throw err;

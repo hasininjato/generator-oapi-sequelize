@@ -28,6 +28,43 @@ User:
         - "user:item"
       output:
         - "user:login"
+        - custom:
+            type: "string"
+            access_token:
+              type: "string"
+              description: "Access token"
+            refresh_token:
+              type: "string"
+              description: "Refresh token"
+              example: "fkasjd;ur  rqfj asudf"
+            array_tokens:
+              type: "array"
+              items:
+                access_token:
+                  type: "string"
+                  description: "Access token"
+                refresh_token:
+                  type: "string"
+                  description: "Refresh token"
+            object_tokens:
+              type: "object"
+              items:
+                access_token:
+                  type: "string"
+                  description: "Access token"
+                refresh_token:
+                  type: "string"
+                  description: "Refresh token"
+                  example: "ejgh8ta582.afkrioakljflkjsdfk"
+      responses:
+        omit: ["200"]
+        custom:
+          - 401:
+              message: "Invalid credentials"
+          - 403:
+              message: "Forbidden"
+
+      isCreation: false
     validate_token:
       tags: "Token"
       path: "/validate/token"
@@ -36,7 +73,14 @@ User:
         summary: "Validate token sent in parameter"
         description: "Validate token sent in parameter"
       input:
-        - user:item
+        - "user:item"
+      output:
+        - custom:
+            type: "string"
+            message:
+              type: "string"
+              description: "Validity of the token"
+              example: "The token is still valid"
       params:
         query:
           name: "token"
