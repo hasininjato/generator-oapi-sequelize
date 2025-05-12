@@ -119,7 +119,7 @@ router.post('/login', async (req, res) => {
             access_token: accessToken
         });
     } catch (error) {
-        if (error.message == "User not found") {
+        if (error.message === "User not found") {
             return res.status(401).json({
                 message: "Invalid credentials"
             })

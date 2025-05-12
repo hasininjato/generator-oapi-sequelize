@@ -279,6 +279,33 @@ function toPascalCase(str) {
         .join('');
 }
 
+function isCustomOutput(output) {
+    if (output) {
+        for (const obj of output) {
+            if (typeof obj === "object") {
+                return true;
+            }
+        }
+        return false;
+    }
+    return false;
+}
+
+function applyCustomResponses(responses, customResponses) {
+    // Remove responses based on 'omit'
+    (customResponses?.omit || []).forEach(status => {
+        delete responses[status];
+    });
+    // Add or override responses from 'custom'
+    (customResponses?.custom || []).forEach(entry => {
+        Object.entries(entry).forEach(([status, response]) => {
+            responses[status] = {
+                description: response.message
+            };
+        });
+    });
+}
+
 module.exports = {
     readFileContent,
     getFileInDirectory,
@@ -299,5 +326,7 @@ module.exports = {
     getTypeField,
     getSingularPath,
     removeKeyDeep,
-    toPascalCase
+    toPascalCase,
+    isCustomOutput,
+    applyCustomResponses
 }

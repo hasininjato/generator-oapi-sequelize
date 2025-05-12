@@ -103,6 +103,7 @@ function parser(routesVariable) {
         openApiSpec = removeKeyDeep(openApiSpec, "input");
         openApiSpec = removeKeyDeep(openApiSpec, "output");
         openApiSpec = removeKeyDeep(openApiSpec, "isCreation");
+        openApiSpec = removeKeyDeep(openApiSpec, "customPath");
         return openApiSpec;
     } catch (err) {
         throw err;

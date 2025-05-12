@@ -1,18 +1,6 @@
-const { transformStr, getSingularPath, getVariablesFromPath } = require("../utils/utils");
+const {transformStr, getSingularPath, getVariablesFromPath, isCustomOutput, applyCustomResponses} = require("../utils/utils");
 const responses = require("../utils/statusCode");
 const createRelations = require("./relationCreator");
-
-function isCustomOutput(output) {
-    if (output) {
-        for (const obj of output) {
-            if (typeof obj === "object") {
-                return true;
-            }
-        }
-        return false;
-    }
-    return false;
-}
 
 function createResponse(services, schemas, models) {
     // common responses are 401, 403 and 500 for each route
@@ -25,6 +13,10 @@ function createResponse(services, schemas, models) {
         const pathVariables = getVariablesFromPath(path);
 
         for (const [method, config] of Object.entries(service)) {
+            let customResponses = null;
+            if (config.responses) {
+                customResponses = JSON.parse(JSON.stringify(config.responses))
+            }
             // first process when there is no relation in the output
             if (config.output?.length === 1) {
                 let transformedObj = null;
@@ -53,7 +45,7 @@ function createResponse(services, schemas, models) {
                     // for post, we return 201. for put or patch, we return 200 and 404.
                     const successResponse = method === "post"
                         ? responseOk
-                        : { ...responses.response200(transformedObj, config, null, null), ...responses.response404(pathVariables) };
+                        : {...responses.response200(transformedObj, config, null, null, config.responses), ...responses.response404(pathVariables)};
 
                     // we add responses
                     services[path][method].responses = {
@@ -74,13 +66,13 @@ function createResponse(services, schemas, models) {
             } else {
                 // if there is no output (for delete) or more than one (for relation)
                 // @TODO: when there are more than one output
-                let customResponse = null;
+                let customOutput = null;
                 if (isCustomOutput(config.output)) {
                     const customIndex = config.output.findIndex(item => typeof item === 'object' && item.custom);
 
                     // Extract and remove
                     if (customIndex !== -1) {
-                        customResponse = config.output[customIndex];
+                        customOutput = config.output[customIndex];
                         config.output.splice(customIndex, 1);
                     }
                 }
@@ -97,7 +89,7 @@ function createResponse(services, schemas, models) {
                         if (config.isCreation) {
                             responseOk = responses.response201(null, getSingularPath(path), config, relation);
                         } else {
-                            responseOk = responses.response200(null, config, relation, schemas, customResponse);
+                            responseOk = responses.response200(null, config, relation, schemas, customOutput);
                         }
                     }
                     if (["post", "put", "patch"].includes(method)) {
@@ -113,12 +105,15 @@ function createResponse(services, schemas, models) {
                     } else {
                         services[path][method].responses = {
                             ...commonResponses,
-                            ...responses.response200(null, config, relation, schemas, customResponse),
+                            ...responses.response200(null, config, relation, schemas, customOutput),
                             ...responses.response404(pathVariables)
                         }
                     }
                 }
             }
+
+            // apply custom responses
+            applyCustomResponses(config.responses, customResponses);
 
             // Optional: Remove output key if needed
             // to delete services[path][method].output;

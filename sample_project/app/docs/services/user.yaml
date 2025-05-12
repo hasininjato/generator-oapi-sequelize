@@ -56,6 +56,14 @@ User:
                   type: "string"
                   description: "Refresh token"
                   example: "ejgh8ta582.afkrioakljflkjsdfk"
+      responses:
+        omit: ["200"]
+        custom:
+          - 401:
+              message: "Invalid credentials"
+          - 403:
+              message: "Forbidden"
+
       isCreation: false
     validate_token:
       tags: "Token"
