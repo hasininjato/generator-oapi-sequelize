@@ -7,9 +7,15 @@ function createResponseSchema(ref) {
     };
 }
 
-function response200(obj, service, relation, schemas, customOutput = null) {
+function response200(obj, service, relation, schemas, customOutput = null, modelWithMethod = null) {
     const summary = service.summary || "";
-    let ref = obj ? obj.pascalCase : relation;
+    let ref = "";
+    if (modelWithMethod) {
+        ref = modelWithMethod;
+    } else {
+        ref = obj ? obj.pascalCase : relation;
+    }
+    // let ref = obj ? obj.pascalCase : relation;
 
     if (customOutput?.custom) {
         const customRef = `Custom${service.customPath}`;
@@ -81,7 +87,6 @@ function response200(obj, service, relation, schemas, customOutput = null) {
 
         ref = customRef;
     }
-    console.log(ref)
 
     return {
         200: {
@@ -95,11 +100,16 @@ function response200(obj, service, relation, schemas, customOutput = null) {
     };
 }
 
-function response201(obj, model, service, relation = null) {
+function response201(obj, model, service, relation = null, modelWithMethod = null) {
     const description = model
         ? `${model} created successfully`
         : `${service.summary} successfully`;
-    const componentName = obj ? obj.pascalCase : relation;
+    let componentName = "";
+    if (modelWithMethod) {
+        componentName = modelWithMethod;
+    } else {
+        componentName = obj ? obj.pascalCase : relation;
+    }
 
     return {
         201: {

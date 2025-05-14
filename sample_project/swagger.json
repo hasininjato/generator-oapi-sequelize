@@ -2038,7 +2038,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/UserItem"
+                                    "$ref": "#/components/schemas/userItem"
                                 }
                             }
                         }

@@ -1,4 +1,4 @@
-const {transformStr, getSingularPath, getVariablesFromPath, isCustomOutput, applyCustomResponses} = require("../utils/utils");
+const {transformStr, getSingularPath, getVariablesFromPath, isCustomOutput, applyCustomResponses, capitalizeFirstLetter} = require("../utils/utils");
 const responses = require("../utils/statusCode");
 const createRelations = require("./relationCreator");
 
@@ -35,11 +35,15 @@ function createResponse(services, schemas, models, modelsName) {
                 // for modification method
                 if (["post", "put", "patch"].includes(method)) {
                     let responseOk = null;
+                    let modelWithMethod = null;
+                    if (modelsName.includes(transformedObj?.prefix)) {
+                        modelWithMethod = `${transformedObj?.prefix}${capitalizeFirstLetter(transformedObj?.suffix)}`;
+                    }
                     if (method === "post") {
                         if (config.isCreation) {
-                            responseOk = responses.response201(transformedObj, getSingularPath(path), config);
+                            responseOk = responses.response201(transformedObj, getSingularPath(path), config, null, modelWithMethod);
                         } else {
-                            responseOk = responses.response200(transformedObj, config, null, null);
+                            responseOk = responses.response200(transformedObj, config, null, null, null, modelWithMethod);
                         }
                     }
                     // for post, we return 201. for put or patch, we return 200 and 404.
