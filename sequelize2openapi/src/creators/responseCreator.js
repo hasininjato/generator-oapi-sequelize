@@ -2,7 +2,7 @@ const {transformStr, getSingularPath, getVariablesFromPath, isCustomOutput, appl
 const responses = require("../utils/statusCode");
 const createRelations = require("./relationCreator");
 
-function createResponse(services, schemas, models) {
+function createResponse(services, schemas, models, modelsName) {
     // common responses are 401, 403 and 500 for each route
     const commonResponses = {
         ...responses.response401(),
@@ -83,7 +83,7 @@ function createResponse(services, schemas, models) {
                         ...responses.response404(pathVariables)
                     }
                 } else {
-                    const relation = createRelations(models, config, schemas);
+                    const relation = createRelations(models, config, schemas, false, modelsName);
                     let responseOk = null;
                     if (method === "post") {
                         if (config.isCreation) {

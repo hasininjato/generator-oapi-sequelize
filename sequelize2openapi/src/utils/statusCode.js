@@ -81,6 +81,7 @@ function response200(obj, service, relation, schemas, customOutput = null) {
 
         ref = customRef;
     }
+    console.log(ref)
 
     return {
         200: {

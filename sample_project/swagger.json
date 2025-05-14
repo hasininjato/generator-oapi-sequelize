@@ -536,7 +536,7 @@
                 "type": "object",
                 "properties": {}
             },
-            "UserList": {
+            "userList": {
                 "type": "array",
                 "items": {
                     "type": "object",
@@ -567,7 +567,7 @@
                     }
                 }
             },
-            "UserItem": {
+            "userItem": {
                 "type": "object",
                 "properties": {
                     "id": {
@@ -595,7 +595,7 @@
                     }
                 }
             },
-            "UserPut": {
+            "userPut": {
                 "type": "object",
                 "properties": {
                     "fullname": {
@@ -617,7 +617,7 @@
                     "password"
                 ]
             },
-            "UserPost": {
+            "userPost": {
                 "type": "object",
                 "properties": {
                     "fullname": {
@@ -639,7 +639,7 @@
                     "password"
                 ]
             },
-            "UserLogin": {
+            "userLogin": {
                 "type": "object",
                 "properties": {
                     "id": {
@@ -823,7 +823,7 @@
                     }
                 }
             },
-            "UserProfileRelationPost": {
+            "userProfileRelationPost": {
                 "type": "object",
                 "properties": {
                     "fullname": {
@@ -854,7 +854,7 @@
                     "password"
                 ]
             },
-            "UserProfileRelationList": {
+            "userProfileRelationList": {
                 "type": "array",
                 "items": {
                     "type": "object",
@@ -899,7 +899,7 @@
                     }
                 }
             },
-            "UserProfileRelationItem": {
+            "userProfileRelationItem": {
                 "type": "object",
                 "properties": {
                     "id": {
@@ -941,7 +941,7 @@
                     }
                 }
             },
-            "UserRelationItem": {
+            "userRelationItem": {
                 "type": "object",
                 "properties": {
                     "id": {
@@ -1028,7 +1028,7 @@
                     }
                 }
             },
-            "UserTransactionRelationItem": {
+            "userTransactionRelationItem": {
                 "type": "object",
                 "properties": {
                     "id": {
@@ -1102,7 +1102,6 @@
                 "tags": [
                     "Post"
                 ],
-                "customPath": "Get",
                 "responses": {
                     "200": {
                         "description": "List of all posts",
@@ -1131,16 +1130,6 @@
                 "tags": [
                     "Post"
                 ],
-                "customPath": "Post",
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/PostPost"
-                            }
-                        }
-                    }
-                },
                 "responses": {
                     "201": {
                         "description": "Post created successfully",
@@ -1198,6 +1187,15 @@
                     "500": {
                         "description": "Internal server error"
                     }
+                },
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PostPost"
+                            }
+                        }
+                    }
                 }
             }
         },
@@ -1207,12 +1205,6 @@
                 "description": "Get post by id",
                 "tags": [
                     "Post"
-                ],
-                "customPath": "Get",
-                "parameters": [
-                    {
-                        "$ref": "#/components/parameters/PostId"
-                    }
                 ],
                 "responses": {
                     "200": {
@@ -1237,7 +1229,12 @@
                     "500": {
                         "description": "Internal server error"
                     }
-                }
+                },
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/PostId"
+                    }
+                ]
             },
             "put": {
                 "summary": "Update a post by id",
@@ -1245,21 +1242,6 @@
                 "tags": [
                     "Post"
                 ],
-                "customPath": "Put",
-                "parameters": [
-                    {
-                        "$ref": "#/components/parameters/PostId"
-                    }
-                ],
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/PostPut"
-                            }
-                        }
-                    }
-                },
                 "responses": {
                     "400": {
                         "description": "Bad request (VALIDATION_ERROR)",
@@ -1310,6 +1292,20 @@
                     "500": {
                         "description": "Internal server error"
                     }
+                },
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/PostId"
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PostPut"
+                            }
+                        }
+                    }
                 }
             },
             "delete": {
@@ -1317,12 +1313,6 @@
                 "description": "Delete a post by id",
                 "tags": [
                     "Post"
-                ],
-                "customPath": "Delete",
-                "parameters": [
-                    {
-                        "$ref": "#/components/parameters/PostId"
-                    }
                 ],
                 "responses": {
                     "204": {
@@ -1340,7 +1330,12 @@
                     "500": {
                         "description": "Internal server error"
                     }
-                }
+                },
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/PostId"
+                    }
+                ]
             }
         },
         "/profiles": {
@@ -1350,7 +1345,6 @@
                 "tags": [
                     "Profile"
                 ],
-                "customPath": "Get",
                 "responses": {
                     "200": {
                         "description": "List of all profiles",
@@ -1379,16 +1373,6 @@
                 "tags": [
                     "Profile"
                 ],
-                "customPath": "Post",
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/ProfilePost"
-                            }
-                        }
-                    }
-                },
                 "responses": {
                     "201": {
                         "description": "Profile created successfully",
@@ -1437,6 +1421,15 @@
                     "500": {
                         "description": "Internal server error"
                     }
+                },
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ProfilePost"
+                            }
+                        }
+                    }
                 }
             }
         },
@@ -1446,12 +1439,6 @@
                 "description": "Get profile by id",
                 "tags": [
                     "Profile"
-                ],
-                "customPath": "Get",
-                "parameters": [
-                    {
-                        "$ref": "#/components/parameters/ProfileId"
-                    }
                 ],
                 "responses": {
                     "200": {
@@ -1476,7 +1463,12 @@
                     "500": {
                         "description": "Internal server error"
                     }
-                }
+                },
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/ProfileId"
+                    }
+                ]
             },
             "put": {
                 "summary": "Update a profile by id",
@@ -1484,21 +1476,6 @@
                 "tags": [
                     "Profile"
                 ],
-                "customPath": "Put",
-                "parameters": [
-                    {
-                        "$ref": "#/components/parameters/ProfileId"
-                    }
-                ],
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/ProfilePut"
-                            }
-                        }
-                    }
-                },
                 "responses": {
                     "200": {
                         "description": "Update a profile by id",
@@ -1550,6 +1527,20 @@
                     "500": {
                         "description": "Internal server error"
                     }
+                },
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/ProfileId"
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ProfilePut"
+                            }
+                        }
+                    }
                 }
             },
             "delete": {
@@ -1557,12 +1548,6 @@
                 "description": "Delete a profile by id",
                 "tags": [
                     "Profile"
-                ],
-                "customPath": "Delete",
-                "parameters": [
-                    {
-                        "$ref": "#/components/parameters/ProfileId"
-                    }
                 ],
                 "responses": {
                     "204": {
@@ -1580,7 +1565,12 @@
                     "500": {
                         "description": "Internal server error"
                     }
-                }
+                },
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/ProfileId"
+                    }
+                ]
             }
         },
         "/tags": {
@@ -1590,7 +1580,6 @@
                 "tags": [
                     "Tag"
                 ],
-                "customPath": "Get",
                 "responses": {
                     "200": {
                         "description": "List of all tags",
@@ -1619,16 +1608,6 @@
                 "tags": [
                     "Tag"
                 ],
-                "customPath": "Post",
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/TagPost"
-                            }
-                        }
-                    }
-                },
                 "responses": {
                     "201": {
                         "description": "Tag created successfully",
@@ -1677,6 +1656,15 @@
                     "500": {
                         "description": "Internal server error"
                     }
+                },
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/TagPost"
+                            }
+                        }
+                    }
                 }
             }
         },
@@ -1686,12 +1674,6 @@
                 "description": "Get tag by id",
                 "tags": [
                     "Tag"
-                ],
-                "customPath": "Get",
-                "parameters": [
-                    {
-                        "$ref": "#/components/parameters/TagId"
-                    }
                 ],
                 "responses": {
                     "200": {
@@ -1716,7 +1698,12 @@
                     "500": {
                         "description": "Internal server error"
                     }
-                }
+                },
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/TagId"
+                    }
+                ]
             },
             "put": {
                 "summary": "Update a tag by id",
@@ -1724,21 +1711,6 @@
                 "tags": [
                     "Tag"
                 ],
-                "customPath": "Put",
-                "parameters": [
-                    {
-                        "$ref": "#/components/parameters/TagId"
-                    }
-                ],
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/TagPut"
-                            }
-                        }
-                    }
-                },
                 "responses": {
                     "400": {
                         "description": "Bad request (VALIDATION_ERROR)",
@@ -1780,6 +1752,20 @@
                     "500": {
                         "description": "Internal server error"
                     }
+                },
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/TagId"
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/TagPut"
+                            }
+                        }
+                    }
                 }
             },
             "delete": {
@@ -1787,12 +1773,6 @@
                 "description": "Delete a tag by id",
                 "tags": [
                     "Tag"
-                ],
-                "customPath": "Delete",
-                "parameters": [
-                    {
-                        "$ref": "#/components/parameters/TagId"
-                    }
                 ],
                 "responses": {
                     "204": {
@@ -1810,7 +1790,12 @@
                     "500": {
                         "description": "Internal server error"
                     }
-                }
+                },
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/TagId"
+                    }
+                ]
             }
         },
         "/users": {
@@ -1818,16 +1803,15 @@
                 "summary": "List of all users",
                 "description": "List of all users",
                 "tags": [
-                    "User"
+                    "user"
                 ],
-                "customPath": "Get",
                 "responses": {
                     "200": {
                         "description": "List of all users",
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/UserProfileRelationList"
+                                    "$ref": "#/components/schemas/userProfileRelationList"
                                 }
                             }
                         }
@@ -1847,25 +1831,15 @@
                 "summary": "Create a user",
                 "description": "Create a user",
                 "tags": [
-                    "User"
+                    "user"
                 ],
-                "customPath": "Post",
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/UserProfileRelationPost"
-                            }
-                        }
-                    }
-                },
                 "responses": {
                     "201": {
                         "description": "User created successfully",
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/UserProfileRelationItem"
+                                    "$ref": "#/components/schemas/userProfileRelationItem"
                                 }
                             }
                         }
@@ -1879,36 +1853,7 @@
                                 },
                                 "example": {
                                     "name": "ValidationError",
-                                    "errors": [
-                                        {
-                                            "field": "fullname",
-                                            "message": "Full name is required"
-                                        },
-                                        {
-                                            "field": "fullname",
-                                            "message": "Full name cannot be empty"
-                                        },
-                                        {
-                                            "field": "email",
-                                            "message": "Email is required"
-                                        },
-                                        {
-                                            "field": "email",
-                                            "message": "Email cannot be empty"
-                                        },
-                                        {
-                                            "field": "email",
-                                            "message": "Invalid email"
-                                        },
-                                        {
-                                            "field": "password",
-                                            "message": "Password is required"
-                                        },
-                                        {
-                                            "field": "password",
-                                            "message": "Password cannot be empty"
-                                        }
-                                    ]
+                                    "errors": []
                                 }
                             }
                         }
@@ -1928,18 +1873,22 @@
                                 },
                                 "example": {
                                     "name": "UniqueConstraintError",
-                                    "errors": [
-                                        {
-                                            "field": "email",
-                                            "message": "This email is already in use"
-                                        }
-                                    ]
+                                    "errors": []
                                 }
                             }
                         }
                     },
                     "500": {
                         "description": "Internal server error"
+                    }
+                },
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/userProfileRelationPost"
+                            }
+                        }
                     }
                 }
             }
@@ -1951,27 +1900,7 @@
                 "tags": [
                     "Authentication"
                 ],
-                "customPath": "Login",
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/UserItem"
-                            }
-                        }
-                    }
-                },
                 "responses": {
-                    "200": {
-                        "description": "Login an user",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/CustomLogin"
-                                }
-                            }
-                        }
-                    },
                     "400": {
                         "description": "Bad request (VALIDATION_ERROR)",
                         "content": {
@@ -1981,42 +1910,13 @@
                                 },
                                 "example": {
                                     "name": "ValidationError",
-                                    "errors": [
-                                        {
-                                            "field": "fullname",
-                                            "message": "Full name is required"
-                                        },
-                                        {
-                                            "field": "fullname",
-                                            "message": "Full name cannot be empty"
-                                        },
-                                        {
-                                            "field": "email",
-                                            "message": "Email is required"
-                                        },
-                                        {
-                                            "field": "email",
-                                            "message": "Email cannot be empty"
-                                        },
-                                        {
-                                            "field": "email",
-                                            "message": "Invalid email"
-                                        },
-                                        {
-                                            "field": "password",
-                                            "message": "Password is required"
-                                        },
-                                        {
-                                            "field": "password",
-                                            "message": "Password cannot be empty"
-                                        }
-                                    ]
+                                    "errors": []
                                 }
                             }
                         }
                     },
                     "401": {
-                        "description": "Unauthorized"
+                        "description": "Invalid credentials"
                     },
                     "403": {
                         "description": "Forbidden"
@@ -2030,18 +1930,22 @@
                                 },
                                 "example": {
                                     "name": "UniqueConstraintError",
-                                    "errors": [
-                                        {
-                                            "field": "email",
-                                            "message": "This email is already in use"
-                                        }
-                                    ]
+                                    "errors": []
                                 }
                             }
                         }
                     },
                     "500": {
                         "description": "Internal server error"
+                    }
+                },
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/userItem"
+                            }
+                        }
                     }
                 }
             }
@@ -2053,16 +1957,6 @@
                 "tags": [
                     "Token"
                 ],
-                "customPath": "ValidateToken",
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/UserItem"
-                            }
-                        }
-                    }
-                },
                 "responses": {
                     "200": {
                         "description": "Validate token sent in parameter",
@@ -2083,6 +1977,15 @@
                     "500": {
                         "description": "Internal server error"
                     }
+                },
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/userItem"
+                            }
+                        }
+                    }
                 }
             }
         },
@@ -2091,13 +1994,7 @@
                 "summary": "Get user by id",
                 "description": "Get user by id",
                 "tags": [
-                    "User"
-                ],
-                "customPath": "Get",
-                "parameters": [
-                    {
-                        "$ref": "#/components/parameters/UserId"
-                    }
+                    "user"
                 ],
                 "responses": {
                     "200": {
@@ -2105,7 +2002,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/UserProfileRelationItem"
+                                    "$ref": "#/components/schemas/userProfileRelationItem"
                                 }
                             }
                         }
@@ -2122,29 +2019,19 @@
                     "500": {
                         "description": "Internal server error"
                     }
-                }
+                },
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/UserId"
+                    }
+                ]
             },
             "put": {
                 "summary": "Update an user by id",
                 "description": "Update an user by id",
                 "tags": [
-                    "User"
+                    "user"
                 ],
-                "customPath": "Put",
-                "parameters": [
-                    {
-                        "$ref": "#/components/parameters/UserId"
-                    }
-                ],
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/UserPut"
-                            }
-                        }
-                    }
-                },
                 "responses": {
                     "200": {
                         "description": "Update an user by id",
@@ -2165,36 +2052,7 @@
                                 },
                                 "example": {
                                     "name": "ValidationError",
-                                    "errors": [
-                                        {
-                                            "field": "fullname",
-                                            "message": "Full name is required"
-                                        },
-                                        {
-                                            "field": "fullname",
-                                            "message": "Full name cannot be empty"
-                                        },
-                                        {
-                                            "field": "email",
-                                            "message": "Email is required"
-                                        },
-                                        {
-                                            "field": "email",
-                                            "message": "Email cannot be empty"
-                                        },
-                                        {
-                                            "field": "email",
-                                            "message": "Invalid email"
-                                        },
-                                        {
-                                            "field": "password",
-                                            "message": "Password is required"
-                                        },
-                                        {
-                                            "field": "password",
-                                            "message": "Password cannot be empty"
-                                        }
-                                    ]
+                                    "errors": []
                                 }
                             }
                         }
@@ -2217,12 +2075,7 @@
                                 },
                                 "example": {
                                     "name": "UniqueConstraintError",
-                                    "errors": [
-                                        {
-                                            "field": "email",
-                                            "message": "This email is already in use"
-                                        }
-                                    ]
+                                    "errors": []
                                 }
                             }
                         }
@@ -2230,19 +2083,27 @@
                     "500": {
                         "description": "Internal server error"
                     }
+                },
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/UserId"
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/userPut"
+                            }
+                        }
+                    }
                 }
             },
             "delete": {
                 "summary": "Delete an user by id",
                 "description": "Delete an user by id",
                 "tags": [
-                    "User"
-                ],
-                "customPath": "Delete",
-                "parameters": [
-                    {
-                        "$ref": "#/components/parameters/UserId"
-                    }
+                    "user"
                 ],
                 "responses": {
                     "204": {
@@ -2260,7 +2121,12 @@
                     "500": {
                         "description": "Internal server error"
                     }
-                }
+                },
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/UserId"
+                    }
+                ]
             }
         },
         "/users/{id}/transactions": {
@@ -2270,21 +2136,6 @@
                 "tags": [
                     "Transaction"
                 ],
-                "customPath": "CreateTransaction",
-                "parameters": [
-                    {
-                        "$ref": "#/components/parameters/UserId"
-                    }
-                ],
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/TransactionPost"
-                            }
-                        }
-                    }
-                },
                 "responses": {
                     "201": {
                         "description": "Creation of a transaction of a user successfully",
@@ -2358,6 +2209,20 @@
                     "500": {
                         "description": "Internal server error"
                     }
+                },
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/UserId"
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/TransactionPost"
+                            }
+                        }
+                    }
                 }
             },
             "get": {
@@ -2366,19 +2231,13 @@
                 "tags": [
                     "Transaction"
                 ],
-                "customPath": "ListTransaction",
-                "parameters": [
-                    {
-                        "$ref": "#/components/parameters/UserId"
-                    }
-                ],
                 "responses": {
                     "200": {
                         "description": "List of all transactions of an user by id",
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/UserTransactionRelationItem"
+                                    "$ref": "#/components/schemas/userTransactionRelationItem"
                                 }
                             }
                         }
@@ -2395,7 +2254,12 @@
                     "500": {
                         "description": "Internal server error"
                     }
-                }
+                },
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/UserId"
+                    }
+                ]
             }
         },
         "/users/{id}/transactions/{name}": {
@@ -2405,22 +2269,13 @@
                 "tags": [
                     "Transaction"
                 ],
-                "customPath": "ListTransactionWithName",
-                "parameters": [
-                    {
-                        "$ref": "#/components/parameters/UserId"
-                    },
-                    {
-                        "$ref": "#/components/parameters/TransactionName"
-                    }
-                ],
                 "responses": {
                     "200": {
                         "description": "List of all transactions with name of an user by id",
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/UserTransactionRelationItem"
+                                    "$ref": "#/components/schemas/userTransactionRelationItem"
                                 }
                             }
                         }
@@ -2437,7 +2292,15 @@
                     "500": {
                         "description": "Internal server error"
                     }
-                }
+                },
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/UserId"
+                    },
+                    {
+                        "$ref": "#/components/parameters/TransactionName"
+                    }
+                ]
             }
         }
     }

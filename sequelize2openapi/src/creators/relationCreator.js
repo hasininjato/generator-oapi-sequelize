@@ -1,6 +1,6 @@
 const {transformStr, capitalizeFirstLetter} = require("../utils/utils");
 
-function createRelations(models, service, schemas, isBody = false) {
+function createRelations(models, service, schemas, isBody = false, modelsName) {
     let parentModelValue, relationModels;
     if (isBody) {
         [parentModelValue, ...relationModels] = service.input;
@@ -11,8 +11,14 @@ function createRelations(models, service, schemas, isBody = false) {
 
     const parentTransformed = transformStr(parentModelValue);
     // Create a deep clone of the parent schema to avoid modifying the original
-    const parentSchema = JSON.parse(JSON.stringify(schemas[parentTransformed.pascalCase]));
+    let modelWithMethod = parentTransformed.pascalCase;
     let schemaName = capitalizeFirstLetter(parentTransformed.prefix);
+    if (modelsName.includes(parentTransformed.prefix)) {
+        modelWithMethod = `${parentTransformed.prefix}${capitalizeFirstLetter(parentTransformed.suffix)}`;
+        schemaName = parentTransformed.prefix;
+    }
+    const parentSchema = JSON.parse(JSON.stringify(schemas[modelWithMethod]));
+
     const relations = {};
 
     for (const modelValue of relationModels) {

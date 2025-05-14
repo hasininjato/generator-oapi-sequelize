@@ -28,7 +28,12 @@ function parser(routesVariable) {
         const routePrefix = sequelizeConfig.routePrefix;
 
         const models = getModels(modelsPath);
+        // let modelsName = models.map(model => model.sequelizeModel);
 
+        let modelsName = [];
+        models.map(model => {
+            modelsName.push(model.sequelizeModel)
+        })
         addRelationManyToManyToEachModel(models);
 
         const methodsToProcess = getAllMethods(models);
@@ -89,8 +94,8 @@ function parser(routesVariable) {
             // Merge the current service into the accumulated services
             services = { ...services, ...currentService };
 
-            createRequestBody(currentService, schemas, models, true);
-            createResponse(currentService, schemas, models);
+            createRequestBody(currentService, schemas, models, modelsName);
+            createResponse(currentService, schemas, models, modelsName);
 
             // Update openApiSpec with the accumulated services
             openApiSpec = {
