@@ -94,7 +94,7 @@ function parser(routesVariable) {
             // Merge the current service into the accumulated services
             services = { ...services, ...currentService };
 
-            createRequestBody(currentService, schemas, models, modelsName);
+            createRequestBody(currentService, schemas, models, modelsName, components);
             createResponse(currentService, schemas, models, modelsName);
 
             // Update openApiSpec with the accumulated services
@@ -109,6 +109,8 @@ function parser(routesVariable) {
         openApiSpec = removeKeyDeep(openApiSpec, "output");
         openApiSpec = removeKeyDeep(openApiSpec, "isCreation");
         openApiSpec = removeKeyDeep(openApiSpec, "customPath");
+        openApiSpec = removeKeyDeep(openApiSpec, "model");
+        openApiSpec = removeKeyDeep(openApiSpec, "filterableFields");
         return openApiSpec;
     } catch (err) {
         throw err;

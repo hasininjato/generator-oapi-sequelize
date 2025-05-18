@@ -16,6 +16,7 @@ const User = sequelize.define('user', {
     /**
      * @swag
      * methods: item, list, put, post, login
+     * description: User fullname
      */
     fullname: {
         type: DataTypes.STRING,
@@ -29,6 +30,7 @@ const User = sequelize.define('user', {
     /**
      * @swag
      * methods: item, list, put, post, login
+     * description: Email user
      */
     email: {
         type: DataTypes.STRING,

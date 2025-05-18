@@ -130,6 +130,8 @@ function parseOperations(operations, routesVariable, routePrefix, model, isColle
                 input: operation.input,
                 output: operation.output,
                 responses: operation.responses,
+                filterableFields: operation.filterableFields,
+                model: model,
                 ...customOperation
             };
             if (method === "POST") {

@@ -7,6 +7,7 @@ user:
       output:
         - "user:list"
         - "profile:item"
+      filterableFields: ["fullname", "email"]
     post:
       openapi_context:
         summary: "Create a user"

@@ -62,6 +62,24 @@
                 },
                 "required": true,
                 "description": "Post id"
+            },
+            "userFullnameFilter": {
+                "name": "fullname",
+                "in": "query",
+                "schema": {
+                    "type": "string"
+                },
+                "required": false,
+                "description": "User fullname"
+            },
+            "userEmailFilter": {
+                "name": "email",
+                "in": "query",
+                "schema": {
+                    "type": "string"
+                },
+                "required": false,
+                "description": "Email user"
             }
         },
         "schemas": {
@@ -548,11 +566,11 @@
                         },
                         "fullname": {
                             "type": "string",
-                            "description": ""
+                            "description": "User fullname"
                         },
                         "email": {
                             "type": "string",
-                            "description": ""
+                            "description": "Email user"
                         },
                         "createdAt": {
                             "type": "string",
@@ -577,11 +595,11 @@
                     },
                     "fullname": {
                         "type": "string",
-                        "description": ""
+                        "description": "User fullname"
                     },
                     "email": {
                         "type": "string",
-                        "description": ""
+                        "description": "Email user"
                     },
                     "createdAt": {
                         "type": "string",
@@ -600,11 +618,11 @@
                 "properties": {
                     "fullname": {
                         "type": "string",
-                        "description": ""
+                        "description": "User fullname"
                     },
                     "email": {
                         "type": "string",
-                        "description": ""
+                        "description": "Email user"
                     },
                     "password": {
                         "type": "string",
@@ -622,11 +640,11 @@
                 "properties": {
                     "fullname": {
                         "type": "string",
-                        "description": ""
+                        "description": "User fullname"
                     },
                     "email": {
                         "type": "string",
-                        "description": ""
+                        "description": "Email user"
                     },
                     "password": {
                         "type": "string",
@@ -649,11 +667,11 @@
                     },
                     "fullname": {
                         "type": "string",
-                        "description": ""
+                        "description": "User fullname"
                     },
                     "email": {
                         "type": "string",
-                        "description": ""
+                        "description": "Email user"
                     }
                 }
             },
@@ -828,11 +846,11 @@
                 "properties": {
                     "fullname": {
                         "type": "string",
-                        "description": ""
+                        "description": "User fullname"
                     },
                     "email": {
                         "type": "string",
-                        "description": ""
+                        "description": "Email user"
                     },
                     "password": {
                         "type": "string",
@@ -866,11 +884,11 @@
                         },
                         "fullname": {
                             "type": "string",
-                            "description": ""
+                            "description": "User fullname"
                         },
                         "email": {
                             "type": "string",
-                            "description": ""
+                            "description": "Email user"
                         },
                         "createdAt": {
                             "type": "string",
@@ -909,11 +927,11 @@
                     },
                     "fullname": {
                         "type": "string",
-                        "description": ""
+                        "description": "User fullname"
                     },
                     "email": {
                         "type": "string",
-                        "description": ""
+                        "description": "Email user"
                     },
                     "createdAt": {
                         "type": "string",
@@ -951,11 +969,11 @@
                     },
                     "fullname": {
                         "type": "string",
-                        "description": ""
+                        "description": "User fullname"
                     },
                     "email": {
                         "type": "string",
-                        "description": ""
+                        "description": "Email user"
                     }
                 }
             },
@@ -969,11 +987,11 @@
                     },
                     "fullname": {
                         "type": "string",
-                        "description": ""
+                        "description": "User fullname"
                     },
                     "email": {
                         "type": "string",
-                        "description": ""
+                        "description": "Email user"
                     },
                     "access_token": {
                         "type": "string",
@@ -1038,11 +1056,11 @@
                     },
                     "fullname": {
                         "type": "string",
-                        "description": ""
+                        "description": "User fullname"
                     },
                     "email": {
                         "type": "string",
-                        "description": ""
+                        "description": "Email user"
                     },
                     "createdAt": {
                         "type": "string",
@@ -1825,7 +1843,15 @@
                     "500": {
                         "description": "Internal server error"
                     }
-                }
+                },
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/userFullnameFilter"
+                    },
+                    {
+                        "$ref": "#/components/parameters/userEmailFilter"
+                    }
+                ]
             },
             "post": {
                 "summary": "Create a user",
@@ -2038,7 +2064,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/userItem"
+                                    "$ref": "#/components/schemas/UserItem"
                                 }
                             }
                         }
