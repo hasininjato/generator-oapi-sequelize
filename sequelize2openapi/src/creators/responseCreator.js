@@ -2,6 +2,13 @@ const {transformStr, getSingularPath, getVariablesFromPath, isCustomOutput, appl
 const responses = require("../utils/statusCode");
 const createRelations = require("./relationCreator");
 
+/**
+ * create response of a request
+ * @param services
+ * @param schemas
+ * @param models
+ * @param modelsName
+ */
 function createResponse(services, schemas, models, modelsName) {
     // common responses are 401, 403 and 500 for each route
     const commonResponses = {
@@ -43,13 +50,13 @@ function createResponse(services, schemas, models, modelsName) {
                         if (config.isCreation) {
                             responseOk = responses.response201(transformedObj, getSingularPath(path), config, null, modelWithMethod);
                         } else {
-                            responseOk = responses.response200(transformedObj, config, null, null, null, modelWithMethod);
+                            responseOk = responses.response200(transformedObj, config, null, null, null, modelWithMethod, modelsName);
                         }
                     }
                     // for post, we return 201. for put or patch, we return 200 and 404.
                     const successResponse = method === "post"
                         ? responseOk
-                        : {...responses.response200(transformedObj, config, null, null, config.responses), ...responses.response404(pathVariables)};
+                        : {...responses.response200(transformedObj, config, null, null, config.responses, null, modelsName), ...responses.response404(pathVariables)};
 
                     // we add responses
                     services[path][method].responses = {
@@ -61,7 +68,7 @@ function createResponse(services, schemas, models, modelsName) {
                 } else if (method === "get") {
                     // for get method
                     services[path][method].responses = {
-                        ...responses.response200(transformedObj, config, null, schemas, transformedObj),
+                        ...responses.response200(transformedObj, config, null, schemas, transformedObj, null, modelsName),
                         ...commonResponses,
                         ...responses.response404(pathVariables)
                     };
@@ -93,7 +100,7 @@ function createResponse(services, schemas, models, modelsName) {
                         if (config.isCreation) {
                             responseOk = responses.response201(null, getSingularPath(path), config, relation);
                         } else {
-                            responseOk = responses.response200(null, config, relation, schemas, customOutput);
+                            responseOk = responses.response200(null, config, relation, schemas, customOutput, null, modelsName);
                         }
                     }
                     if (["post", "put", "patch"].includes(method)) {
@@ -109,7 +116,7 @@ function createResponse(services, schemas, models, modelsName) {
                     } else {
                         services[path][method].responses = {
                             ...commonResponses,
-                            ...responses.response200(null, config, relation, schemas, customOutput),
+                            ...responses.response200(null, config, relation, schemas, customOutput, null, modelsName),
                             ...responses.response404(pathVariables)
                         }
                     }

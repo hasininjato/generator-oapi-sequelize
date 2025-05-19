@@ -841,37 +841,6 @@
                     }
                 }
             },
-            "userProfileRelationPost": {
-                "type": "object",
-                "properties": {
-                    "fullname": {
-                        "type": "string",
-                        "description": "User fullname"
-                    },
-                    "email": {
-                        "type": "string",
-                        "description": "Email user"
-                    },
-                    "password": {
-                        "type": "string",
-                        "description": ""
-                    },
-                    "profile": {
-                        "type": "object",
-                        "properties": {
-                            "bio": {
-                                "type": "string",
-                                "description": "Profile bio"
-                            }
-                        }
-                    }
-                },
-                "required": [
-                    "fullname",
-                    "email",
-                    "password"
-                ]
-            },
             "userProfileRelationList": {
                 "type": "array",
                 "items": {
@@ -1912,7 +1881,7 @@
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/userProfileRelationPost"
+                                "$ref": "#/components/schemas/userPost"
                             }
                         }
                     }
@@ -2064,7 +2033,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/UserItem"
+                                    "$ref": "#/components/schemas/userItem"
                                 }
                             }
                         }

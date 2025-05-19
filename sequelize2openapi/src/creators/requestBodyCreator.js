@@ -1,6 +1,14 @@
 const {transformStr, capitalizeFirstLetter, getTypeField} = require("../utils/utils");
 const createRelations = require("./relationCreator");
 
+/**
+ * create request body of a request
+ * @param services
+ * @param schemas
+ * @param models
+ * @param modelsName
+ * @param components
+ */
 function createRequestBody(services, schemas, models, modelsName, components) {
     for (const [index, service] of Object.entries(services)) {
         for (const [method, config] of Object.entries(service)) {
