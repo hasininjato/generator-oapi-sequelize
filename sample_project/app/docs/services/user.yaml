@@ -1,4 +1,4 @@
-User:
+user:
   collectionOperations:
     get:
       openapi_context:
@@ -7,6 +7,7 @@ User:
       output:
         - "user:list"
         - "profile:item"
+      filterableFields: ["fullname", "email"]
     post:
       openapi_context:
         summary: "Create a user"

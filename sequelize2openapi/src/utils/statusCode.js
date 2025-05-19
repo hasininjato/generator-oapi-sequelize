@@ -1,15 +1,45 @@
 const {capitalizeFirstLetter} = require('./utils');
 const {sequelizeValidationHandlers} = require('./constants');
 
+/**
+ * @param ref
+ * @returns {{$ref: string}}
+ */
 function createResponseSchema(ref) {
     return {
         "$ref": `#/components/schemas/${ref}`
     };
 }
 
-function response200(obj, service, relation, schemas, customOutput = null) {
+/**
+ * status code 200
+ * @param obj
+ * @param service
+ * @param relation
+ * @param schemas
+ * @param customOutput
+ * @param modelWithMethod
+ * @param modelsName
+ * @returns {{200: {description: (*|string), content: {"application/json": {schema: {$ref: string}}}}}}
+ */
+function response200(obj, service, relation, schemas, customOutput = null, modelWithMethod = null, modelsName = null) {
     const summary = service.summary || "";
-    let ref = obj ? obj.pascalCase : relation;
+    let ref = "";
+    if (modelWithMethod) {
+        ref = modelWithMethod;
+    } else {
+        if (obj) {
+            const prefix = obj.prefix;
+            const model = modelsName?.find(elt => elt === prefix);
+            if (model) {
+                ref = `${model}${capitalizeFirstLetter(obj?.suffix)}`;
+            } else {
+                ref = obj.pascalCase;
+            }
+        } else {
+            ref = relation;
+        }
+    }
 
     if (customOutput?.custom) {
         const customRef = `Custom${service.customPath}`;
@@ -94,11 +124,25 @@ function response200(obj, service, relation, schemas, customOutput = null) {
     };
 }
 
-function response201(obj, model, service, relation = null) {
+/**
+ * status code 201
+ * @param obj
+ * @param model
+ * @param service
+ * @param relation
+ * @param modelWithMethod
+ * @returns {{201: {description: string, content: {"application/json": {schema: {$ref: string}}}}}}
+ */
+function response201(obj, model, service, relation = null, modelWithMethod = null) {
     const description = model
         ? `${model} created successfully`
         : `${service.summary} successfully`;
-    const componentName = obj ? obj.pascalCase : relation;
+    let componentName = "";
+    if (modelWithMethod) {
+        componentName = modelWithMethod;
+    } else {
+        componentName = obj ? obj.pascalCase : relation;
+    }
 
     return {
         201: {
@@ -112,6 +156,10 @@ function response201(obj, model, service, relation = null) {
     };
 }
 
+/**
+ * status code 204
+ * @returns {{204: {description: string}}}
+ */
 function response204() {
     return {
         204: {
@@ -120,26 +168,12 @@ function response204() {
     };
 }
 
-function getValidationDetails(modelFields) {
-    const details = [];
-
-    modelFields?.forEach(field => {
-        const {field: name, object: {validate}} = field;
-
-        if (validate) {
-            for (const [validationType, validationConfig] of Object.entries(validate)) {
-                if (sequelizeValidationHandlers[validationType]) {
-                    details.push(
-                        sequelizeValidationHandlers[validationType](name, validationConfig)
-                    );
-                }
-            }
-        }
-    });
-
-    return details;
-}
-
+/**
+ * status code 400
+ * @param obj
+ * @param models
+ * @returns {{400: {description: string, content: {"application/json": {schema: {$ref: string}, example: {name: string, errors: *[]}}}}}}
+ */
 function response400(obj, models) {
     const modelName = capitalizeFirstLetter(obj.prefix);
     const findModel = models.find(model => model.sequelizeModel === modelName);
@@ -161,6 +195,10 @@ function response400(obj, models) {
     };
 }
 
+/**
+ * status code 401
+ * @returns {{401: {description: string}}}
+ */
 function response401() {
     return {
         401: {
@@ -169,6 +207,10 @@ function response401() {
     };
 }
 
+/**
+ * status code 403
+ * @returns {{403: {description: string}}}
+ */
 function response403() {
     return {
         403: {
@@ -177,6 +219,11 @@ function response403() {
     };
 }
 
+/**
+ * status code 404
+ * @param paths
+ * @returns {{404: {description: string}}|null}
+ */
 function response404(paths) {
     if (!paths) return null;
 
@@ -188,27 +235,12 @@ function response404(paths) {
     };
 }
 
-function getUniqueConstraints(modelFields) {
-    const details = [];
-
-    modelFields?.forEach(field => {
-        const {field: name, object: {unique}} = field;
-
-        if (unique) {
-            const message = typeof unique === "boolean"
-                ? `Constraint violations on ${field.field}`
-                : unique.msg;
-
-            details.push({
-                field: field.field,
-                message
-            });
-        }
-    });
-
-    return details;
-}
-
+/**
+ * status code 409
+ * @param obj
+ * @param models
+ * @returns {{409: {description: string, content: {"application/json": {schema: {$ref: string}, example: {name: string, errors: *[]}}}}}}
+ */
 function response409(obj, models) {
     const modelName = capitalizeFirstLetter(obj.prefix);
     const findModel = models.find(model => model.sequelizeModel === modelName);
@@ -230,12 +262,67 @@ function response409(obj, models) {
     };
 }
 
+/**
+ * status code 500
+ * @returns {{500: {description: string}}}
+ */
 function response500() {
     return {
         500: {
             description: "Internal server error"
         }
     };
+}
+
+/**
+ * parse Sequelize validation rules of fields
+ * @param modelFields
+ * @returns {*[]}
+ */
+function getValidationDetails(modelFields) {
+    const details = [];
+
+    modelFields?.forEach(field => {
+        const {field: name, object: {validate}} = field;
+
+        if (validate) {
+            for (const [validationType, validationConfig] of Object.entries(validate)) {
+                if (sequelizeValidationHandlers[validationType]) {
+                    details.push(
+                        sequelizeValidationHandlers[validationType](name, validationConfig)
+                    );
+                }
+            }
+        }
+    });
+
+    return details;
+}
+
+/**
+ * parse Sequelize unique constraints rules of fields
+ * @param modelFields
+ * @returns {*[]}
+ */
+function getUniqueConstraints(modelFields) {
+    const details = [];
+
+    modelFields?.forEach(field => {
+        const {field: name, object: {unique}} = field;
+
+        if (unique) {
+            const message = typeof unique === "boolean"
+                ? `Constraint violations on ${field.field}`
+                : unique.msg;
+
+            details.push({
+                field: field.field,
+                message
+            });
+        }
+    });
+
+    return details;
 }
 
 module.exports = {
