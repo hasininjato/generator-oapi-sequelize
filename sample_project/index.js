@@ -7,7 +7,7 @@ const helmet = require("helmet")
 const swaggerUi = require('swagger-ui-express')
 
 // generator-oapi-sequelize
-const { parser } = require("sequelize2openapi")
+const { parser } = require("../sequelize2openapi")
 
 const app = express()
 

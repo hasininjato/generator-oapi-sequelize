@@ -404,7 +404,7 @@
                 "type": "object",
                 "properties": {}
             },
-            "TagList": {
+            "tagList": {
                 "type": "array",
                 "items": {
                     "type": "object",
@@ -416,7 +416,7 @@
                     }
                 }
             },
-            "TagItem": {
+            "tagItem": {
                 "type": "object",
                 "properties": {
                     "name": {
@@ -425,7 +425,7 @@
                     }
                 }
             },
-            "TagPut": {
+            "tagPut": {
                 "type": "object",
                 "properties": {
                     "name": {
@@ -434,7 +434,7 @@
                     }
                 }
             },
-            "TagPost": {
+            "tagPost": {
                 "type": "object",
                 "properties": {
                     "name": {
@@ -443,7 +443,7 @@
                     }
                 }
             },
-            "TagLogin": {
+            "tagLogin": {
                 "type": "object",
                 "properties": {}
             },
@@ -788,7 +788,7 @@
                     }
                 }
             },
-            "TagPostRelationList": {
+            "tagPostRelationList": {
                 "type": "array",
                 "items": {
                     "type": "object",
@@ -816,7 +816,7 @@
                     }
                 }
             },
-            "TagPostRelationItem": {
+            "tagPostRelationItem": {
                 "type": "object",
                 "properties": {
                     "name": {
@@ -840,6 +840,37 @@
                         }
                     }
                 }
+            },
+            "userProfileRelationPost": {
+                "type": "object",
+                "properties": {
+                    "fullname": {
+                        "type": "string",
+                        "description": "User fullname"
+                    },
+                    "email": {
+                        "type": "string",
+                        "description": "Email user"
+                    },
+                    "password": {
+                        "type": "string",
+                        "description": ""
+                    },
+                    "profile": {
+                        "type": "object",
+                        "properties": {
+                            "bio": {
+                                "type": "string",
+                                "description": "Profile bio"
+                            }
+                        }
+                    }
+                },
+                "required": [
+                    "fullname",
+                    "email",
+                    "password"
+                ]
             },
             "userProfileRelationList": {
                 "type": "array",
@@ -1573,7 +1604,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/TagPostRelationList"
+                                    "$ref": "#/components/schemas/tagPostRelationList"
                                 }
                             }
                         }
@@ -1601,7 +1632,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/TagItem"
+                                    "$ref": "#/components/schemas/tagItem"
                                 }
                             }
                         }
@@ -1648,7 +1679,7 @@
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/TagPost"
+                                "$ref": "#/components/schemas/tagPost"
                             }
                         }
                     }
@@ -1668,7 +1699,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/TagPostRelationItem"
+                                    "$ref": "#/components/schemas/tagPostRelationItem"
                                 }
                             }
                         }
@@ -1749,7 +1780,7 @@
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/TagPut"
+                                "$ref": "#/components/schemas/tagPut"
                             }
                         }
                     }
@@ -1881,7 +1912,7 @@
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/userPost"
+                                "$ref": "#/components/schemas/userProfileRelationPost"
                             }
                         }
                     }

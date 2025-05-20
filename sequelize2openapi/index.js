@@ -34,7 +34,7 @@ function parser(routesVariable) {
         models.map(model => {
             modelsName.push(model.sequelizeModel)
         })
-        addRelationManyToManyToEachModel(models);
+        addRelationManyToManyToEachModel(models, modelsName);
 
         const methodsToProcess = getAllMethods(models);
         const schemas = createSchemas(models, methodsToProcess)

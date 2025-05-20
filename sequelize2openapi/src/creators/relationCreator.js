@@ -1,4 +1,4 @@
-const {transformStr, capitalizeFirstLetter} = require("../utils/utils");
+const { transformStr, capitalizeFirstLetter } = require("../utils/utils");
 
 function createRelations(models, service, schemas, isBody = false, modelsName) {
     let parentModelValue, relationModels;
@@ -23,7 +23,10 @@ function createRelations(models, service, schemas, isBody = false, modelsName) {
 
     for (const modelValue of relationModels) {
         const relationTransformed = transformStr(modelValue);
-        const relationModelName = capitalizeFirstLetter(relationTransformed.prefix);
+        let relationModelName = capitalizeFirstLetter(relationTransformed.prefix);
+        if (modelsName.includes(relationTransformed.prefix)) {
+            relationModelName = relationTransformed.prefix;
+        }
         const relationModel = models.find(m => m.sequelizeModel === relationModelName);
 
         schemaName += capitalizeFirstLetter(relationTransformed.prefix);
@@ -39,7 +42,11 @@ function createRelations(models, service, schemas, isBody = false, modelsName) {
         }
 
         // Create a deep clone of the relation schema
-        relations[keyName] = JSON.parse(JSON.stringify(schemas[relationTransformed.pascalCase]));
+        let schemaNameDefined = relationTransformed.pascalCase;
+        if (modelsName.includes(relationTransformed.prefix)) {
+            schemaNameDefined = `${relationTransformed.prefix}${capitalizeFirstLetter(relationTransformed.suffix)}`;
+        }
+        relations[keyName] = JSON.parse(JSON.stringify(schemas[schemaNameDefined]));
     }
     let suffix = "";
     if (isBody) {

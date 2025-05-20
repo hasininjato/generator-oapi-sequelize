@@ -228,6 +228,22 @@ Model:
         - "model:custom"
 ```
 
+### Filterable fields
+
+You can add filter to your operation to allow filtering Sequelize fields. To do so, add the option `filterableFields` which takes an array of fields:
+
+```yaml
+ModelName:
+  collectionOperations:
+    get:
+      openapi_context:
+        summary: "List all items"
+        description: "Get paginated list of items"
+      output:
+        - "modelname:list"
+      filterableFields: ["field1", "field2"]
+```
+
 ### Custom output
 
 If annotating Sequelize models fields are unsufficient, you can declare custom fields to your responses. There are 3 types of custom output.

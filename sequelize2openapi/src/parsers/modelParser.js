@@ -262,7 +262,7 @@ function extractRelationsManyToManyThroughString(ast) {
     return relations;
 }
 
-function addRelationManyToManyToEachModel(models) {
+function addRelationManyToManyToEachModel(models, modelsName) {
     for (const model of Object.values(models)) {
         let relationsMany = [];
         if (model.relations.length > 1) {
@@ -276,8 +276,12 @@ function addRelationManyToManyToEachModel(models) {
             }
         }
         if (relationsMany.length > 0) { // Changed to > 0 since you might want to add even single relations
-            const source = relationsMany[0]?.source;
-            const target = relationsMany[0]?.target;
+            let { source, target } = relationsMany[0];
+
+            // Sequelize model name (inside define) may be in lowercase
+            const modelLookup = new Map(modelsName.map(name => [name.toLowerCase(), name]));
+            source = modelLookup.get(source.toLowerCase()) || source;
+            target = modelLookup.get(target.toLowerCase()) || target;
 
             if (!source || !target) {
                 throw new Error('Relations must have source and target defined');
@@ -298,12 +302,14 @@ function addRelationManyToManyToEachModel(models) {
             const newSourceRelations = relationsMany.filter(newRel =>
                 !sourceModel.relations.some(existingRel =>
                     JSON.stringify(existingRel) === JSON.stringify(newRel)
-                ));
+                )
+            );
 
             const newTargetRelations = relationsMany.filter(newRel =>
                 !targetModel.relations.some(existingRel =>
                     JSON.stringify(existingRel) === JSON.stringify(newRel)
-                ));
+                )
+            );
 
             // Add new relations
             sourceModel.relations.push(...newSourceRelations);
