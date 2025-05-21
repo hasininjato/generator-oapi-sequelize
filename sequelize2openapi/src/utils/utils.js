@@ -300,9 +300,41 @@ function applyCustomResponses(responses, customResponses) {
     (customResponses?.custom || []).forEach(entry => {
         Object.entries(entry).forEach(([status, response]) => {
             // change description
-            responses[status]?.description = response.message;
+            responses[status].description = response.message;
         });
     });
+}
+
+function addCommonErrorSchemas(schemas) {
+    const errorSchema = {
+        type: "object",
+        properties: {
+            name: {
+                type: "string",
+                description: "Name of the error",
+                example: "ValidationError",
+                enum: ["ValidationError", "UniqueConstraintError"]
+            },
+            errors: {
+                type: "array",
+                items: {
+                    type: "object",
+                    properties: {
+                        field: {
+                            type: "string",
+                            description: "Name of the field"
+                        },
+                        message: {
+                            type: "string",
+                            description: "Message on validation"
+                        }
+                    }
+                }
+            }
+        }
+    };
+    schemas["Response400Schema"] = errorSchema;
+    schemas["Response409Schema"] = errorSchema;
 }
 
 module.exports = {
@@ -327,5 +359,6 @@ module.exports = {
     removeKeyDeep,
     toPascalCase,
     isCustomOutput,
-    applyCustomResponses
+    applyCustomResponses,
+    addCommonErrorSchemas
 }
