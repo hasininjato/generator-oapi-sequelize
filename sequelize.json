@@ -1,0 +1,613 @@
+[
+  {
+    "sequelizeModel": "Instrument",
+    "value": [
+      {
+        "field": "id",
+        "type": "field",
+        "object": {
+          "allowNull": false,
+          "autoIncrement": true,
+          "primaryKey": true,
+          "type": "DataTypes.INTEGER"
+        },
+        "methods": [
+          "list",
+          "item"
+        ],
+        "description": ""
+      },
+      {
+        "field": "type",
+        "type": "field",
+        "object": {
+          "allowNull": false,
+          "type": "DataTypes.STRING"
+        },
+        "methods": [
+          "list",
+          "item",
+          "put",
+          "post"
+        ],
+        "description": "type of the instrument"
+      },
+      {
+        "field": "purchaseDate",
+        "type": "field",
+        "object": {
+          "allowNull": false,
+          "type": "DataTypes.DATE"
+        },
+        "methods": [
+          "list",
+          "item"
+        ],
+        "description": ""
+      }
+    ],
+    "relations": [
+      {
+        "type": "relation",
+        "relation": "belongsToMany",
+        "source": "User",
+        "target": "Instrument",
+        "args": [
+          "Instrument",
+          {
+            "through": "InstrumentUsers",
+            "association": "Instruments",
+            "foreignKey": "userId"
+          }
+        ]
+      },
+      {
+        "type": "relation",
+        "relation": "belongsToMany",
+        "source": "Instrument",
+        "target": "User",
+        "args": [
+          "User",
+          {
+            "through": "InstrumentUsers",
+            "association": "Users",
+            "foreignKey": "instrumentId"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "sequelizeModel": "InstrumentUsers",
+    "isThroughString": true,
+    "value": [
+      {
+        "field": "userId",
+        "type": "field",
+        "object": {
+          "type": "DataTypes.INTEGER",
+          "references": {
+            "model": "User"
+          }
+        },
+        "comment": {
+          "methods": [
+            "list",
+            "item",
+            "put",
+            "post"
+          ],
+          "description": "User ID"
+        }
+      },
+      {
+        "field": "instrumentId",
+        "type": "field",
+        "object": {
+          "type": "DataTypes.INTEGER",
+          "references": {
+            "model": "Instrument"
+          }
+        },
+        "comment": {
+          "methods": [
+            "list",
+            "item",
+            "put",
+            "post"
+          ],
+          "description": "Instrument ID"
+        }
+      }
+    ],
+    "relations": [
+      {
+        "type": "relation",
+        "relation": "belongsToMany",
+        "source": "User",
+        "target": "Instrument",
+        "through": "InstrumentUsers",
+        "args": [
+          "Instrument",
+          {
+            "through": "InstrumentUsers",
+            "alias": "Instruments"
+          }
+        ]
+      },
+      {
+        "type": "relation",
+        "relation": "belongsToMany",
+        "source": "Instrument",
+        "target": "User",
+        "through": "InstrumentUsers",
+        "args": [
+          "User",
+          {
+            "through": "InstrumentUsers",
+            "alias": "Users"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "sequelizeModel": "Post",
+    "value": [
+      {
+        "field": "title",
+        "type": "field",
+        "object": {
+          "type": "DataTypes.STRING",
+          "allowNull": false,
+          "unique": false,
+          "validate": {
+            "notNull": {
+              "msg": "Title is required"
+            },
+            "notEmpty": {
+              "msg": "Title cannot be empty"
+            }
+          }
+        },
+        "methods": [
+          "list",
+          "item",
+          "put",
+          "post"
+        ],
+        "description": "Post title"
+      },
+      {
+        "field": "content",
+        "type": "field",
+        "object": "DataTypes.TEXT",
+        "methods": [
+          "list",
+          "item",
+          "put",
+          "post"
+        ],
+        "description": "Post content"
+      }
+    ],
+    "relations": [
+      {
+        "type": "relation",
+        "relation": "hasMany",
+        "source": "User",
+        "target": "Post",
+        "args": [
+          "Post",
+          {
+            "onDelete": "CASCADE",
+            "association": "Posts",
+            "foreignKey": "userId"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "sequelizeModel": "PostTags",
+    "value": [
+      {
+        "field": "postId",
+        "type": "field",
+        "object": {
+          "type": "DataTypes.INTEGER",
+          "references": {
+            "model": "Post",
+            "key": "id"
+          }
+        },
+        "methods": [
+          "list",
+          "item",
+          "put",
+          "post"
+        ],
+        "description": "Tag name"
+      },
+      {
+        "field": "tagId",
+        "type": "field",
+        "object": {
+          "type": "DataTypes.INTEGER",
+          "references": {
+            "model": "Tag",
+            "key": "id"
+          }
+        },
+        "methods": [
+          "list",
+          "item",
+          "put",
+          "post"
+        ],
+        "description": "Tag name"
+      }
+    ],
+    "relations": [
+      {
+        "type": "relation",
+        "relation": "belongsToMany",
+        "source": "Post",
+        "target": "Tag",
+        "args": [
+          "Tag",
+          {
+            "through": "PostTags",
+            "association": "Tags",
+            "foreignKey": "postId"
+          }
+        ]
+      },
+      {
+        "type": "relation",
+        "relation": "belongsToMany",
+        "source": "Tag",
+        "target": "Post",
+        "args": [
+          "Post",
+          {
+            "through": "PostTags",
+            "association": "Posts",
+            "foreignKey": "tagId"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "sequelizeModel": "Profile",
+    "value": [
+      {
+        "field": "id",
+        "type": "field",
+        "object": {
+          "allowNull": false,
+          "autoIncrement": true,
+          "primaryKey": true,
+          "type": "DataTypes.INTEGER"
+        },
+        "methods": [
+          "list",
+          "item"
+        ],
+        "description": "Profile ID"
+      },
+      {
+        "field": "bio",
+        "type": "field",
+        "object": "DataTypes.TEXT",
+        "methods": [
+          "list",
+          "item",
+          "put",
+          "post"
+        ],
+        "description": "Profile bio"
+      }
+    ],
+    "relations": [
+      {
+        "type": "relation",
+        "relation": "hasOne",
+        "source": "User",
+        "target": "Profile",
+        "args": [
+          "Profile",
+          {
+            "foreignKey": "userId"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "sequelizeModel": "Tag",
+    "value": [
+      {
+        "field": "name",
+        "type": "field",
+        "object": "DataTypes.STRING",
+        "methods": [
+          "list",
+          "item",
+          "put",
+          "post"
+        ],
+        "description": "Tag name"
+      }
+    ],
+    "relations": []
+  },
+  {
+    "sequelizeModel": "Transaction",
+    "value": [
+      {
+        "field": "id",
+        "type": "field",
+        "object": {
+          "type": "DataTypes.INTEGER",
+          "primaryKey": true,
+          "autoIncrement": true,
+          "allowNull": false
+        },
+        "methods": [
+          "item",
+          "list"
+        ],
+        "description": "Id of the transaction"
+      },
+      {
+        "field": "amount",
+        "type": "field",
+        "object": {
+          "type": "DataTypes.DECIMAL",
+          "allowNull": false,
+          "unique": false,
+          "validate": {
+            "notNull": {
+              "msg": "Amount is required"
+            },
+            "isDecimal": {
+              "msg": "Amount must be a valid decimal number"
+            },
+            "notEmpty": {
+              "msg": "Amount cannot be empty"
+            },
+            "min": {
+              "args": [
+                0.01
+              ],
+              "msg": "Amount must be greater than 0"
+            }
+          }
+        },
+        "methods": [
+          "item",
+          "list",
+          "put",
+          "post"
+        ],
+        "description": "Amount of the transaction"
+      },
+      {
+        "field": "description",
+        "type": "field",
+        "object": {
+          "type": "DataTypes.STRING",
+          "allowNull": false,
+          "unique": false,
+          "validate": {
+            "notNull": {
+              "msg": "Description is required"
+            },
+            "notEmpty": {
+              "msg": "Description cannot be empty"
+            }
+          }
+        },
+        "methods": [
+          "item",
+          "list",
+          "put",
+          "post"
+        ],
+        "description": "Description of the transaction"
+      },
+      {
+        "field": "date",
+        "type": "field",
+        "object": {
+          "type": "DataTypes.DATE",
+          "allowNull": false,
+          "defaultValue": "DataTypes.NOW"
+        },
+        "methods": [
+          "item",
+          "list"
+        ],
+        "description": ""
+      },
+      {
+        "field": "createdAt",
+        "type": "field",
+        "object": {
+          "type": "DataTypes.DATE",
+          "allowNull": false
+        },
+        "comment": {
+          "methods": [
+            "item",
+            "list"
+          ],
+          "description": "Date when the record was created"
+        }
+      },
+      {
+        "field": "updatedAt",
+        "type": "field",
+        "object": {
+          "type": "DataTypes.DATE",
+          "allowNull": false
+        },
+        "comment": {
+          "methods": [
+            "item",
+            "list"
+          ],
+          "description": "Date when the record was last updated"
+        }
+      }
+    ],
+    "relations": [
+      {
+        "type": "relation",
+        "relation": "hasMany",
+        "source": "User",
+        "target": "Transaction",
+        "args": [
+          "Transaction",
+          {
+            "foreignKey": {
+              "name": "userId"
+            },
+            "association": "Transactions"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "sequelizeModel": "user",
+    "value": [
+      {
+        "field": "id",
+        "type": "field",
+        "object": {
+          "type": "DataTypes.INTEGER",
+          "primaryKey": true,
+          "autoIncrement": true,
+          "allowNull": false
+        },
+        "methods": [
+          "item",
+          "list",
+          "login"
+        ],
+        "description": "Id of the user"
+      },
+      {
+        "field": "fullname",
+        "type": "field",
+        "object": {
+          "type": "DataTypes.STRING",
+          "allowNull": false,
+          "unique": false,
+          "validate": {
+            "notNull": {
+              "msg": "Full name is required"
+            },
+            "notEmpty": {
+              "msg": "Full name cannot be empty"
+            }
+          }
+        },
+        "methods": [
+          "item",
+          "list",
+          "put",
+          "post",
+          "login"
+        ],
+        "description": "User fullname"
+      },
+      {
+        "field": "email",
+        "type": "field",
+        "object": {
+          "type": "DataTypes.STRING",
+          "allowNull": false,
+          "unique": {
+            "name": "unique_email",
+            "msg": "This email is already in use"
+          },
+          "validate": {
+            "notNull": {
+              "msg": "Email is required"
+            },
+            "notEmpty": {
+              "msg": "Email cannot be empty"
+            },
+            "isEmail": {
+              "msg": "Invalid email"
+            }
+          }
+        },
+        "methods": [
+          "item",
+          "list",
+          "put",
+          "post",
+          "login"
+        ],
+        "description": "Email user"
+      },
+      {
+        "field": "password",
+        "type": "field",
+        "object": {
+          "type": "DataTypes.STRING",
+          "allowNull": false,
+          "validate": {
+            "notNull": {
+              "msg": "Password is required"
+            },
+            "notEmpty": {
+              "msg": "Password cannot be empty"
+            }
+          }
+        },
+        "methods": [
+          "put",
+          "post"
+        ],
+        "description": ""
+      },
+      {
+        "field": "createdAt",
+        "type": "field",
+        "object": {
+          "type": "DataTypes.DATE",
+          "allowNull": false
+        },
+        "comment": {
+          "methods": [
+            "item",
+            "list"
+          ],
+          "description": "Date when the record was created"
+        }
+      },
+      {
+        "field": "updatedAt",
+        "type": "field",
+        "object": {
+          "type": "DataTypes.DATE",
+          "allowNull": false
+        },
+        "comment": {
+          "methods": [
+            "item",
+            "list"
+          ],
+          "description": "Date when the record was last updated"
+        }
+      }
+    ],
+    "relations": []
+  }
+]

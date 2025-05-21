@@ -6,6 +6,7 @@ const createSchemas = require('./src/creators/schemaCreator');
 const createResponse = require('./src/creators/responseCreator');
 const createRequestBody = require("./src/creators/requestBodyCreator");
 const path = require('path');
+const fs = require("node:fs");
 
 function getModels(modelsPath) {
     return getFileInDirectory(modelsPath)
@@ -22,6 +23,7 @@ function parser(routesVariable) {
 
         // Load and process models
         const models = getModels(modelsPath);
+        fs.writeFileSync("../sequelize.json", JSON.stringify(models, null, 2))
         const modelNames = models.map(model => model.sequelizeModel);
         addRelationManyToManyToEachModel(models, modelNames);
 
