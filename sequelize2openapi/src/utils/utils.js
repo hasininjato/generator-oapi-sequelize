@@ -299,9 +299,8 @@ function applyCustomResponses(responses, customResponses) {
     // Add or override responses from 'custom'
     (customResponses?.custom || []).forEach(entry => {
         Object.entries(entry).forEach(([status, response]) => {
-            responses[status] = {
-                description: response.message
-            };
+            // change description
+            responses[status]?.description = response.message;
         });
     });
 }

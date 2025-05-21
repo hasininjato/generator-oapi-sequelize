@@ -404,7 +404,7 @@
                 "type": "object",
                 "properties": {}
             },
-            "tagList": {
+            "TagList": {
                 "type": "array",
                 "items": {
                     "type": "object",
@@ -416,7 +416,7 @@
                     }
                 }
             },
-            "tagItem": {
+            "TagItem": {
                 "type": "object",
                 "properties": {
                     "name": {
@@ -425,7 +425,7 @@
                     }
                 }
             },
-            "tagPut": {
+            "TagPut": {
                 "type": "object",
                 "properties": {
                     "name": {
@@ -434,7 +434,7 @@
                     }
                 }
             },
-            "tagPost": {
+            "TagPost": {
                 "type": "object",
                 "properties": {
                     "name": {
@@ -443,7 +443,7 @@
                     }
                 }
             },
-            "tagLogin": {
+            "TagLogin": {
                 "type": "object",
                 "properties": {}
             },
@@ -788,7 +788,7 @@
                     }
                 }
             },
-            "tagPostRelationList": {
+            "TagPostRelationList": {
                 "type": "array",
                 "items": {
                     "type": "object",
@@ -816,7 +816,7 @@
                     }
                 }
             },
-            "tagPostRelationItem": {
+            "TagPostRelationItem": {
                 "type": "object",
                 "properties": {
                     "name": {
@@ -1604,7 +1604,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/tagPostRelationList"
+                                    "$ref": "#/components/schemas/TagPostRelationList"
                                 }
                             }
                         }
@@ -1632,7 +1632,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/tagItem"
+                                    "$ref": "#/components/schemas/TagItem"
                                 }
                             }
                         }
@@ -1679,7 +1679,7 @@
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/tagPost"
+                                "$ref": "#/components/schemas/TagPost"
                             }
                         }
                     }
@@ -1699,7 +1699,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/tagPostRelationItem"
+                                    "$ref": "#/components/schemas/TagPostRelationItem"
                                 }
                             }
                         }
@@ -1780,7 +1780,7 @@
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/tagPut"
+                                "$ref": "#/components/schemas/TagPut"
                             }
                         }
                     }
@@ -1835,10 +1835,10 @@
                         }
                     },
                     "401": {
-                        "description": "Unauthorized"
+                        "description": "Invalid credentials"
                     },
                     "403": {
-                        "description": "Forbidden"
+                        "description": "Invalid password or email. Please try again"
                     },
                     "500": {
                         "description": "Internal server error"
@@ -1885,10 +1885,10 @@
                         }
                     },
                     "401": {
-                        "description": "Unauthorized"
+                        "description": "Invalid credentials"
                     },
                     "403": {
-                        "description": "Forbidden"
+                        "description": "Invalid password or email. Please try again"
                     },
                     "409": {
                         "description": "Unique constraint errors",
@@ -1927,6 +1927,16 @@
                     "Authentication"
                 ],
                 "responses": {
+                    "200": {
+                        "description": "Successfully logged in",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CustomLogin"
+                                }
+                            }
+                        }
+                    },
                     "400": {
                         "description": "Bad request (VALIDATION_ERROR)",
                         "content": {
@@ -1945,7 +1955,7 @@
                         "description": "Invalid credentials"
                     },
                     "403": {
-                        "description": "Forbidden"
+                        "description": "Invalid password or email. Please try again"
                     },
                     "409": {
                         "description": "Unique constraint errors",
@@ -1985,7 +1995,7 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Validate token sent in parameter",
+                        "description": "Token is valid",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -1995,10 +2005,10 @@
                         }
                     },
                     "401": {
-                        "description": "Unauthorized"
+                        "description": "Invalid credentials"
                     },
                     "403": {
-                        "description": "Forbidden"
+                        "description": "Invalid password or email. Please try again"
                     },
                     "500": {
                         "description": "Internal server error"
@@ -2034,10 +2044,10 @@
                         }
                     },
                     "401": {
-                        "description": "Unauthorized"
+                        "description": "Invalid credentials"
                     },
                     "403": {
-                        "description": "Forbidden"
+                        "description": "Invalid password or email. Please try again"
                     },
                     "404": {
                         "description": "User not found"
@@ -2084,10 +2094,10 @@
                         }
                     },
                     "401": {
-                        "description": "Unauthorized"
+                        "description": "Invalid credentials"
                     },
                     "403": {
-                        "description": "Forbidden"
+                        "description": "Invalid password or email. Please try again"
                     },
                     "404": {
                         "description": "User not found"
@@ -2136,10 +2146,10 @@
                         "description": "No content"
                     },
                     "401": {
-                        "description": "Unauthorized"
+                        "description": "Invalid credentials"
                     },
                     "403": {
-                        "description": "Forbidden"
+                        "description": "Invalid password or email. Please try again"
                     },
                     "404": {
                         "description": "User not found"
@@ -2213,10 +2223,10 @@
                         }
                     },
                     "401": {
-                        "description": "Unauthorized"
+                        "description": "Invalid credentials"
                     },
                     "403": {
-                        "description": "Forbidden"
+                        "description": "Invalid password or email. Please try again"
                     },
                     "409": {
                         "description": "Unique constraint errors",
@@ -2269,10 +2279,10 @@
                         }
                     },
                     "401": {
-                        "description": "Unauthorized"
+                        "description": "Invalid credentials"
                     },
                     "403": {
-                        "description": "Forbidden"
+                        "description": "Invalid password or email. Please try again"
                     },
                     "404": {
                         "description": "User not found"
@@ -2307,10 +2317,10 @@
                         }
                     },
                     "401": {
-                        "description": "Unauthorized"
+                        "description": "Invalid credentials"
                     },
                     "403": {
-                        "description": "Forbidden"
+                        "description": "Invalid password or email. Please try again"
                     },
                     "404": {
                         "description": "User, Transaction not found"

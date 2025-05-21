@@ -58,12 +58,13 @@ user:
                   description: "Refresh token"
                   example: "ejgh8ta582.afkrioakljflkjsdfk"
       responses:
-        omit: ["200"]
         custom:
+          - 200:
+              message: "Successfully logged in"
           - 401:
               message: "Invalid credentials"
           - 403:
-              message: "Forbidden"
+              message: "Invalid password or email. Please try again"
 
       isCreation: false
     validate_token:
@@ -82,6 +83,10 @@ user:
               type: "string"
               description: "Validity of the token"
               example: "The token is still valid"
+      responses:
+        custom:
+          - 200:
+              message: "Token is valid"
       params:
         query:
           name: "token"

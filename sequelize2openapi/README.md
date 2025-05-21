@@ -360,6 +360,37 @@ This will output in the OpenAPI specifications something like:
 }
 ```
 
+### Custom responses
+
+Default responses are generated based on the HTTP method of the API route:
+- `GET` all: status codes returned are 200 (OK), 401 (Unauthorized), 403 (Forbidden), 500 (Internal server error)
+- `GET` by id (or other fields): status codes returned are 200 (OK), 401 (Unauthorized), 403 (Forbidden), 404 (Not found), 500 (Internal server error)
+- `POST` creation: status codes returned are 201 (Created), 400 (Bad request), 401 (Unauthorized), 403 (Forbidden), 409 (Unique constraint errors), 500 (Internal server error)
+- `POST` to send data via form: status codes returned are 200 (OK), 401 (Unauthorized), 403 (Forbidden), 500 (Internal server error)
+- `PUT` to update a resource: status codes returned are 200 (OK), 401 (Unauthorized), 403 (Forbidden), 404 (Not found), 500 (Internal server error)
+- `DELETE` to delete a resource by id: status codes returned are 204 (No content), 401 (Unauthorized), 403 (Forbidden), 404 (Not found), 500 (Internal server error)
+
+If those default resopnses are unsufficient for your use case, you can create custom responses. To do so, add the option `responses` to your operation like:
+```yaml
+Model:
+  custom_path:
+    tags: "Custom path"
+    path: "/custom/path"
+    method: "POST"
+    openapi_context:
+        summary: "Custom path"
+        description: "Declaring custom path"
+    input:
+        - "model:post"
+    output:
+        - "model:custom"
+    responses:
+      omit: ["200"] # you can omit status code responses
+      custom:
+        - 201:
+            message: "Custom path is OK" # you can change the message to display
+```
+
 # Best Practices
 
 1. Keep your model annotations up-to-date with your actual API behavior

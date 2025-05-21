@@ -129,7 +129,7 @@ router.post('/login', async (req, res) => {
 });
 
 // this route should be protected by JWT refresh token, but for now public for all to validate a jwt token
-router.get('/validate-token', async (req, res) => {
+router.get('/validate/token', async (req, res) => {
     const accessToken = req.query.accessToken;
     jwt.verify(accessToken,
         process.env.JWT_SECRET,
