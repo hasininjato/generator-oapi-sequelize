@@ -271,7 +271,13 @@
                         {
                             "type": "attribute",
                             "name": "unique",
-                            "kind": "field"
+                            "kind": "field",
+                            "args": [
+                                {
+                                    "type": "attributeArgument",
+                                    "value": "false"
+                                }
+                            ]
                         }
                     ]
                 },

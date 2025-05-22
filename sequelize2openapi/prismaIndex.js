@@ -28,11 +28,25 @@ model Post {
 
 model User {
   id    Int     @id @default(autoincrement())
-  email String  @unique
+  email String  @unique(false)
   name  String?
   posts Post[]
 }
 `
+
+function isId(attributes) {
+	// attributes?.forEach((attr) => {
+	// 	console.log(attr.name)
+	// 	if (attr.name === "id") {
+	// 		return true;
+	// 	}
+	// })
+	// return false;
+	attributes?.forEach((attr) => {
+		console.log(attr)
+	})
+}
+
 const schemas = getSchema(source);
 fs.writeFileSync("../prisma.json", JSON.stringify(schemas, null, 4));
 let models = [];
@@ -54,11 +68,29 @@ for (const schema of Object.values(schemas.list)) {
 						allowNull: property.optional,
 					}
 				}
+				if (!property?.optional) {
+					// check if the field is not id
+					property.attributes?.forEach((attr) => {
+						valueItem.object.validate = {
+							notNull: { msg: `${property.name} is required` },
+							notEmpty: { msg: `${property.name} cannot be empty` }
+						};
+						if (attr.name === "id") {
+							delete valueItem.object.validate;
+						}
+					})
+				}
 				property.attributes?.forEach((attr) => {
 					// get default value of the field
 					if (attr.name === "default") {
-						// console.log(attr.args[0])
 						valueItem.object.defaultValue = attr.args[0].value.name ?? attr.args[0].value;
+					}
+					// get unique field
+					if (attr.name === "unique") {
+						valueItem.object.unique = {
+							name: `unique_${property.name}`,
+							msg: `This ${property.name} is already in use`
+						};
 					}
 				})
 				model.value.push(valueItem);
