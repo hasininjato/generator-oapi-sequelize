@@ -29,23 +29,11 @@ model Post {
 model User {
   id    Int     @id @default(autoincrement())
   email String  @unique(false)
-  name  String?
+  fullname  String @unique
+  password String
   posts Post[]
 }
 `
-
-function isId(attributes) {
-	// attributes?.forEach((attr) => {
-	// 	console.log(attr.name)
-	// 	if (attr.name === "id") {
-	// 		return true;
-	// 	}
-	// })
-	// return false;
-	attributes?.forEach((attr) => {
-		console.log(attr)
-	})
-}
 
 const schemas = getSchema(source);
 fs.writeFileSync("../prisma.json", JSON.stringify(schemas, null, 4));
@@ -68,17 +56,23 @@ for (const schema of Object.values(schemas.list)) {
 						allowNull: property.optional,
 					}
 				}
-				if (!property?.optional) {
-					// check if the field is not id
-					property.attributes?.forEach((attr) => {
-						valueItem.object.validate = {
-							notNull: { msg: `${property.name} is required` },
-							notEmpty: { msg: `${property.name} cannot be empty` }
-						};
-						if (attr.name === "id") {
-							delete valueItem.object.validate;
+				if (property.attributes) {
+					if (!property?.optional) {
+						// check if the field is not id
+						for (const attribute of Object.values(property?.attributes)) {
+							// if field is type of id, no need to add validate rules
+							if (attribute.name === "id") break;
+							valueItem.object.validate = {
+								notNull: { msg: `${property.name} is required` },
+								notEmpty: { msg: `${property.name} cannot be empty` }
+							};
 						}
-					})
+					}
+				} else {
+					valueItem.object.validate = {
+						notNull: { msg: `${property.name} is required` },
+						notEmpty: { msg: `${property.name} cannot be empty` }
+					};
 				}
 				property.attributes?.forEach((attr) => {
 					// get default value of the field
@@ -99,4 +93,5 @@ for (const schema of Object.values(schemas.list)) {
 		models.push(model);
 	}
 }
-console.log(JSON.stringify(models, null, 4));
+// console.log(JSON.stringify(models, null, 4));
+fs.writeFileSync("../prisma-models.json", JSON.stringify(models, null, 4));

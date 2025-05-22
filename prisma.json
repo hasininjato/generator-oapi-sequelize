@@ -283,10 +283,24 @@
                 },
                 {
                     "type": "field",
-                    "name": "name",
+                    "name": "fullname",
                     "fieldType": "String",
                     "array": false,
-                    "optional": true
+                    "optional": false,
+                    "attributes": [
+                        {
+                            "type": "attribute",
+                            "name": "unique",
+                            "kind": "field"
+                        }
+                    ]
+                },
+                {
+                    "type": "field",
+                    "name": "password",
+                    "fieldType": "String",
+                    "array": false,
+                    "optional": false
                 },
                 {
                     "type": "field",
