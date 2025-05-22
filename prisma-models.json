@@ -1,0 +1,214 @@
+[
+    {
+        "sequelizeModel": "Post",
+        "value": [
+            {
+                "field": "id",
+                "type": "field",
+                "object": {
+                    "type": "Int",
+                    "allowNull": false,
+                    "defaultValue": "autoincrement"
+                }
+            },
+            {
+                "field": "title",
+                "type": "field",
+                "object": {
+                    "type": "String",
+                    "allowNull": false,
+                    "validate": {
+                        "notNull": {
+                            "msg": "title is required"
+                        },
+                        "notEmpty": {
+                            "msg": "title cannot be empty"
+                        }
+                    },
+                    "unique": {
+                        "name": "unique_title",
+                        "msg": "This title is already in use"
+                    },
+                    "defaultValue": "\"Untitled\""
+                },
+                "comment": {
+                    "description": "Date when the record was last updated",
+                    "methods": [
+                        "list",
+                        "item",
+                        "post"
+                    ]
+                }
+            },
+            {
+                "field": "content",
+                "type": "field",
+                "object": {
+                    "type": "String",
+                    "allowNull": true,
+                    "validate": {
+                        "notNull": {
+                            "msg": "content is required"
+                        },
+                        "notEmpty": {
+                            "msg": "content cannot be empty"
+                        }
+                    }
+                },
+                "comment": {
+                    "description": "Date when the record was last updated",
+                    "methods": [
+                        "list",
+                        "item",
+                        "post",
+                        "put"
+                    ]
+                }
+            },
+            {
+                "field": "published",
+                "type": "field",
+                "object": {
+                    "type": "Boolean",
+                    "allowNull": false,
+                    "validate": {
+                        "notNull": {
+                            "msg": "published is required"
+                        },
+                        "notEmpty": {
+                            "msg": "published cannot be empty"
+                        }
+                    },
+                    "defaultValue": "false"
+                }
+            },
+            {
+                "field": "author",
+                "type": "field",
+                "object": {
+                    "type": "User",
+                    "allowNull": true
+                }
+            },
+            {
+                "field": "authorId",
+                "type": "field",
+                "object": {
+                    "type": "Int",
+                    "allowNull": true,
+                    "validate": {
+                        "notNull": {
+                            "msg": "authorId is required"
+                        },
+                        "notEmpty": {
+                            "msg": "authorId cannot be empty"
+                        }
+                    }
+                }
+            },
+            {
+                "field": "createdAt",
+                "type": "field",
+                "object": {
+                    "type": "DateTime",
+                    "allowNull": false,
+                    "validate": {
+                        "notNull": {
+                            "msg": "createdAt is required"
+                        },
+                        "notEmpty": {
+                            "msg": "createdAt cannot be empty"
+                        }
+                    },
+                    "defaultValue": "now"
+                }
+            }
+        ]
+    },
+    {
+        "sequelizeModel": "User",
+        "value": [
+            {
+                "field": "id",
+                "type": "field",
+                "object": {
+                    "type": "Int",
+                    "allowNull": false,
+                    "defaultValue": "autoincrement"
+                }
+            },
+            {
+                "field": "email",
+                "type": "field",
+                "object": {
+                    "type": "String",
+                    "allowNull": false,
+                    "validate": {
+                        "notNull": {
+                            "msg": "email is required"
+                        },
+                        "notEmpty": {
+                            "msg": "email cannot be empty"
+                        }
+                    },
+                    "unique": {
+                        "name": "unique_email",
+                        "msg": "This email is already in use"
+                    }
+                }
+            },
+            {
+                "field": "fullname",
+                "type": "field",
+                "object": {
+                    "type": "String",
+                    "allowNull": false,
+                    "validate": {
+                        "notNull": {
+                            "msg": "fullname is required"
+                        },
+                        "notEmpty": {
+                            "msg": "fullname cannot be empty"
+                        }
+                    },
+                    "unique": {
+                        "name": "unique_fullname",
+                        "msg": "This fullname is already in use"
+                    }
+                }
+            },
+            {
+                "field": "password",
+                "type": "field",
+                "object": {
+                    "type": "String",
+                    "allowNull": false,
+                    "validate": {
+                        "notNull": {
+                            "msg": "password is required"
+                        },
+                        "notEmpty": {
+                            "msg": "password cannot be empty"
+                        }
+                    }
+                }
+            },
+            {
+                "field": "posts",
+                "type": "field",
+                "object": {
+                    "type": "Post",
+                    "allowNull": false,
+                    "validate": {
+                        "notNull": {
+                            "msg": "posts is required"
+                        },
+                        "notEmpty": {
+                            "msg": "posts cannot be empty"
+                        }
+                    }
+                }
+            }
+        ]
+    }
+]

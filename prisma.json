@@ -86,7 +86,7 @@
                 },
                 {
                     "type": "comment",
-                    "text": "// @swag | description: Title of the post | methods: list, item, post, put"
+                    "text": "// @swag | description: Title of the post | methods: list, item, post"
                 },
                 {
                     "type": "field",
@@ -124,6 +124,10 @@
                             ]
                         }
                     ]
+                },
+                {
+                    "type": "comment",
+                    "text": "// @swag | description: Content of the post | methods: list, item, post, put"
                 },
                 {
                     "type": "field",

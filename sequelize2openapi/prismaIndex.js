@@ -17,8 +17,9 @@ generator client {
 // Data model
 model Post {
   id        Int     @id @default(autoincrement())
-  // @swag | description: Title of the post | methods: list, item, post, put
+  // @swag | description: Title of the post | methods: list, item, post
   title     String @unique @default("Untitled") @db.VarChar(100)
+  // @swag | description: Content of the post | methods: list, item, post, put
   content   String?
   published Boolean @default(false)
   author    User?   @relation(fields:  [authorId], references: [id])
@@ -35,6 +36,25 @@ model User {
 }
 `
 
+function parseComment(comment) {
+	if (comment.includes("@swag")) {
+		const result = {};
+
+		const parts = comment.split('|').map(part => part.trim());
+
+		for (const part of parts) {
+			if (part.startsWith('description:')) {
+				result.description = 'Date when the record was last updated'; // Replace as needed
+			} else if (part.startsWith('methods:')) {
+				result.methods = part.replace('methods:', '').split(',').map(m => m.trim());
+			}
+		}
+
+		return result;
+	}
+	return null;
+}
+
 const schemas = getSchema(source);
 fs.writeFileSync("../prisma.json", JSON.stringify(schemas, null, 4));
 let models = [];
@@ -46,7 +66,11 @@ for (const schema of Object.values(schemas.list)) {
 			sequelizeModel: sequelizeModel,
 			value: []
 		}
+		let comment = null;
 		for (const property of schema.properties) {
+			if (property.type === "comment") {
+				comment = parseComment(property.text);
+			}
 			if (property.type === "field") {
 				const valueItem = {
 					field: property.name,
@@ -56,6 +80,10 @@ for (const schema of Object.values(schemas.list)) {
 						allowNull: property.optional,
 					}
 				}
+				if (comment) {
+					valueItem.comment = {...comment}
+				}
+				comment = null;
 				if (property.attributes) {
 					if (!property?.optional) {
 						// check if the field is not id
