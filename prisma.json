@@ -1,242 +1,295 @@
 {
-  "type": "schema",
-  "list": [
-    {
-      "type": "comment",
-      "text": "// Data source"
-    },
-    {
-      "type": "datasource",
-      "name": "db",
-      "assignments": [
+    "type": "schema",
+    "list": [
         {
-          "type": "assignment",
-          "key": "provider",
-          "value": "\"postgresql\""
+            "type": "comment",
+            "text": "// Data source"
         },
         {
-          "type": "assignment",
-          "key": "url",
-          "value": {
-            "type": "function",
-            "name": "env",
-            "params": [
-              "\"DATABASE_URL\""
-            ]
-          }
-        }
-      ]
-    },
-    {
-      "type": "break"
-    },
-    {
-      "type": "comment",
-      "text": "// Generator"
-    },
-    {
-      "type": "generator",
-      "name": "client",
-      "assignments": [
-        {
-          "type": "assignment",
-          "key": "provider",
-          "value": "\"prisma-client-js\""
-        }
-      ]
-    },
-    {
-      "type": "break"
-    },
-    {
-      "type": "comment",
-      "text": "// Data model"
-    },
-    {
-      "type": "model",
-      "name": "Post",
-      "properties": [
-        {
-          "type": "field",
-          "name": "id",
-          "fieldType": "Int",
-          "array": false,
-          "optional": false,
-          "attributes": [
-            {
-              "type": "attribute",
-              "name": "id",
-              "kind": "field"
-            },
-            {
-              "type": "attribute",
-              "name": "default",
-              "kind": "field",
-              "args": [
+            "type": "datasource",
+            "name": "db",
+            "assignments": [
                 {
-                  "type": "attributeArgument",
-                  "value": {
-                    "type": "function",
-                    "name": "autoincrement"
-                  }
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "type": "comment",
-          "text": "// @swag | description: Title of the post | methods: list, item, post, put"
-        },
-        {
-          "type": "field",
-          "name": "title",
-          "fieldType": "String",
-          "array": false,
-          "optional": false
-        },
-        {
-          "type": "field",
-          "name": "content",
-          "fieldType": "String",
-          "array": false,
-          "optional": true
-        },
-        {
-          "type": "field",
-          "name": "published",
-          "fieldType": "Boolean",
-          "array": false,
-          "optional": false,
-          "attributes": [
-            {
-              "type": "attribute",
-              "name": "default",
-              "kind": "field",
-              "args": [
-                {
-                  "type": "attributeArgument",
-                  "value": "false"
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "type": "field",
-          "name": "author",
-          "fieldType": "User",
-          "array": false,
-          "optional": true,
-          "attributes": [
-            {
-              "type": "attribute",
-              "name": "relation",
-              "kind": "field",
-              "args": [
-                {
-                  "type": "attributeArgument",
-                  "value": {
-                    "type": "keyValue",
-                    "key": "fields",
-                    "value": {
-                      "type": "array",
-                      "args": [
-                        "authorId"
-                      ]
-                    }
-                  }
+                    "type": "assignment",
+                    "key": "provider",
+                    "value": "\"postgresql\""
                 },
                 {
-                  "type": "attributeArgument",
-                  "value": {
-                    "type": "keyValue",
-                    "key": "references",
+                    "type": "assignment",
+                    "key": "url",
                     "value": {
-                      "type": "array",
-                      "args": [
-                        "id"
-                      ]
+                        "type": "function",
+                        "name": "env",
+                        "params": [
+                            "\"DATABASE_URL\""
+                        ]
                     }
-                  }
                 }
-              ]
-            }
-          ]
+            ]
         },
         {
-          "type": "field",
-          "name": "authorId",
-          "fieldType": "Int",
-          "array": false,
-          "optional": true
-        }
-      ]
-    },
-    {
-      "type": "break"
-    },
-    {
-      "type": "model",
-      "name": "User",
-      "properties": [
+            "type": "break"
+        },
         {
-          "type": "field",
-          "name": "id",
-          "fieldType": "Int",
-          "array": false,
-          "optional": false,
-          "attributes": [
-            {
-              "type": "attribute",
-              "name": "id",
-              "kind": "field"
-            },
-            {
-              "type": "attribute",
-              "name": "default",
-              "kind": "field",
-              "args": [
+            "type": "comment",
+            "text": "// Generator"
+        },
+        {
+            "type": "generator",
+            "name": "client",
+            "assignments": [
                 {
-                  "type": "attributeArgument",
-                  "value": {
-                    "type": "function",
-                    "name": "autoincrement"
-                  }
+                    "type": "assignment",
+                    "key": "provider",
+                    "value": "\"prisma-client-js\""
                 }
-              ]
-            }
-          ]
+            ]
         },
         {
-          "type": "field",
-          "name": "email",
-          "fieldType": "String",
-          "array": false,
-          "optional": false,
-          "attributes": [
-            {
-              "type": "attribute",
-              "name": "unique",
-              "kind": "field"
-            }
-          ]
+            "type": "break"
         },
         {
-          "type": "field",
-          "name": "name",
-          "fieldType": "String",
-          "array": false,
-          "optional": true
+            "type": "comment",
+            "text": "// Data model"
         },
         {
-          "type": "field",
-          "name": "posts",
-          "fieldType": "Post",
-          "array": true,
-          "optional": false
+            "type": "model",
+            "name": "Post",
+            "properties": [
+                {
+                    "type": "field",
+                    "name": "id",
+                    "fieldType": "Int",
+                    "array": false,
+                    "optional": false,
+                    "attributes": [
+                        {
+                            "type": "attribute",
+                            "name": "id",
+                            "kind": "field"
+                        },
+                        {
+                            "type": "attribute",
+                            "name": "default",
+                            "kind": "field",
+                            "args": [
+                                {
+                                    "type": "attributeArgument",
+                                    "value": {
+                                        "type": "function",
+                                        "name": "autoincrement"
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "comment",
+                    "text": "// @swag | description: Title of the post | methods: list, item, post, put"
+                },
+                {
+                    "type": "field",
+                    "name": "title",
+                    "fieldType": "String",
+                    "array": false,
+                    "optional": false,
+                    "attributes": [
+                        {
+                            "type": "attribute",
+                            "name": "unique",
+                            "kind": "field"
+                        },
+                        {
+                            "type": "attribute",
+                            "name": "default",
+                            "kind": "field",
+                            "args": [
+                                {
+                                    "type": "attributeArgument",
+                                    "value": "\"Untitled\""
+                                }
+                            ]
+                        },
+                        {
+                            "type": "attribute",
+                            "name": "VarChar",
+                            "kind": "field",
+                            "group": "db",
+                            "args": [
+                                {
+                                    "type": "attributeArgument",
+                                    "value": "100"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "field",
+                    "name": "content",
+                    "fieldType": "String",
+                    "array": false,
+                    "optional": true
+                },
+                {
+                    "type": "field",
+                    "name": "published",
+                    "fieldType": "Boolean",
+                    "array": false,
+                    "optional": false,
+                    "attributes": [
+                        {
+                            "type": "attribute",
+                            "name": "default",
+                            "kind": "field",
+                            "args": [
+                                {
+                                    "type": "attributeArgument",
+                                    "value": "false"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "field",
+                    "name": "author",
+                    "fieldType": "User",
+                    "array": false,
+                    "optional": true,
+                    "attributes": [
+                        {
+                            "type": "attribute",
+                            "name": "relation",
+                            "kind": "field",
+                            "args": [
+                                {
+                                    "type": "attributeArgument",
+                                    "value": {
+                                        "type": "keyValue",
+                                        "key": "fields",
+                                        "value": {
+                                            "type": "array",
+                                            "args": [
+                                                "authorId"
+                                            ]
+                                        }
+                                    }
+                                },
+                                {
+                                    "type": "attributeArgument",
+                                    "value": {
+                                        "type": "keyValue",
+                                        "key": "references",
+                                        "value": {
+                                            "type": "array",
+                                            "args": [
+                                                "id"
+                                            ]
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "field",
+                    "name": "authorId",
+                    "fieldType": "Int",
+                    "array": false,
+                    "optional": true
+                },
+                {
+                    "type": "field",
+                    "name": "createdAt",
+                    "fieldType": "DateTime",
+                    "array": false,
+                    "optional": false,
+                    "attributes": [
+                        {
+                            "type": "attribute",
+                            "name": "default",
+                            "kind": "field",
+                            "args": [
+                                {
+                                    "type": "attributeArgument",
+                                    "value": {
+                                        "type": "function",
+                                        "name": "now"
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "break"
+        },
+        {
+            "type": "model",
+            "name": "User",
+            "properties": [
+                {
+                    "type": "field",
+                    "name": "id",
+                    "fieldType": "Int",
+                    "array": false,
+                    "optional": false,
+                    "attributes": [
+                        {
+                            "type": "attribute",
+                            "name": "id",
+                            "kind": "field"
+                        },
+                        {
+                            "type": "attribute",
+                            "name": "default",
+                            "kind": "field",
+                            "args": [
+                                {
+                                    "type": "attributeArgument",
+                                    "value": {
+                                        "type": "function",
+                                        "name": "autoincrement"
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "field",
+                    "name": "email",
+                    "fieldType": "String",
+                    "array": false,
+                    "optional": false,
+                    "attributes": [
+                        {
+                            "type": "attribute",
+                            "name": "unique",
+                            "kind": "field"
+                        }
+                    ]
+                },
+                {
+                    "type": "field",
+                    "name": "name",
+                    "fieldType": "String",
+                    "array": false,
+                    "optional": true
+                },
+                {
+                    "type": "field",
+                    "name": "posts",
+                    "fieldType": "Post",
+                    "array": true,
+                    "optional": false
+                }
+            ]
         }
-      ]
-    }
-  ]
+    ]
 }
