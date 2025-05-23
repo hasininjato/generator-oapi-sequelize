@@ -1,6 +1,7 @@
 const { modelParser } = require("./src/parsers/modelParser");
 const { getSchema } = require('@mrleebo/prisma-ast');
 const fs = require('fs');
+const { capitalizeFirstLetter } = require("./src/utils/utils");
 
 const source = `
 // Data source
@@ -16,43 +17,50 @@ generator client {
 
 // Data model
 model Post {
+  // @swag | description: Unique identifier for the post | methods: list, item
   id        Int     @id @default(autoincrement())
   // @swag | description: Title of the post | methods: list, item, post
-  title     String @unique @default("Untitled") @db.VarChar(100)
+  title     String @unique @default(Untitled) @db.VarChar(100)
   // @swag | description: Content of the post | methods: list, item, post, put
   content   String?
-  published Boolean @default(false)
+  // @swag | description: Published status of the post | methods: list, item, post, put
+  published Boolean
   author    User?   @relation(fields:  [authorId], references: [id])
   authorId  Int?
   createdAt   DateTime @default(now())
 }
 
 model User {
+  // @swag | description: Unique identifier for the user | methods: list, item
   id    Int     @id @default(autoincrement())
+  // @swag | description: Email of the user | methods: list, item, post, put
   email String  @unique(false)
+  // @swag | description: Fullname of the user | methods: list, item, post, put
   fullname  String @unique
+  // @swag | description: Password of the user | methods: post, put
   password String
   posts Post[]
 }
 `
 
 function parseComment(comment) {
-	if (comment.includes("@swag")) {
-		const result = {};
+	if (!comment.includes("@swag")) return null;
 
-		const parts = comment.split('|').map(part => part.trim());
-
-		for (const part of parts) {
-			if (part.startsWith('description:')) {
-				result.description = 'Date when the record was last updated'; // Replace as needed
-			} else if (part.startsWith('methods:')) {
-				result.methods = part.replace('methods:', '').split(',').map(m => m.trim());
+	const result = {};
+	const parts = comment.replace("// @swag", "").split("|");
+	for (const part of parts) {
+		const [key, val] = part.split(":").map((s) => s.trim());
+		if (key && val) {
+			if (key === "description") {
+				result.description = val;
+			} else if (key === "methods") {
+				result.methods = val.split(",").map((s) => s.trim());
+			} else {
+				result[key] = val;
 			}
 		}
-
-		return result;
 	}
-	return null;
+	return result;
 }
 
 const schemas = getSchema(source);
@@ -81,7 +89,7 @@ for (const schema of Object.values(schemas.list)) {
 					}
 				}
 				if (comment) {
-					valueItem.comment = {...comment}
+					valueItem.comment = { ...comment }
 				}
 				comment = null;
 				if (property.attributes) {
@@ -91,21 +99,22 @@ for (const schema of Object.values(schemas.list)) {
 							// if field is type of id, no need to add validate rules
 							if (attribute.name === "id") break;
 							valueItem.object.validate = {
-								notNull: { msg: `${property.name} is required` },
-								notEmpty: { msg: `${property.name} cannot be empty` }
+								notNull: { msg: `${capitalizeFirstLetter(property.name)} is required` },
+								notEmpty: { msg: `${capitalizeFirstLetter(property.name)} cannot be empty` }
 							};
 						}
 					}
 				} else {
 					valueItem.object.validate = {
-						notNull: { msg: `${property.name} is required` },
-						notEmpty: { msg: `${property.name} cannot be empty` }
+						notNull: { msg: `${capitalizeFirstLetter(property.name)} is required` },
+						notEmpty: { msg: `${capitalizeFirstLetter(property.name)} cannot be empty` }
 					};
 				}
 				property.attributes?.forEach((attr) => {
 					// get default value of the field
 					if (attr.name === "default") {
 						valueItem.object.defaultValue = attr.args[0].value.name ?? attr.args[0].value;
+						console.log(attr.args[0].value.name ?? attr.args[0].value)
 					}
 					// get unique field
 					if (attr.name === "unique") {
