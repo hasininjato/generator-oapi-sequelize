@@ -90,7 +90,7 @@
                 },
                 {
                     "type": "comment",
-                    "text": "// @swag | description: Title of the post | methods: list, item, post"
+                    "text": "// @swag | description: Title of the post | methods: list, item, post, put"
                 },
                 {
                     "type": "field",
@@ -103,17 +103,6 @@
                             "type": "attribute",
                             "name": "unique",
                             "kind": "field"
-                        },
-                        {
-                            "type": "attribute",
-                            "name": "default",
-                            "kind": "field",
-                            "args": [
-                                {
-                                    "type": "attributeArgument",
-                                    "value": "Untitled"
-                                }
-                            ]
                         },
                         {
                             "type": "attribute",

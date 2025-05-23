@@ -35,15 +35,15 @@
                     "unique": {
                         "name": "unique_title",
                         "msg": "This title is already in use"
-                    },
-                    "defaultValue": "Untitled"
+                    }
                 },
                 "comment": {
                     "description": "Title of the post",
                     "methods": [
                         "list",
                         "item",
-                        "post"
+                        "post",
+                        "put"
                     ]
                 }
             },
@@ -52,15 +52,7 @@
                 "type": "field",
                 "object": {
                     "type": "String",
-                    "allowNull": true,
-                    "validate": {
-                        "notNull": {
-                            "msg": "Content is required"
-                        },
-                        "notEmpty": {
-                            "msg": "Content cannot be empty"
-                        }
-                    }
+                    "allowNull": true
                 },
                 "comment": {
                     "description": "Content of the post",
@@ -110,15 +102,7 @@
                 "type": "field",
                 "object": {
                     "type": "Int",
-                    "allowNull": true,
-                    "validate": {
-                        "notNull": {
-                            "msg": "AuthorId is required"
-                        },
-                        "notEmpty": {
-                            "msg": "AuthorId cannot be empty"
-                        }
-                    }
+                    "allowNull": true
                 }
             },
             {
@@ -127,14 +111,6 @@
                 "object": {
                     "type": "DateTime",
                     "allowNull": false,
-                    "validate": {
-                        "notNull": {
-                            "msg": "CreatedAt is required"
-                        },
-                        "notEmpty": {
-                            "msg": "CreatedAt cannot be empty"
-                        }
-                    },
                     "defaultValue": "now"
                 }
             }
