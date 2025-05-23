@@ -6,6 +6,7 @@ function isCreatedOrUpdated(field) {
 }
 
 function transformField(field, comment) {
+    console.log(field);
     const fieldObject = {
         field: field.name,
         type: "field",
@@ -34,7 +35,12 @@ function transformField(field, comment) {
 
     // Only add validate if required AND not an ID
     if (isRequired && !hasId) {
-        if (!isCreatedOrUpdated(field.name)) {
+        if (isCreatedOrUpdated(field.name)) {
+            fieldObject.comment = {
+                "description": `${capitalizeFirstLetter(field.name)} is automatically set by the system`,
+                "methods": ["list", "item"]
+            }
+        } else {
             fieldObject.object.validate = {
                 notNull: { msg: `${capitalizeFirstLetter(field.name)} is required` },
                 notEmpty: { msg: `${capitalizeFirstLetter(field.name)} cannot be empty` }

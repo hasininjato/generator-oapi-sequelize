@@ -112,6 +112,13 @@
                     "type": "DateTime",
                     "allowNull": false,
                     "defaultValue": "now"
+                },
+                "comment": {
+                    "description": "CreatedAt is automatically set by the system",
+                    "methods": [
+                        "list",
+                        "item"
+                    ]
                 }
             }
         ]
