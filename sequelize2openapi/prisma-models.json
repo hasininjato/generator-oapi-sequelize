@@ -95,8 +95,7 @@
                 "object": {
                     "type": "User",
                     "allowNull": true
-                },
-                "comment": {}
+                }
             },
             {
                 "field": "authorId",
@@ -134,13 +133,22 @@
                     "type": "Int",
                     "allowNull": false,
                     "defaultValue": "autoincrement"
-                },
-                "comment": {
-                    "description": "Unique identifier for the user",
-                    "methods": [
-                        "list",
-                        "item"
-                    ]
+                }
+            },
+            {
+                "field": "fullname",
+                "type": "field",
+                "object": {
+                    "type": "String",
+                    "allowNull": false,
+                    "validate": {
+                        "notNull": {
+                            "msg": "Fullname is required"
+                        },
+                        "notEmpty": {
+                            "msg": "Fullname cannot be empty"
+                        }
+                    }
                 }
             },
             {
@@ -161,44 +169,6 @@
                         "name": "unique_email",
                         "msg": "This email is already in use"
                     }
-                },
-                "comment": {
-                    "description": "Email of the user",
-                    "methods": [
-                        "list",
-                        "item",
-                        "post",
-                        "put"
-                    ]
-                }
-            },
-            {
-                "field": "fullname",
-                "type": "field",
-                "object": {
-                    "type": "String",
-                    "allowNull": false,
-                    "validate": {
-                        "notNull": {
-                            "msg": "Fullname is required"
-                        },
-                        "notEmpty": {
-                            "msg": "Fullname cannot be empty"
-                        }
-                    },
-                    "unique": {
-                        "name": "unique_fullname",
-                        "msg": "This fullname is already in use"
-                    }
-                },
-                "comment": {
-                    "description": "Fullname of the user",
-                    "methods": [
-                        "list",
-                        "item",
-                        "post",
-                        "put"
-                    ]
                 }
             },
             {
@@ -215,27 +185,51 @@
                             "msg": "Password cannot be empty"
                         }
                     }
+                }
+            },
+            {
+                "field": "createdAt",
+                "type": "field",
+                "object": {
+                    "type": "DateTime",
+                    "allowNull": false,
+                    "defaultValue": "now"
                 },
                 "comment": {
-                    "description": "Password of the user",
+                    "description": "CreatedAt is automatically set by the system",
                     "methods": [
-                        "post",
-                        "put"
+                        "list",
+                        "item"
                     ]
                 }
             },
             {
-                "field": "posts",
+                "field": "updatedAt",
+                "type": "field",
+                "object": {
+                    "type": "DateTime",
+                    "allowNull": false
+                },
+                "comment": {
+                    "description": "UpdatedAt is automatically set by the system",
+                    "methods": [
+                        "list",
+                        "item"
+                    ]
+                }
+            },
+            {
+                "field": "Post",
                 "type": "field",
                 "object": {
                     "type": "Post",
                     "allowNull": false,
                     "validate": {
                         "notNull": {
-                            "msg": "Posts is required"
+                            "msg": "Post is required"
                         },
                         "notEmpty": {
-                            "msg": "Posts cannot be empty"
+                            "msg": "Post cannot be empty"
                         }
                     }
                 }

@@ -141,10 +141,6 @@
                     "optional": false
                 },
                 {
-                    "type": "comment",
-                    "text": "// @swag | relations: User"
-                },
-                {
                     "type": "field",
                     "name": "author",
                     "fieldType": "User",
@@ -226,10 +222,6 @@
             "name": "User",
             "properties": [
                 {
-                    "type": "comment",
-                    "text": "// @swag | description: Unique identifier for the user | methods: list, item"
-                },
-                {
                     "type": "field",
                     "name": "id",
                     "fieldType": "Int",
@@ -258,36 +250,15 @@
                     ]
                 },
                 {
-                    "type": "comment",
-                    "text": "// @swag | description: Email of the user | methods: list, item, post, put"
+                    "type": "field",
+                    "name": "fullname",
+                    "fieldType": "String",
+                    "array": false,
+                    "optional": false
                 },
                 {
                     "type": "field",
                     "name": "email",
-                    "fieldType": "String",
-                    "array": false,
-                    "optional": false,
-                    "attributes": [
-                        {
-                            "type": "attribute",
-                            "name": "unique",
-                            "kind": "field",
-                            "args": [
-                                {
-                                    "type": "attributeArgument",
-                                    "value": "false"
-                                }
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "type": "comment",
-                    "text": "// @swag | description: Fullname of the user | methods: list, item, post, put"
-                },
-                {
-                    "type": "field",
-                    "name": "fullname",
                     "fieldType": "String",
                     "array": false,
                     "optional": false,
@@ -300,10 +271,6 @@
                     ]
                 },
                 {
-                    "type": "comment",
-                    "text": "// @swag | description: Password of the user | methods: post, put"
-                },
-                {
                     "type": "field",
                     "name": "password",
                     "fieldType": "String",
@@ -312,10 +279,65 @@
                 },
                 {
                     "type": "field",
-                    "name": "posts",
+                    "name": "createdAt",
+                    "fieldType": "DateTime",
+                    "array": false,
+                    "optional": false,
+                    "attributes": [
+                        {
+                            "type": "attribute",
+                            "name": "default",
+                            "kind": "field",
+                            "args": [
+                                {
+                                    "type": "attributeArgument",
+                                    "value": {
+                                        "type": "function",
+                                        "name": "now"
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "field",
+                    "name": "updatedAt",
+                    "fieldType": "DateTime",
+                    "array": false,
+                    "optional": false,
+                    "attributes": [
+                        {
+                            "type": "attribute",
+                            "name": "updatedAt",
+                            "kind": "field"
+                        }
+                    ]
+                },
+                {
+                    "type": "field",
+                    "name": "Post",
                     "fieldType": "Post",
                     "array": true,
                     "optional": false
+                },
+                {
+                    "type": "break"
+                },
+                {
+                    "type": "attribute",
+                    "name": "map",
+                    "kind": "object",
+                    "args": [
+                        {
+                            "type": "attributeArgument",
+                            "value": "\"user\""
+                        }
+                    ]
+                },
+                {
+                    "type": "comment",
+                    "text": "// correspond au nom de la table dans Sequelize"
                 }
             ]
         }

@@ -6,7 +6,6 @@ function isCreatedOrUpdated(field) {
 }
 
 function transformField(field, comment) {
-    console.log(field);
     const fieldObject = {
         field: field.name,
         type: "field",

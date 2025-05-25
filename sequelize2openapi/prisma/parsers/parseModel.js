@@ -2,7 +2,7 @@ const { getSchema } = require('@mrleebo/prisma-ast');
 const { parseComment } = require('./parseComment');
 const { transformField } = require('./transformField');
 
-function generateModels(source) {
+function parseModel(source) {
     const schemas = getSchema(source);
     const models = [];
 
@@ -34,4 +34,4 @@ function generateModels(source) {
     return { schemas, models };
 }
 
-module.exports = { generateModels };
+module.exports = { generateModels: parseModel };
