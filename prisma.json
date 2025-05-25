@@ -157,6 +157,10 @@
                     ]
                 },
                 {
+                    "type": "comment",
+                    "text": "// @swag | relations: User"
+                },
+                {
                     "type": "field",
                     "name": "author",
                     "fieldType": "User",

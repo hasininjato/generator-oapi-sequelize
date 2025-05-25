@@ -88,7 +88,8 @@
                 "object": {
                     "type": "User",
                     "allowNull": true
-                }
+                },
+                "comment": {}
             },
             {
                 "field": "authorId",

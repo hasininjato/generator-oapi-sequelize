@@ -22,6 +22,7 @@ model Post {
   // @swag | description: Content of the post | methods: list, item, post, put
   content   String?
   published Boolean @default(false)
+  // @swag | relations: User
   author    User?   @relation(fields:  [authorId], references: [id])
   authorId  Int?
   createdAt   DateTime @default(now())
@@ -34,6 +35,19 @@ model User {
   password String
   posts Post[]
 }
+
+model Student {
+  id      Int      @id @default(autoincrement())
+  name    String
+  courses Course[] @relation("Enrollments")
+}
+
+model Course {
+  id       Int       @id @default(autoincrement())
+  title    String
+  students Student[] @relation("Enrollments")
+}
+
 `
 
 function parseComment(comment) {
