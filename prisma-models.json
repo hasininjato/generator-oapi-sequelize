@@ -9,6 +9,13 @@
                     "type": "Int",
                     "allowNull": false,
                     "defaultValue": "autoincrement"
+                },
+                "comment": {
+                    "description": "Unique identifier for the post",
+                    "methods": [
+                        "list",
+                        "item"
+                    ]
                 }
             },
             {
@@ -19,24 +26,24 @@
                     "allowNull": false,
                     "validate": {
                         "notNull": {
-                            "msg": "title is required"
+                            "msg": "Title is required"
                         },
                         "notEmpty": {
-                            "msg": "title cannot be empty"
+                            "msg": "Title cannot be empty"
                         }
                     },
                     "unique": {
                         "name": "unique_title",
                         "msg": "This title is already in use"
-                    },
-                    "defaultValue": "\"Untitled\""
+                    }
                 },
                 "comment": {
-                    "description": "Date when the record was last updated",
+                    "description": "Title of the post",
                     "methods": [
                         "list",
                         "item",
-                        "post"
+                        "post",
+                        "put"
                     ]
                 }
             },
@@ -45,18 +52,10 @@
                 "type": "field",
                 "object": {
                     "type": "String",
-                    "allowNull": true,
-                    "validate": {
-                        "notNull": {
-                            "msg": "content is required"
-                        },
-                        "notEmpty": {
-                            "msg": "content cannot be empty"
-                        }
-                    }
+                    "allowNull": true
                 },
                 "comment": {
-                    "description": "Date when the record was last updated",
+                    "description": "Content of the post",
                     "methods": [
                         "list",
                         "item",
@@ -73,13 +72,21 @@
                     "allowNull": false,
                     "validate": {
                         "notNull": {
-                            "msg": "published is required"
+                            "msg": "Published is required"
                         },
                         "notEmpty": {
-                            "msg": "published cannot be empty"
+                            "msg": "Published cannot be empty"
                         }
-                    },
-                    "defaultValue": "false"
+                    }
+                },
+                "comment": {
+                    "description": "Published status of the post",
+                    "methods": [
+                        "list",
+                        "item",
+                        "post",
+                        "put"
+                    ]
                 }
             },
             {
@@ -96,15 +103,7 @@
                 "type": "field",
                 "object": {
                     "type": "Int",
-                    "allowNull": true,
-                    "validate": {
-                        "notNull": {
-                            "msg": "authorId is required"
-                        },
-                        "notEmpty": {
-                            "msg": "authorId cannot be empty"
-                        }
-                    }
+                    "allowNull": true
                 }
             },
             {
@@ -113,15 +112,14 @@
                 "object": {
                     "type": "DateTime",
                     "allowNull": false,
-                    "validate": {
-                        "notNull": {
-                            "msg": "createdAt is required"
-                        },
-                        "notEmpty": {
-                            "msg": "createdAt cannot be empty"
-                        }
-                    },
                     "defaultValue": "now"
+                },
+                "comment": {
+                    "description": "CreatedAt is automatically set by the system",
+                    "methods": [
+                        "list",
+                        "item"
+                    ]
                 }
             }
         ]
@@ -136,6 +134,13 @@
                     "type": "Int",
                     "allowNull": false,
                     "defaultValue": "autoincrement"
+                },
+                "comment": {
+                    "description": "Unique identifier for the user",
+                    "methods": [
+                        "list",
+                        "item"
+                    ]
                 }
             },
             {
@@ -146,16 +151,25 @@
                     "allowNull": false,
                     "validate": {
                         "notNull": {
-                            "msg": "email is required"
+                            "msg": "Email is required"
                         },
                         "notEmpty": {
-                            "msg": "email cannot be empty"
+                            "msg": "Email cannot be empty"
                         }
                     },
                     "unique": {
                         "name": "unique_email",
                         "msg": "This email is already in use"
                     }
+                },
+                "comment": {
+                    "description": "Email of the user",
+                    "methods": [
+                        "list",
+                        "item",
+                        "post",
+                        "put"
+                    ]
                 }
             },
             {
@@ -166,16 +180,25 @@
                     "allowNull": false,
                     "validate": {
                         "notNull": {
-                            "msg": "fullname is required"
+                            "msg": "Fullname is required"
                         },
                         "notEmpty": {
-                            "msg": "fullname cannot be empty"
+                            "msg": "Fullname cannot be empty"
                         }
                     },
                     "unique": {
                         "name": "unique_fullname",
                         "msg": "This fullname is already in use"
                     }
+                },
+                "comment": {
+                    "description": "Fullname of the user",
+                    "methods": [
+                        "list",
+                        "item",
+                        "post",
+                        "put"
+                    ]
                 }
             },
             {
@@ -186,12 +209,19 @@
                     "allowNull": false,
                     "validate": {
                         "notNull": {
-                            "msg": "password is required"
+                            "msg": "Password is required"
                         },
                         "notEmpty": {
-                            "msg": "password cannot be empty"
+                            "msg": "Password cannot be empty"
                         }
                     }
+                },
+                "comment": {
+                    "description": "Password of the user",
+                    "methods": [
+                        "post",
+                        "put"
+                    ]
                 }
             },
             {
@@ -202,10 +232,10 @@
                     "allowNull": false,
                     "validate": {
                         "notNull": {
-                            "msg": "posts is required"
+                            "msg": "Posts is required"
                         },
                         "notEmpty": {
-                            "msg": "posts cannot be empty"
+                            "msg": "Posts cannot be empty"
                         }
                     }
                 }

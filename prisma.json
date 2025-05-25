@@ -57,6 +57,10 @@
             "name": "Post",
             "properties": [
                 {
+                    "type": "comment",
+                    "text": "// @swag | description: Unique identifier for the post | methods: list, item"
+                },
+                {
                     "type": "field",
                     "name": "id",
                     "fieldType": "Int",
@@ -86,7 +90,7 @@
                 },
                 {
                     "type": "comment",
-                    "text": "// @swag | description: Title of the post | methods: list, item, post"
+                    "text": "// @swag | description: Title of the post | methods: list, item, post, put"
                 },
                 {
                     "type": "field",
@@ -99,17 +103,6 @@
                             "type": "attribute",
                             "name": "unique",
                             "kind": "field"
-                        },
-                        {
-                            "type": "attribute",
-                            "name": "default",
-                            "kind": "field",
-                            "args": [
-                                {
-                                    "type": "attributeArgument",
-                                    "value": "\"Untitled\""
-                                }
-                            ]
                         },
                         {
                             "type": "attribute",
@@ -137,24 +130,15 @@
                     "optional": true
                 },
                 {
+                    "type": "comment",
+                    "text": "// @swag | description: Published status of the post | methods: list, item, post, put"
+                },
+                {
                     "type": "field",
                     "name": "published",
                     "fieldType": "Boolean",
                     "array": false,
-                    "optional": false,
-                    "attributes": [
-                        {
-                            "type": "attribute",
-                            "name": "default",
-                            "kind": "field",
-                            "args": [
-                                {
-                                    "type": "attributeArgument",
-                                    "value": "false"
-                                }
-                            ]
-                        }
-                    ]
+                    "optional": false
                 },
                 {
                     "type": "comment",
@@ -242,6 +226,10 @@
             "name": "User",
             "properties": [
                 {
+                    "type": "comment",
+                    "text": "// @swag | description: Unique identifier for the user | methods: list, item"
+                },
+                {
                     "type": "field",
                     "name": "id",
                     "fieldType": "Int",
@@ -270,6 +258,10 @@
                     ]
                 },
                 {
+                    "type": "comment",
+                    "text": "// @swag | description: Email of the user | methods: list, item, post, put"
+                },
+                {
                     "type": "field",
                     "name": "email",
                     "fieldType": "String",
@@ -290,6 +282,10 @@
                     ]
                 },
                 {
+                    "type": "comment",
+                    "text": "// @swag | description: Fullname of the user | methods: list, item, post, put"
+                },
+                {
                     "type": "field",
                     "name": "fullname",
                     "fieldType": "String",
@@ -302,6 +298,10 @@
                             "kind": "field"
                         }
                     ]
+                },
+                {
+                    "type": "comment",
+                    "text": "// @swag | description: Password of the user | methods: post, put"
                 },
                 {
                     "type": "field",
