@@ -1,129 +1,5 @@
 [
     {
-        "sequelizeModel": "Post",
-        "value": [
-            {
-                "field": "id",
-                "type": "field",
-                "object": {
-                    "type": "Int",
-                    "allowNull": false,
-                    "defaultValue": "autoincrement"
-                },
-                "comment": {
-                    "description": "Unique identifier for the post",
-                    "methods": [
-                        "list",
-                        "item"
-                    ]
-                }
-            },
-            {
-                "field": "title",
-                "type": "field",
-                "object": {
-                    "type": "String",
-                    "allowNull": false,
-                    "validate": {
-                        "notNull": {
-                            "msg": "Title is required"
-                        },
-                        "notEmpty": {
-                            "msg": "Title cannot be empty"
-                        }
-                    },
-                    "unique": {
-                        "name": "unique_title",
-                        "msg": "This title is already in use"
-                    }
-                },
-                "comment": {
-                    "description": "Title of the post",
-                    "methods": [
-                        "list",
-                        "item",
-                        "post",
-                        "put"
-                    ]
-                }
-            },
-            {
-                "field": "content",
-                "type": "field",
-                "object": {
-                    "type": "String",
-                    "allowNull": true
-                },
-                "comment": {
-                    "description": "Content of the post",
-                    "methods": [
-                        "list",
-                        "item",
-                        "post",
-                        "put"
-                    ]
-                }
-            },
-            {
-                "field": "published",
-                "type": "field",
-                "object": {
-                    "type": "Boolean",
-                    "allowNull": false,
-                    "validate": {
-                        "notNull": {
-                            "msg": "Published is required"
-                        },
-                        "notEmpty": {
-                            "msg": "Published cannot be empty"
-                        }
-                    }
-                },
-                "comment": {
-                    "description": "Published status of the post",
-                    "methods": [
-                        "list",
-                        "item",
-                        "post",
-                        "put"
-                    ]
-                }
-            },
-            {
-                "field": "author",
-                "type": "field",
-                "object": {
-                    "type": "User",
-                    "allowNull": true
-                }
-            },
-            {
-                "field": "authorId",
-                "type": "field",
-                "object": {
-                    "type": "Int",
-                    "allowNull": true
-                }
-            },
-            {
-                "field": "createdAt",
-                "type": "field",
-                "object": {
-                    "type": "DateTime",
-                    "allowNull": false,
-                    "defaultValue": "now"
-                },
-                "comment": {
-                    "description": "CreatedAt is automatically set by the system",
-                    "methods": [
-                        "list",
-                        "item"
-                    ]
-                }
-            }
-        ]
-    },
-    {
         "sequelizeModel": "User",
         "value": [
             {
@@ -208,10 +84,179 @@
                 "type": "field",
                 "object": {
                     "type": "DateTime",
-                    "allowNull": false
+                    "allowNull": false,
+                    "validate": {
+                        "notNull": {
+                            "msg": "UpdatedAt is required"
+                        },
+                        "notEmpty": {
+                            "msg": "UpdatedAt cannot be empty"
+                        }
+                    }
+                }
+            },
+            {
+                "field": "posts",
+                "type": "field",
+                "object": {
+                    "type": "Post",
+                    "allowNull": false,
+                    "validate": {
+                        "notNull": {
+                            "msg": "Posts is required"
+                        },
+                        "notEmpty": {
+                            "msg": "Posts cannot be empty"
+                        }
+                    }
+                }
+            },
+            {
+                "field": "profile",
+                "type": "field",
+                "object": {
+                    "type": "Profile",
+                    "allowNull": true
+                }
+            },
+            {
+                "field": "transactions",
+                "type": "field",
+                "object": {
+                    "type": "Transaction",
+                    "allowNull": false,
+                    "validate": {
+                        "notNull": {
+                            "msg": "Transactions is required"
+                        },
+                        "notEmpty": {
+                            "msg": "Transactions cannot be empty"
+                        }
+                    }
+                }
+            },
+            {
+                "field": "instruments",
+                "type": "field",
+                "object": {
+                    "type": "Instrument",
+                    "allowNull": false,
+                    "validate": {
+                        "notNull": {
+                            "msg": "Instruments is required"
+                        },
+                        "notEmpty": {
+                            "msg": "Instruments cannot be empty"
+                        }
+                    }
+                }
+            }
+        ]
+    },
+    {
+        "sequelizeModel": "Profile",
+        "value": [
+            {
+                "field": "id",
+                "type": "field",
+                "object": {
+                    "type": "Int",
+                    "allowNull": false,
+                    "defaultValue": "autoincrement"
+                }
+            },
+            {
+                "field": "bio",
+                "type": "field",
+                "object": {
+                    "type": "String",
+                    "allowNull": true
+                }
+            },
+            {
+                "field": "userId",
+                "type": "field",
+                "object": {
+                    "type": "Int",
+                    "allowNull": false,
+                    "validate": {
+                        "notNull": {
+                            "msg": "UserId is required"
+                        },
+                        "notEmpty": {
+                            "msg": "UserId cannot be empty"
+                        }
+                    },
+                    "unique": {
+                        "name": "unique_userId",
+                        "msg": "This userId is already in use"
+                    }
+                }
+            },
+            {
+                "field": "user",
+                "type": "field",
+                "object": {
+                    "type": "User",
+                    "allowNull": false,
+                    "validate": {
+                        "notNull": {
+                            "msg": "User is required"
+                        },
+                        "notEmpty": {
+                            "msg": "User cannot be empty"
+                        }
+                    }
+                }
+            }
+        ]
+    },
+    {
+        "sequelizeModel": "Post",
+        "value": [
+            {
+                "field": "id",
+                "type": "field",
+                "object": {
+                    "type": "Int",
+                    "allowNull": false,
+                    "defaultValue": "autoincrement"
+                }
+            },
+            {
+                "field": "title",
+                "type": "field",
+                "object": {
+                    "type": "String",
+                    "allowNull": false,
+                    "validate": {
+                        "notNull": {
+                            "msg": "Title is required"
+                        },
+                        "notEmpty": {
+                            "msg": "Title cannot be empty"
+                        }
+                    }
+                }
+            },
+            {
+                "field": "content",
+                "type": "field",
+                "object": {
+                    "type": "String",
+                    "allowNull": true
+                }
+            },
+            {
+                "field": "createdAt",
+                "type": "field",
+                "object": {
+                    "type": "DateTime",
+                    "allowNull": false,
+                    "defaultValue": "now"
                 },
                 "comment": {
-                    "description": "UpdatedAt is automatically set by the system",
+                    "description": "CreatedAt is automatically set by the system",
                     "methods": [
                         "list",
                         "item"
@@ -219,7 +264,178 @@
                 }
             },
             {
-                "field": "Post",
+                "field": "updatedAt",
+                "type": "field",
+                "object": {
+                    "type": "DateTime",
+                    "allowNull": false,
+                    "validate": {
+                        "notNull": {
+                            "msg": "UpdatedAt is required"
+                        },
+                        "notEmpty": {
+                            "msg": "UpdatedAt cannot be empty"
+                        }
+                    }
+                }
+            },
+            {
+                "field": "userId",
+                "type": "field",
+                "object": {
+                    "type": "Int",
+                    "allowNull": true
+                }
+            },
+            {
+                "field": "user",
+                "type": "field",
+                "object": {
+                    "type": "User",
+                    "allowNull": true
+                }
+            },
+            {
+                "field": "tags",
+                "type": "field",
+                "object": {
+                    "type": "PostTags",
+                    "allowNull": false,
+                    "validate": {
+                        "notNull": {
+                            "msg": "Tags is required"
+                        },
+                        "notEmpty": {
+                            "msg": "Tags cannot be empty"
+                        }
+                    }
+                }
+            }
+        ]
+    },
+    {
+        "sequelizeModel": "Tag",
+        "value": [
+            {
+                "field": "id",
+                "type": "field",
+                "object": {
+                    "type": "Int",
+                    "allowNull": false,
+                    "defaultValue": "autoincrement"
+                }
+            },
+            {
+                "field": "name",
+                "type": "field",
+                "object": {
+                    "type": "String",
+                    "allowNull": true
+                }
+            },
+            {
+                "field": "createdAt",
+                "type": "field",
+                "object": {
+                    "type": "DateTime",
+                    "allowNull": false,
+                    "defaultValue": "now"
+                },
+                "comment": {
+                    "description": "CreatedAt is automatically set by the system",
+                    "methods": [
+                        "list",
+                        "item"
+                    ]
+                }
+            },
+            {
+                "field": "updatedAt",
+                "type": "field",
+                "object": {
+                    "type": "DateTime",
+                    "allowNull": false,
+                    "validate": {
+                        "notNull": {
+                            "msg": "UpdatedAt is required"
+                        },
+                        "notEmpty": {
+                            "msg": "UpdatedAt cannot be empty"
+                        }
+                    }
+                }
+            },
+            {
+                "field": "posts",
+                "type": "field",
+                "object": {
+                    "type": "PostTags",
+                    "allowNull": false,
+                    "validate": {
+                        "notNull": {
+                            "msg": "Posts is required"
+                        },
+                        "notEmpty": {
+                            "msg": "Posts cannot be empty"
+                        }
+                    }
+                }
+            }
+        ]
+    },
+    {
+        "sequelizeModel": "PostTags",
+        "value": [
+            {
+                "field": "postId",
+                "type": "field",
+                "object": {
+                    "type": "Int",
+                    "allowNull": false,
+                    "validate": {
+                        "notNull": {
+                            "msg": "PostId is required"
+                        },
+                        "notEmpty": {
+                            "msg": "PostId cannot be empty"
+                        }
+                    }
+                }
+            },
+            {
+                "field": "tagId",
+                "type": "field",
+                "object": {
+                    "type": "Int",
+                    "allowNull": false,
+                    "validate": {
+                        "notNull": {
+                            "msg": "TagId is required"
+                        },
+                        "notEmpty": {
+                            "msg": "TagId cannot be empty"
+                        }
+                    }
+                }
+            },
+            {
+                "field": "createdAt",
+                "type": "field",
+                "object": {
+                    "type": "DateTime",
+                    "allowNull": false,
+                    "defaultValue": "now"
+                },
+                "comment": {
+                    "description": "CreatedAt is automatically set by the system",
+                    "methods": [
+                        "list",
+                        "item"
+                    ]
+                }
+            },
+            {
+                "field": "post",
                 "type": "field",
                 "object": {
                     "type": "Post",
@@ -230,6 +446,203 @@
                         },
                         "notEmpty": {
                             "msg": "Post cannot be empty"
+                        }
+                    }
+                }
+            },
+            {
+                "field": "tag",
+                "type": "field",
+                "object": {
+                    "type": "Tag",
+                    "allowNull": false,
+                    "validate": {
+                        "notNull": {
+                            "msg": "Tag is required"
+                        },
+                        "notEmpty": {
+                            "msg": "Tag cannot be empty"
+                        }
+                    }
+                }
+            }
+        ]
+    },
+    {
+        "sequelizeModel": "Transaction",
+        "value": [
+            {
+                "field": "id",
+                "type": "field",
+                "object": {
+                    "type": "Int",
+                    "allowNull": false,
+                    "defaultValue": "autoincrement"
+                }
+            },
+            {
+                "field": "amount",
+                "type": "field",
+                "object": {
+                    "type": "Decimal",
+                    "allowNull": false,
+                    "validate": {
+                        "notNull": {
+                            "msg": "Amount is required"
+                        },
+                        "notEmpty": {
+                            "msg": "Amount cannot be empty"
+                        }
+                    }
+                }
+            },
+            {
+                "field": "description",
+                "type": "field",
+                "object": {
+                    "type": "String",
+                    "allowNull": false,
+                    "validate": {
+                        "notNull": {
+                            "msg": "Description is required"
+                        },
+                        "notEmpty": {
+                            "msg": "Description cannot be empty"
+                        }
+                    }
+                }
+            },
+            {
+                "field": "date",
+                "type": "field",
+                "object": {
+                    "type": "DateTime",
+                    "allowNull": false,
+                    "defaultValue": "now"
+                }
+            },
+            {
+                "field": "createdAt",
+                "type": "field",
+                "object": {
+                    "type": "DateTime",
+                    "allowNull": false,
+                    "defaultValue": "now"
+                },
+                "comment": {
+                    "description": "CreatedAt is automatically set by the system",
+                    "methods": [
+                        "list",
+                        "item"
+                    ]
+                }
+            },
+            {
+                "field": "updatedAt",
+                "type": "field",
+                "object": {
+                    "type": "DateTime",
+                    "allowNull": false,
+                    "validate": {
+                        "notNull": {
+                            "msg": "UpdatedAt is required"
+                        },
+                        "notEmpty": {
+                            "msg": "UpdatedAt cannot be empty"
+                        }
+                    }
+                }
+            },
+            {
+                "field": "userId",
+                "type": "field",
+                "object": {
+                    "type": "Int",
+                    "allowNull": false,
+                    "validate": {
+                        "notNull": {
+                            "msg": "UserId is required"
+                        },
+                        "notEmpty": {
+                            "msg": "UserId cannot be empty"
+                        }
+                    }
+                }
+            },
+            {
+                "field": "user",
+                "type": "field",
+                "object": {
+                    "type": "User",
+                    "allowNull": false,
+                    "validate": {
+                        "notNull": {
+                            "msg": "User is required"
+                        },
+                        "notEmpty": {
+                            "msg": "User cannot be empty"
+                        }
+                    }
+                }
+            }
+        ]
+    },
+    {
+        "sequelizeModel": "Instrument",
+        "value": [
+            {
+                "field": "id",
+                "type": "field",
+                "object": {
+                    "type": "Int",
+                    "allowNull": false,
+                    "defaultValue": "autoincrement"
+                }
+            },
+            {
+                "field": "type",
+                "type": "field",
+                "object": {
+                    "type": "String",
+                    "allowNull": false,
+                    "validate": {
+                        "notNull": {
+                            "msg": "Type is required"
+                        },
+                        "notEmpty": {
+                            "msg": "Type cannot be empty"
+                        }
+                    }
+                }
+            },
+            {
+                "field": "purchaseDate",
+                "type": "field",
+                "object": {
+                    "type": "DateTime",
+                    "allowNull": false,
+                    "validate": {
+                        "notNull": {
+                            "msg": "PurchaseDate is required"
+                        },
+                        "notEmpty": {
+                            "msg": "PurchaseDate cannot be empty"
+                        }
+                    }
+                }
+            },
+            {
+                "field": "users",
+                "type": "field",
+                "object": {
+                    "type": "User",
+                    "allowNull": false,
+                    "validate": {
+                        "notNull": {
+                            "msg": "Users is required"
+                        },
+                        "notEmpty": {
+                            "msg": "Users cannot be empty"
                         }
                     }
                 }

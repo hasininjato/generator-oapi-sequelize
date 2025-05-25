@@ -1,7 +1,7 @@
 const { capitalizeFirstLetter } = require("../../src/utils/utils");
 
 function isCreatedOrUpdated(field) {
-    const dateFields = ['createdat', 'updatedat', 'created_at', 'updated_at'];
+    const dateFields = ['createdat', 'created_at'];
     return dateFields.includes(field.toLowerCase());
 }
 
@@ -52,7 +52,7 @@ function transformField(field, comment) {
             // default value
             if (attr.name === "default") {
                 fieldObject.object.defaultValue = attr.args[0]?.value?.name ?? attr.args[0]?.value;
-                // we dont't need validate if default value is set
+                // we don't need to validate if default value is set
                 delete fieldObject.object.validate;
             }
 

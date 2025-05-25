@@ -50,169 +50,7 @@
         },
         {
             "type": "comment",
-            "text": "// Data model"
-        },
-        {
-            "type": "model",
-            "name": "Post",
-            "properties": [
-                {
-                    "type": "comment",
-                    "text": "// @swag | description: Unique identifier for the post | methods: list, item"
-                },
-                {
-                    "type": "field",
-                    "name": "id",
-                    "fieldType": "Int",
-                    "array": false,
-                    "optional": false,
-                    "attributes": [
-                        {
-                            "type": "attribute",
-                            "name": "id",
-                            "kind": "field"
-                        },
-                        {
-                            "type": "attribute",
-                            "name": "default",
-                            "kind": "field",
-                            "args": [
-                                {
-                                    "type": "attributeArgument",
-                                    "value": {
-                                        "type": "function",
-                                        "name": "autoincrement"
-                                    }
-                                }
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "type": "comment",
-                    "text": "// @swag | description: Title of the post | methods: list, item, post, put"
-                },
-                {
-                    "type": "field",
-                    "name": "title",
-                    "fieldType": "String",
-                    "array": false,
-                    "optional": false,
-                    "attributes": [
-                        {
-                            "type": "attribute",
-                            "name": "unique",
-                            "kind": "field"
-                        },
-                        {
-                            "type": "attribute",
-                            "name": "VarChar",
-                            "kind": "field",
-                            "group": "db",
-                            "args": [
-                                {
-                                    "type": "attributeArgument",
-                                    "value": "100"
-                                }
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "type": "comment",
-                    "text": "// @swag | description: Content of the post | methods: list, item, post, put"
-                },
-                {
-                    "type": "field",
-                    "name": "content",
-                    "fieldType": "String",
-                    "array": false,
-                    "optional": true
-                },
-                {
-                    "type": "comment",
-                    "text": "// @swag | description: Published status of the post | methods: list, item, post, put"
-                },
-                {
-                    "type": "field",
-                    "name": "published",
-                    "fieldType": "Boolean",
-                    "array": false,
-                    "optional": false
-                },
-                {
-                    "type": "field",
-                    "name": "author",
-                    "fieldType": "User",
-                    "array": false,
-                    "optional": true,
-                    "attributes": [
-                        {
-                            "type": "attribute",
-                            "name": "relation",
-                            "kind": "field",
-                            "args": [
-                                {
-                                    "type": "attributeArgument",
-                                    "value": {
-                                        "type": "keyValue",
-                                        "key": "fields",
-                                        "value": {
-                                            "type": "array",
-                                            "args": [
-                                                "authorId"
-                                            ]
-                                        }
-                                    }
-                                },
-                                {
-                                    "type": "attributeArgument",
-                                    "value": {
-                                        "type": "keyValue",
-                                        "key": "references",
-                                        "value": {
-                                            "type": "array",
-                                            "args": [
-                                                "id"
-                                            ]
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "type": "field",
-                    "name": "authorId",
-                    "fieldType": "Int",
-                    "array": false,
-                    "optional": true
-                },
-                {
-                    "type": "field",
-                    "name": "createdAt",
-                    "fieldType": "DateTime",
-                    "array": false,
-                    "optional": false,
-                    "attributes": [
-                        {
-                            "type": "attribute",
-                            "name": "default",
-                            "kind": "field",
-                            "args": [
-                                {
-                                    "type": "attributeArgument",
-                                    "value": {
-                                        "type": "function",
-                                        "name": "now"
-                                    }
-                                }
-                            ]
-                        }
-                    ]
-                }
-            ]
+            "text": "// Models"
         },
         {
             "type": "break"
@@ -315,29 +153,787 @@
                     ]
                 },
                 {
+                    "type": "break"
+                },
+                {
                     "type": "field",
-                    "name": "Post",
+                    "name": "posts",
                     "fieldType": "Post",
                     "array": true,
                     "optional": false
+                },
+                {
+                    "type": "field",
+                    "name": "profile",
+                    "fieldType": "Profile",
+                    "array": false,
+                    "optional": true
+                },
+                {
+                    "type": "field",
+                    "name": "transactions",
+                    "fieldType": "Transaction",
+                    "array": true,
+                    "optional": false
+                },
+                {
+                    "type": "field",
+                    "name": "instruments",
+                    "fieldType": "Instrument",
+                    "array": true,
+                    "optional": false,
+                    "attributes": [
+                        {
+                            "type": "attribute",
+                            "name": "relation",
+                            "kind": "field",
+                            "args": [
+                                {
+                                    "type": "attributeArgument",
+                                    "value": "\"InstrumentUsers\""
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "break"
+        },
+        {
+            "type": "model",
+            "name": "Profile",
+            "properties": [
+                {
+                    "type": "field",
+                    "name": "id",
+                    "fieldType": "Int",
+                    "array": false,
+                    "optional": false,
+                    "attributes": [
+                        {
+                            "type": "attribute",
+                            "name": "id",
+                            "kind": "field"
+                        },
+                        {
+                            "type": "attribute",
+                            "name": "default",
+                            "kind": "field",
+                            "args": [
+                                {
+                                    "type": "attributeArgument",
+                                    "value": {
+                                        "type": "function",
+                                        "name": "autoincrement"
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "field",
+                    "name": "bio",
+                    "fieldType": "String",
+                    "array": false,
+                    "optional": true
+                },
+                {
+                    "type": "break"
+                },
+                {
+                    "type": "field",
+                    "name": "userId",
+                    "fieldType": "Int",
+                    "array": false,
+                    "optional": false,
+                    "attributes": [
+                        {
+                            "type": "attribute",
+                            "name": "unique",
+                            "kind": "field"
+                        }
+                    ]
+                },
+                {
+                    "type": "field",
+                    "name": "user",
+                    "fieldType": "User",
+                    "array": false,
+                    "optional": false,
+                    "attributes": [
+                        {
+                            "type": "attribute",
+                            "name": "relation",
+                            "kind": "field",
+                            "args": [
+                                {
+                                    "type": "attributeArgument",
+                                    "value": {
+                                        "type": "keyValue",
+                                        "key": "fields",
+                                        "value": {
+                                            "type": "array",
+                                            "args": [
+                                                "userId"
+                                            ]
+                                        }
+                                    }
+                                },
+                                {
+                                    "type": "attributeArgument",
+                                    "value": {
+                                        "type": "keyValue",
+                                        "key": "references",
+                                        "value": {
+                                            "type": "array",
+                                            "args": [
+                                                "id"
+                                            ]
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "break"
+        },
+        {
+            "type": "model",
+            "name": "Post",
+            "properties": [
+                {
+                    "type": "field",
+                    "name": "id",
+                    "fieldType": "Int",
+                    "array": false,
+                    "optional": false,
+                    "attributes": [
+                        {
+                            "type": "attribute",
+                            "name": "id",
+                            "kind": "field"
+                        },
+                        {
+                            "type": "attribute",
+                            "name": "default",
+                            "kind": "field",
+                            "args": [
+                                {
+                                    "type": "attributeArgument",
+                                    "value": {
+                                        "type": "function",
+                                        "name": "autoincrement"
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "field",
+                    "name": "title",
+                    "fieldType": "String",
+                    "array": false,
+                    "optional": false
+                },
+                {
+                    "type": "field",
+                    "name": "content",
+                    "fieldType": "String",
+                    "array": false,
+                    "optional": true
+                },
+                {
+                    "type": "field",
+                    "name": "createdAt",
+                    "fieldType": "DateTime",
+                    "array": false,
+                    "optional": false,
+                    "attributes": [
+                        {
+                            "type": "attribute",
+                            "name": "default",
+                            "kind": "field",
+                            "args": [
+                                {
+                                    "type": "attributeArgument",
+                                    "value": {
+                                        "type": "function",
+                                        "name": "now"
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "field",
+                    "name": "updatedAt",
+                    "fieldType": "DateTime",
+                    "array": false,
+                    "optional": false,
+                    "attributes": [
+                        {
+                            "type": "attribute",
+                            "name": "updatedAt",
+                            "kind": "field"
+                        }
+                    ]
+                },
+                {
+                    "type": "break"
+                },
+                {
+                    "type": "field",
+                    "name": "userId",
+                    "fieldType": "Int",
+                    "array": false,
+                    "optional": true
+                },
+                {
+                    "type": "field",
+                    "name": "user",
+                    "fieldType": "User",
+                    "array": false,
+                    "optional": true,
+                    "attributes": [
+                        {
+                            "type": "attribute",
+                            "name": "relation",
+                            "kind": "field",
+                            "args": [
+                                {
+                                    "type": "attributeArgument",
+                                    "value": {
+                                        "type": "keyValue",
+                                        "key": "fields",
+                                        "value": {
+                                            "type": "array",
+                                            "args": [
+                                                "userId"
+                                            ]
+                                        }
+                                    }
+                                },
+                                {
+                                    "type": "attributeArgument",
+                                    "value": {
+                                        "type": "keyValue",
+                                        "key": "references",
+                                        "value": {
+                                            "type": "array",
+                                            "args": [
+                                                "id"
+                                            ]
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "field",
+                    "name": "tags",
+                    "fieldType": "PostTags",
+                    "array": true,
+                    "optional": false
+                }
+            ]
+        },
+        {
+            "type": "break"
+        },
+        {
+            "type": "model",
+            "name": "Tag",
+            "properties": [
+                {
+                    "type": "field",
+                    "name": "id",
+                    "fieldType": "Int",
+                    "array": false,
+                    "optional": false,
+                    "attributes": [
+                        {
+                            "type": "attribute",
+                            "name": "id",
+                            "kind": "field"
+                        },
+                        {
+                            "type": "attribute",
+                            "name": "default",
+                            "kind": "field",
+                            "args": [
+                                {
+                                    "type": "attributeArgument",
+                                    "value": {
+                                        "type": "function",
+                                        "name": "autoincrement"
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "field",
+                    "name": "name",
+                    "fieldType": "String",
+                    "array": false,
+                    "optional": true
+                },
+                {
+                    "type": "field",
+                    "name": "createdAt",
+                    "fieldType": "DateTime",
+                    "array": false,
+                    "optional": false,
+                    "attributes": [
+                        {
+                            "type": "attribute",
+                            "name": "default",
+                            "kind": "field",
+                            "args": [
+                                {
+                                    "type": "attributeArgument",
+                                    "value": {
+                                        "type": "function",
+                                        "name": "now"
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "field",
+                    "name": "updatedAt",
+                    "fieldType": "DateTime",
+                    "array": false,
+                    "optional": false,
+                    "attributes": [
+                        {
+                            "type": "attribute",
+                            "name": "updatedAt",
+                            "kind": "field"
+                        }
+                    ]
+                },
+                {
+                    "type": "break"
+                },
+                {
+                    "type": "field",
+                    "name": "posts",
+                    "fieldType": "PostTags",
+                    "array": true,
+                    "optional": false
+                }
+            ]
+        },
+        {
+            "type": "break"
+        },
+        {
+            "type": "model",
+            "name": "PostTags",
+            "properties": [
+                {
+                    "type": "field",
+                    "name": "postId",
+                    "fieldType": "Int",
+                    "array": false,
+                    "optional": false
+                },
+                {
+                    "type": "field",
+                    "name": "tagId",
+                    "fieldType": "Int",
+                    "array": false,
+                    "optional": false
+                },
+                {
+                    "type": "field",
+                    "name": "createdAt",
+                    "fieldType": "DateTime",
+                    "array": false,
+                    "optional": false,
+                    "attributes": [
+                        {
+                            "type": "attribute",
+                            "name": "default",
+                            "kind": "field",
+                            "args": [
+                                {
+                                    "type": "attributeArgument",
+                                    "value": {
+                                        "type": "function",
+                                        "name": "now"
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "break"
+                },
+                {
+                    "type": "field",
+                    "name": "post",
+                    "fieldType": "Post",
+                    "array": false,
+                    "optional": false,
+                    "attributes": [
+                        {
+                            "type": "attribute",
+                            "name": "relation",
+                            "kind": "field",
+                            "args": [
+                                {
+                                    "type": "attributeArgument",
+                                    "value": {
+                                        "type": "keyValue",
+                                        "key": "fields",
+                                        "value": {
+                                            "type": "array",
+                                            "args": [
+                                                "postId"
+                                            ]
+                                        }
+                                    }
+                                },
+                                {
+                                    "type": "attributeArgument",
+                                    "value": {
+                                        "type": "keyValue",
+                                        "key": "references",
+                                        "value": {
+                                            "type": "array",
+                                            "args": [
+                                                "id"
+                                            ]
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "field",
+                    "name": "tag",
+                    "fieldType": "Tag",
+                    "array": false,
+                    "optional": false,
+                    "attributes": [
+                        {
+                            "type": "attribute",
+                            "name": "relation",
+                            "kind": "field",
+                            "args": [
+                                {
+                                    "type": "attributeArgument",
+                                    "value": {
+                                        "type": "keyValue",
+                                        "key": "fields",
+                                        "value": {
+                                            "type": "array",
+                                            "args": [
+                                                "tagId"
+                                            ]
+                                        }
+                                    }
+                                },
+                                {
+                                    "type": "attributeArgument",
+                                    "value": {
+                                        "type": "keyValue",
+                                        "key": "references",
+                                        "value": {
+                                            "type": "array",
+                                            "args": [
+                                                "id"
+                                            ]
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    ]
                 },
                 {
                     "type": "break"
                 },
                 {
                     "type": "attribute",
-                    "name": "map",
+                    "name": "id",
                     "kind": "object",
                     "args": [
                         {
                             "type": "attributeArgument",
-                            "value": "\"user\""
+                            "value": {
+                                "type": "array",
+                                "args": [
+                                    "postId",
+                                    "tagId"
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "break"
+        },
+        {
+            "type": "model",
+            "name": "Transaction",
+            "properties": [
+                {
+                    "type": "field",
+                    "name": "id",
+                    "fieldType": "Int",
+                    "array": false,
+                    "optional": false,
+                    "attributes": [
+                        {
+                            "type": "attribute",
+                            "name": "id",
+                            "kind": "field"
+                        },
+                        {
+                            "type": "attribute",
+                            "name": "default",
+                            "kind": "field",
+                            "args": [
+                                {
+                                    "type": "attributeArgument",
+                                    "value": {
+                                        "type": "function",
+                                        "name": "autoincrement"
+                                    }
+                                }
+                            ]
                         }
                     ]
                 },
                 {
-                    "type": "comment",
-                    "text": "// correspond au nom de la table dans Sequelize"
+                    "type": "field",
+                    "name": "amount",
+                    "fieldType": "Decimal",
+                    "array": false,
+                    "optional": false,
+                    "attributes": [
+                        {
+                            "type": "attribute",
+                            "name": "Decimal",
+                            "kind": "field",
+                            "group": "db"
+                        }
+                    ]
+                },
+                {
+                    "type": "field",
+                    "name": "description",
+                    "fieldType": "String",
+                    "array": false,
+                    "optional": false
+                },
+                {
+                    "type": "field",
+                    "name": "date",
+                    "fieldType": "DateTime",
+                    "array": false,
+                    "optional": false,
+                    "attributes": [
+                        {
+                            "type": "attribute",
+                            "name": "default",
+                            "kind": "field",
+                            "args": [
+                                {
+                                    "type": "attributeArgument",
+                                    "value": {
+                                        "type": "function",
+                                        "name": "now"
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "field",
+                    "name": "createdAt",
+                    "fieldType": "DateTime",
+                    "array": false,
+                    "optional": false,
+                    "attributes": [
+                        {
+                            "type": "attribute",
+                            "name": "default",
+                            "kind": "field",
+                            "args": [
+                                {
+                                    "type": "attributeArgument",
+                                    "value": {
+                                        "type": "function",
+                                        "name": "now"
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "field",
+                    "name": "updatedAt",
+                    "fieldType": "DateTime",
+                    "array": false,
+                    "optional": false,
+                    "attributes": [
+                        {
+                            "type": "attribute",
+                            "name": "updatedAt",
+                            "kind": "field"
+                        }
+                    ]
+                },
+                {
+                    "type": "break"
+                },
+                {
+                    "type": "field",
+                    "name": "userId",
+                    "fieldType": "Int",
+                    "array": false,
+                    "optional": false
+                },
+                {
+                    "type": "field",
+                    "name": "user",
+                    "fieldType": "User",
+                    "array": false,
+                    "optional": false,
+                    "attributes": [
+                        {
+                            "type": "attribute",
+                            "name": "relation",
+                            "kind": "field",
+                            "args": [
+                                {
+                                    "type": "attributeArgument",
+                                    "value": {
+                                        "type": "keyValue",
+                                        "key": "fields",
+                                        "value": {
+                                            "type": "array",
+                                            "args": [
+                                                "userId"
+                                            ]
+                                        }
+                                    }
+                                },
+                                {
+                                    "type": "attributeArgument",
+                                    "value": {
+                                        "type": "keyValue",
+                                        "key": "references",
+                                        "value": {
+                                            "type": "array",
+                                            "args": [
+                                                "id"
+                                            ]
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "break"
+        },
+        {
+            "type": "model",
+            "name": "Instrument",
+            "properties": [
+                {
+                    "type": "field",
+                    "name": "id",
+                    "fieldType": "Int",
+                    "array": false,
+                    "optional": false,
+                    "attributes": [
+                        {
+                            "type": "attribute",
+                            "name": "id",
+                            "kind": "field"
+                        },
+                        {
+                            "type": "attribute",
+                            "name": "default",
+                            "kind": "field",
+                            "args": [
+                                {
+                                    "type": "attributeArgument",
+                                    "value": {
+                                        "type": "function",
+                                        "name": "autoincrement"
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "field",
+                    "name": "type",
+                    "fieldType": "String",
+                    "array": false,
+                    "optional": false
+                },
+                {
+                    "type": "field",
+                    "name": "purchaseDate",
+                    "fieldType": "DateTime",
+                    "array": false,
+                    "optional": false
+                },
+                {
+                    "type": "break"
+                },
+                {
+                    "type": "field",
+                    "name": "users",
+                    "fieldType": "User",
+                    "array": true,
+                    "optional": false,
+                    "attributes": [
+                        {
+                            "type": "attribute",
+                            "name": "relation",
+                            "kind": "field",
+                            "args": [
+                                {
+                                    "type": "attributeArgument",
+                                    "value": "\"InstrumentUsers\""
+                                }
+                            ]
+                        }
+                    ]
                 }
             ]
         }

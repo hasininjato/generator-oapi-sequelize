@@ -9,20 +9,7 @@ generator client {
   provider = "prisma-client-js"
 }
 
-// Data model
-model Post {
-  // @swag | description: Unique identifier for the post | methods: list, item
-  id        Int      @id @default(autoincrement())
-  // @swag | description: Title of the post | methods: list, item, post, put
-  title     String   @unique @db.VarChar(100)
-  // @swag | description: Content of the post | methods: list, item, post, put
-  content   String?
-  // @swag | description: Published status of the post | methods: list, item, post, put
-  published Boolean
-  author    User?    @relation(fields: [authorId], references: [id])
-  authorId  Int?
-  createdAt DateTime @default(now())
-}
+// Models
 
 model User {
   id        Int      @id @default(autoincrement())
@@ -31,7 +18,69 @@ model User {
   password  String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  Post      Post[]
 
-  @@map("user") // correspond au nom de la table dans Sequelize
+  posts        Post[]
+  profile      Profile?
+  transactions Transaction[]
+  instruments  Instrument[]  @relation("InstrumentUsers")
+}
+
+model Profile {
+  id  Int     @id @default(autoincrement())
+  bio String?
+
+  userId Int  @unique
+  user   User @relation(fields: [userId], references: [id])
+}
+
+model Post {
+  id        Int      @id @default(autoincrement())
+  title     String
+  content   String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  userId Int?
+  user   User?      @relation(fields: [userId], references: [id])
+  tags   PostTags[]
+}
+
+model Tag {
+  id        Int      @id @default(autoincrement())
+  name      String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  posts PostTags[]
+}
+
+model PostTags {
+  postId    Int
+  tagId     Int
+  createdAt DateTime @default(now())
+
+  post Post @relation(fields: [postId], references: [id])
+  tag  Tag  @relation(fields: [tagId], references: [id])
+
+  @@id([postId, tagId])
+}
+
+model Transaction {
+  id          Int      @id @default(autoincrement())
+  amount      Decimal  @db.Decimal
+  description String
+  date        DateTime @default(now())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  userId Int
+  user   User @relation(fields: [userId], references: [id])
+}
+
+model Instrument {
+  id           Int      @id @default(autoincrement())
+  type         String
+  purchaseDate DateTime
+
+  users User[] @relation("InstrumentUsers")
 }
