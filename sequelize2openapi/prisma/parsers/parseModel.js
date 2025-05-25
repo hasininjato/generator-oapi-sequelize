@@ -22,8 +22,10 @@ function parseModel(source) {
             }
 
             if (prop.type === "field") {
-                const field = transformField(prop, pendingComment);
-                model.value.push(field);
+                const field = transformField(prop, pendingComment, schema.name);
+                if (field) {
+                    model.value.push(field);
+                }
                 pendingComment = null;
             }
         }

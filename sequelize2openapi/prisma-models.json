@@ -94,62 +94,6 @@
                         }
                     }
                 }
-            },
-            {
-                "field": "posts",
-                "type": "field",
-                "object": {
-                    "type": "Post",
-                    "allowNull": false,
-                    "validate": {
-                        "notNull": {
-                            "msg": "Posts is required"
-                        },
-                        "notEmpty": {
-                            "msg": "Posts cannot be empty"
-                        }
-                    }
-                }
-            },
-            {
-                "field": "profile",
-                "type": "field",
-                "object": {
-                    "type": "Profile",
-                    "allowNull": true
-                }
-            },
-            {
-                "field": "transactions",
-                "type": "field",
-                "object": {
-                    "type": "Transaction",
-                    "allowNull": false,
-                    "validate": {
-                        "notNull": {
-                            "msg": "Transactions is required"
-                        },
-                        "notEmpty": {
-                            "msg": "Transactions cannot be empty"
-                        }
-                    }
-                }
-            },
-            {
-                "field": "instruments",
-                "type": "field",
-                "object": {
-                    "type": "Instrument",
-                    "allowNull": false,
-                    "validate": {
-                        "notNull": {
-                            "msg": "Instruments is required"
-                        },
-                        "notEmpty": {
-                            "msg": "Instruments cannot be empty"
-                        }
-                    }
-                }
             }
         ]
     },
@@ -190,22 +134,6 @@
                     "unique": {
                         "name": "unique_userId",
                         "msg": "This userId is already in use"
-                    }
-                }
-            },
-            {
-                "field": "user",
-                "type": "field",
-                "object": {
-                    "type": "User",
-                    "allowNull": false,
-                    "validate": {
-                        "notNull": {
-                            "msg": "User is required"
-                        },
-                        "notEmpty": {
-                            "msg": "User cannot be empty"
-                        }
                     }
                 }
             }
@@ -286,30 +214,6 @@
                     "type": "Int",
                     "allowNull": true
                 }
-            },
-            {
-                "field": "user",
-                "type": "field",
-                "object": {
-                    "type": "User",
-                    "allowNull": true
-                }
-            },
-            {
-                "field": "tags",
-                "type": "field",
-                "object": {
-                    "type": "PostTags",
-                    "allowNull": false,
-                    "validate": {
-                        "notNull": {
-                            "msg": "Tags is required"
-                        },
-                        "notEmpty": {
-                            "msg": "Tags cannot be empty"
-                        }
-                    }
-                }
             }
         ]
     },
@@ -361,22 +265,6 @@
                         },
                         "notEmpty": {
                             "msg": "UpdatedAt cannot be empty"
-                        }
-                    }
-                }
-            },
-            {
-                "field": "posts",
-                "type": "field",
-                "object": {
-                    "type": "PostTags",
-                    "allowNull": false,
-                    "validate": {
-                        "notNull": {
-                            "msg": "Posts is required"
-                        },
-                        "notEmpty": {
-                            "msg": "Posts cannot be empty"
                         }
                     }
                 }
@@ -432,38 +320,6 @@
                         "list",
                         "item"
                     ]
-                }
-            },
-            {
-                "field": "post",
-                "type": "field",
-                "object": {
-                    "type": "Post",
-                    "allowNull": false,
-                    "validate": {
-                        "notNull": {
-                            "msg": "Post is required"
-                        },
-                        "notEmpty": {
-                            "msg": "Post cannot be empty"
-                        }
-                    }
-                }
-            },
-            {
-                "field": "tag",
-                "type": "field",
-                "object": {
-                    "type": "Tag",
-                    "allowNull": false,
-                    "validate": {
-                        "notNull": {
-                            "msg": "Tag is required"
-                        },
-                        "notEmpty": {
-                            "msg": "Tag cannot be empty"
-                        }
-                    }
                 }
             }
         ]
@@ -568,22 +424,6 @@
                         }
                     }
                 }
-            },
-            {
-                "field": "user",
-                "type": "field",
-                "object": {
-                    "type": "User",
-                    "allowNull": false,
-                    "validate": {
-                        "notNull": {
-                            "msg": "User is required"
-                        },
-                        "notEmpty": {
-                            "msg": "User cannot be empty"
-                        }
-                    }
-                }
             }
         ]
     },
@@ -627,22 +467,6 @@
                         },
                         "notEmpty": {
                             "msg": "PurchaseDate cannot be empty"
-                        }
-                    }
-                }
-            },
-            {
-                "field": "users",
-                "type": "field",
-                "object": {
-                    "type": "User",
-                    "allowNull": false,
-                    "validate": {
-                        "notNull": {
-                            "msg": "Users is required"
-                        },
-                        "notEmpty": {
-                            "msg": "Users cannot be empty"
                         }
                     }
                 }

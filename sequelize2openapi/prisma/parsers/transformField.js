@@ -1,11 +1,18 @@
-const { capitalizeFirstLetter } = require("../../src/utils/utils");
+const {capitalizeFirstLetter} = require("../../src/utils/utils");
+const {prismaTypesScalars} = require("../constants");
 
-function isCreatedOrUpdated(field) {
+function isCreatedField(field) {
     const dateFields = ['createdat', 'created_at'];
     return dateFields.includes(field.toLowerCase());
 }
 
-function transformField(field, comment) {
+function transformField(field, comment, schemaName) {
+    const capitalizedFieldName = capitalizeFirstLetter(field.name);
+    const attributes = Array.isArray(field.attributes) ? field.attributes : [];
+    const isRequired = !field.optional;
+    const hasId = attributes.some(attr => attr.name === "id");
+    const isRelation = attributes.some(attr => attr.name === "relation");
+
     const fieldObject = {
         field: field.name,
         type: "field",
@@ -16,57 +23,41 @@ function transformField(field, comment) {
     };
 
     if (comment) {
-        fieldObject.comment = { ...comment };
+        fieldObject.comment = {...comment};
     }
 
-    const hasAttributes = Array.isArray(field.attributes);
-    const isRequired = !field.optional;
-    let hasId = false;
-
-    if (hasAttributes) {
-        for (const attr of field.attributes) {
-            if (attr.name === "id") {
-                hasId = true;
-                break;
-            }
-        }
-    }
-
-    // Only add validate if required AND not an ID
     if (isRequired && !hasId) {
-        if (isCreatedOrUpdated(field.name)) {
+        if (isCreatedField(field.name)) {
             fieldObject.comment = {
-                "description": `${capitalizeFirstLetter(field.name)} is automatically set by the system`,
-                "methods": ["list", "item"]
-            }
+                description: `${capitalizedFieldName} is automatically set by the system`,
+                methods: ["list", "item"]
+            };
         } else {
             fieldObject.object.validate = {
-                notNull: { msg: `${capitalizeFirstLetter(field.name)} is required` },
-                notEmpty: { msg: `${capitalizeFirstLetter(field.name)} cannot be empty` }
+                notNull: {msg: `${capitalizedFieldName} is required`},
+                notEmpty: {msg: `${capitalizedFieldName} cannot be empty`}
             };
         }
     }
 
-    if (hasAttributes) {
-        for (const attr of field.attributes) {
-            // default value
-            if (attr.name === "default") {
-                fieldObject.object.defaultValue = attr.args[0]?.value?.name ?? attr.args[0]?.value;
-                // we don't need to validate if default value is set
-                delete fieldObject.object.validate;
-            }
-
-            // unique
-            if (attr.name === "unique") {
-                fieldObject.object.unique = {
-                    name: `unique_${field.name}`,
-                    msg: `This ${field.name} is already in use`
-                };
-            }
+    for (const attr of attributes) {
+        if (attr.name === "default") {
+            fieldObject.object.defaultValue = attr.args?.[0]?.value?.name ?? attr.args?.[0]?.value;
+            delete fieldObject.object.validate;
         }
+
+        if (attr.name === "unique") {
+            fieldObject.object.unique = {
+                name: `unique_${field.name}`,
+                msg: `This ${field.name} is already in use`
+            };
+        }
+    }
+    if (!prismaTypesScalars.includes(fieldObject.object.type)) {
+        return null;
     }
 
     return fieldObject;
 }
 
-module.exports = { transformField };
+module.exports = {transformField};
