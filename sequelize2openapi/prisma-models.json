@@ -84,15 +84,14 @@
                 "type": "field",
                 "object": {
                     "type": "DateTime",
-                    "allowNull": false,
-                    "validate": {
-                        "notNull": {
-                            "msg": "UpdatedAt is required"
-                        },
-                        "notEmpty": {
-                            "msg": "UpdatedAt cannot be empty"
-                        }
-                    }
+                    "allowNull": false
+                },
+                "comment": {
+                    "description": "UpdatedAt is automatically set by the system",
+                    "methods": [
+                        "list",
+                        "item"
+                    ]
                 }
             }
         ]
@@ -196,15 +195,14 @@
                 "type": "field",
                 "object": {
                     "type": "DateTime",
-                    "allowNull": false,
-                    "validate": {
-                        "notNull": {
-                            "msg": "UpdatedAt is required"
-                        },
-                        "notEmpty": {
-                            "msg": "UpdatedAt cannot be empty"
-                        }
-                    }
+                    "allowNull": false
+                },
+                "comment": {
+                    "description": "UpdatedAt is automatically set by the system",
+                    "methods": [
+                        "list",
+                        "item"
+                    ]
                 }
             },
             {
@@ -258,15 +256,14 @@
                 "type": "field",
                 "object": {
                     "type": "DateTime",
-                    "allowNull": false,
-                    "validate": {
-                        "notNull": {
-                            "msg": "UpdatedAt is required"
-                        },
-                        "notEmpty": {
-                            "msg": "UpdatedAt cannot be empty"
-                        }
-                    }
+                    "allowNull": false
+                },
+                "comment": {
+                    "description": "UpdatedAt is automatically set by the system",
+                    "methods": [
+                        "list",
+                        "item"
+                    ]
                 }
             }
         ]
@@ -398,15 +395,14 @@
                 "type": "field",
                 "object": {
                     "type": "DateTime",
-                    "allowNull": false,
-                    "validate": {
-                        "notNull": {
-                            "msg": "UpdatedAt is required"
-                        },
-                        "notEmpty": {
-                            "msg": "UpdatedAt cannot be empty"
-                        }
-                    }
+                    "allowNull": false
+                },
+                "comment": {
+                    "description": "UpdatedAt is automatically set by the system",
+                    "methods": [
+                        "list",
+                        "item"
+                    ]
                 }
             },
             {
@@ -467,6 +463,112 @@
                         },
                         "notEmpty": {
                             "msg": "PurchaseDate cannot be empty"
+                        }
+                    }
+                }
+            }
+        ]
+    },
+    {
+        "sequelizeModel": "Order",
+        "value": [
+            {
+                "field": "orderId",
+                "type": "field",
+                "object": {
+                    "type": "Int",
+                    "allowNull": false,
+                    "validate": {
+                        "notNull": {
+                            "msg": "OrderId is required"
+                        },
+                        "notEmpty": {
+                            "msg": "OrderId cannot be empty"
+                        }
+                    }
+                }
+            },
+            {
+                "field": "productId",
+                "type": "field",
+                "object": {
+                    "type": "Int",
+                    "allowNull": false,
+                    "validate": {
+                        "notNull": {
+                            "msg": "ProductId is required"
+                        },
+                        "notEmpty": {
+                            "msg": "ProductId cannot be empty"
+                        }
+                    }
+                }
+            },
+            {
+                "field": "quantity",
+                "type": "field",
+                "object": {
+                    "type": "Int",
+                    "allowNull": false,
+                    "validate": {
+                        "notNull": {
+                            "msg": "Quantity is required"
+                        },
+                        "notEmpty": {
+                            "msg": "Quantity cannot be empty"
+                        }
+                    }
+                }
+            }
+        ]
+    },
+    {
+        "sequelizeModel": "InvoiceLine",
+        "value": [
+            {
+                "field": "orderId",
+                "type": "field",
+                "object": {
+                    "type": "Int",
+                    "allowNull": false,
+                    "validate": {
+                        "notNull": {
+                            "msg": "OrderId is required"
+                        },
+                        "notEmpty": {
+                            "msg": "OrderId cannot be empty"
+                        }
+                    }
+                }
+            },
+            {
+                "field": "productId",
+                "type": "field",
+                "object": {
+                    "type": "Int",
+                    "allowNull": false,
+                    "validate": {
+                        "notNull": {
+                            "msg": "ProductId is required"
+                        },
+                        "notEmpty": {
+                            "msg": "ProductId cannot be empty"
+                        }
+                    }
+                }
+            },
+            {
+                "field": "price",
+                "type": "field",
+                "object": {
+                    "type": "Decimal",
+                    "allowNull": false,
+                    "validate": {
+                        "notNull": {
+                            "msg": "Price is required"
+                        },
+                        "notEmpty": {
+                            "msg": "Price cannot be empty"
                         }
                     }
                 }

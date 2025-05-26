@@ -84,3 +84,23 @@ model Instrument {
 
   users User[] @relation("InstrumentUsers")
 }
+
+model Order {
+  orderId     Int
+  productId   Int
+  quantity    Int
+  InvoiceLine InvoiceLine[]
+
+  @@id([orderId, productId])
+}
+
+model InvoiceLine {
+  orderId   Int
+  productId Int
+  price     Decimal
+
+  // Relation composée vers Order
+  order Order @relation(fields: [orderId, productId], references: [orderId, productId])
+
+  @@id([orderId, productId])
+}

@@ -1,9 +1,8 @@
 const fs = require('fs');
-const { generateModels } = require("./parsers/parseModel");
+const parseModel = require("./parsers/parseModel");
 
 const source = fs.readFileSync("./schema.prisma", 'utf8');
 
-const { schemas, models } = generateModels(source);
+const models = parseModel(source);
 
-fs.writeFileSync("../prisma.json", JSON.stringify(schemas, null, 4));
 fs.writeFileSync("../prisma-models.json", JSON.stringify(models, null, 4));

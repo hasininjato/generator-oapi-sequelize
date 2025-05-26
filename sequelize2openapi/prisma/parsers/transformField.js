@@ -1,63 +1,83 @@
-const {capitalizeFirstLetter} = require("../../src/utils/utils");
-const {prismaTypesScalars} = require("../constants");
+const { capitalizeFirstLetter } = require("../../src/utils/utils");
+const { prismaTypesScalars } = require("../constants");
 
-function isCreatedField(field) {
-    const dateFields = ['createdat', 'created_at'];
-    return dateFields.includes(field.toLowerCase());
+function isCreatedOrUpdatedField(field) {
+    return ['createdat', 'created_at', 'updatedat', 'updated_at'].includes(field.toLowerCase());
 }
 
-function transformField(field, comment, schemaName) {
-    const capitalizedFieldName = capitalizeFirstLetter(field.name);
-    const attributes = Array.isArray(field.attributes) ? field.attributes : [];
-    const isRequired = !field.optional;
-    const hasId = attributes.some(attr => attr.name === "id");
-    const isRelation = attributes.some(attr => attr.name === "relation");
+/**
+ * Transforms a property into a structured field object.
+ * @param {Object} property
+ * @param {Object} comment
+ * @param {string} schemaName
+ * @returns {[Object|null, string[]]}
+ */
+function transformField(property, comment, schemaName) {
+    const attrAssociationFields = [];
+    const { name, fieldType, optional, attributes = [] } = property;
 
-    const fieldObject = {
-        field: field.name,
+    const capitalizedName = capitalizeFirstLetter(name);
+    const isRequired = !optional;
+    const hasId = attributes.some(attr => attr.name === "id");
+
+    const field = {
+        field: name,
         type: "field",
         object: {
-            type: field.fieldType,
-            allowNull: field.optional
+            type: fieldType,
+            allowNull: optional
         }
     };
 
     if (comment) {
-        fieldObject.comment = {...comment};
+        field.comment = { ...comment };
     }
 
     if (isRequired && !hasId) {
-        if (isCreatedField(field.name)) {
-            fieldObject.comment = {
-                description: `${capitalizedFieldName} is automatically set by the system`,
+        if (isCreatedOrUpdatedField(name)) {
+            field.comment = {
+                description: `${capitalizedName} is automatically set by the system`,
                 methods: ["list", "item"]
             };
         } else {
-            fieldObject.object.validate = {
-                notNull: {msg: `${capitalizedFieldName} is required`},
-                notEmpty: {msg: `${capitalizedFieldName} cannot be empty`}
+            field.object.validate = {
+                notNull: { msg: `${capitalizedName} is required` },
+                notEmpty: { msg: `${capitalizedName} cannot be empty` }
             };
         }
     }
 
     for (const attr of attributes) {
-        if (attr.name === "default") {
-            fieldObject.object.defaultValue = attr.args?.[0]?.value?.name ?? attr.args?.[0]?.value;
-            delete fieldObject.object.validate;
-        }
+        const { name: attrName, args = [] } = attr;
 
-        if (attr.name === "unique") {
-            fieldObject.object.unique = {
-                name: `unique_${field.name}`,
-                msg: `This ${field.name} is already in use`
-            };
+        switch (attrName) {
+            case "default":
+                field.object.defaultValue = args[0]?.value?.name ?? args[0]?.value;
+                delete field.object.validate;
+                break;
+
+            case "unique":
+                field.object.unique = {
+                    name: `unique_${name}`,
+                    msg: `This ${name} is already in use`
+                };
+                break;
+
+            case "relation":
+                const fieldsArg = args.find(arg => arg.value?.key === "fields");
+                const relatedFields = fieldsArg?.value?.value?.args;
+                if (Array.isArray(relatedFields)) {
+                    attrAssociationFields.push(...relatedFields);
+                }
+                break;
         }
     }
-    if (!prismaTypesScalars.includes(fieldObject.object.type)) {
-        return null;
+
+    if (!prismaTypesScalars.includes(field.object.type)) {
+        return [null, attrAssociationFields];
     }
 
-    return fieldObject;
+    return [field, attrAssociationFields];
 }
 
-module.exports = {transformField};
+module.exports = { transformField };
